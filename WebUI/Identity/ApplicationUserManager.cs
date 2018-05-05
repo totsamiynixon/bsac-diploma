@@ -1,5 +1,5 @@
 using System;
-using Data.Context;
+using Data.Implementations.Context;
 using Entity.Domain.User;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;

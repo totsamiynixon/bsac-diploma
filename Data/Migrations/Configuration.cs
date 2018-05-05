@@ -1,7 +1,7 @@
-using Data.Context;
+using Data.Implementations.Context;
 using Microsoft.AspNet.Identity;
 
-namespace Data.Migrations
+namespace Data.Implementations.Migrations
 {
     using Entity.Domain.User;
     using System;

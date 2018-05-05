@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.ApplicationServices;
 using System.Web.Http.Dependencies;
 using Data;
-using Data.Context;
+using Data.Implementations.Context;
 using Data.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;

@@ -1,4 +1,4 @@
-namespace Data.Migrations
+namespace Data.Implementations.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
