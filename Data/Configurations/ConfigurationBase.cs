@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Configurations
+namespace Data.Implementations.Configurations
 {
-    internal abstract class ConfigurationBase<T> : EntityTypeConfiguration<T> where T : class, IEntity
+    public abstract class ConfigurationBase<T> : EntityTypeConfiguration<T> where T : class, IEntity
     {
         protected ConfigurationBase()
         {
