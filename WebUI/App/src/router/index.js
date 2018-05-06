@@ -8,6 +8,7 @@ import DefaultLayout from "@/components/Default/Shared/Layout";
 import AuthLayout from "@/components/Auth/Shared/Layout";
 import AdminLayout from "@/components/Admin/Shared/Layout"
 import Criterias from "@/components/Admin/Criteria/Criterias"
+import Exercises from "@/components/Admin/Exercise/Exercises"
 
 Vue.use(Router);
 
@@ -38,6 +39,11 @@ export default new Router({
           path: "criterias",
           name: "criterias",
           component: Criterias
+        },
+        {
+          path: "exercises",
+          name: "exercises",
+          component: Exercises
         }
       ],
       beforeEnter: AuthGuard

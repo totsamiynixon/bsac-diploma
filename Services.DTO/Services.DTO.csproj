@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Criteria\CriteriaDTO.cs" />
+    <Compile Include="ExerciseCriteria\ExerciseCriteriaDTO.cs" />
+    <Compile Include="Exercise\ExerciseDetailsDTO.cs" />
+    <Compile Include="Exercise\ExerciseDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
