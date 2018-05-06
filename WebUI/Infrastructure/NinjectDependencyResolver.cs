@@ -18,23 +18,28 @@ using Microsoft.Owin.Security.DataProtection;
 using Ninject;
 using Ninject.Web.Common;
 using Ninject.Web.WebApi;
+using Services;
+using Services.Interfaces;
 using WebUI.Identity;
-using IDependencyResolver = System.Web.Mvc.IDependencyResolver;
+using IDependencyResolverMVC = System.Web.Mvc.IDependencyResolver;
 
 namespace WebUI.Infrastructure
 {
-    public class NinjectDependencyResolver : IDependencyResolver, System.Web.Http.Dependencies.IDependencyResolver
+    public class NinjectDependencyResolver : IDependencyResolverMVC, System.Web.Http.Dependencies.IDependencyResolver
     {
         private readonly IKernel _kernel;
+
         public NinjectDependencyResolver(IKernel kernelParam)
         {
             _kernel = kernelParam;
-            AddBindings();
+            AddBindings(_kernel);
         }
+
         public object GetService(Type serviceType)
         {
             return _kernel.TryGet(serviceType);
         }
+
         public IEnumerable<object> GetServices(Type serviceType)
         {
             return _kernel.GetAll(serviceType);
@@ -44,16 +49,19 @@ namespace WebUI.Infrastructure
         {
             return new NinjectDependencyScope(this._kernel.BeginBlock());
         }
-        private void AddBindings()
+
+        public static void AddBindings(IKernel _kernel)
         {
             var appName = "Application";
 
 
-            _kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();           
             _kernel.Bind<DataContext>().To<DataContext>().InRequestScope();
+            _kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();           
             _kernel.Bind<ApplicationUserManager>().ToSelf().InRequestScope();
             _kernel.Bind<ApplicationRoleManager>().ToSelf().InRequestScope();
             _kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
+
+            _kernel.Bind<ICriteriaService>().To<CriteriaService>().InRequestScope();
 
             _kernel.Bind<IIdentityMessageService>().To<EmailService>().InRequestScope();
             _kernel.Bind<IDataSerializer<AuthenticationTicket>>().To<TicketSerializer>();

@@ -14,7 +14,7 @@ namespace Data.Implementations.Context
 {
     public class DataContext : IdentityDbContext<User, Role, int, UserLogin, UserRole, UserClaim>
     {
-        public DataContext()
+        public DataContext():base("DefaultConnection")
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataContext, Configuration>());
             Configuration.LazyLoadingEnabled = false;

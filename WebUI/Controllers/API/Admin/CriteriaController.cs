@@ -8,9 +8,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace WebUI.Areas.Admin.Controllers.API
+namespace WebUI.Controllers.API.Admin
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [RoutePrefix("api/admin/criteria")]
     public class CriteriaController : ApiController
     {
@@ -43,8 +43,7 @@ namespace WebUI.Areas.Admin.Controllers.API
             {
                 return BadRequest("Invalid Model");
             }
-            await _criteriaService.AddOrUpdateCriteriaAsync(model);
-            return Ok();
+            return Ok(await _criteriaService.AddOrUpdateCriteriaAsync(model));
         }
 
         [HttpDelete]

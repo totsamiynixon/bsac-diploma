@@ -12,8 +12,9 @@ namespace WebUI.Controllers
     public class HomeController : Controller
     {
         public ActionResult Index()
-        {          
-            return View();
+        {
+            var userId = User.Identity.GetUserId<int>();
+           return View();
         }
 
         public ActionResult About()
