@@ -10,8 +10,21 @@ export default {
   data() {
     return {
       sidebarItems: [
-        { icon: "content_copy", text: "Критерии", route: {name: "criterias"} },
-       /*   { icon: "history", text: "Упражнения", route: {name: "exercises"} },
+        {
+          icon: "content_copy",
+          text: "Критерии",
+          route: {
+            name: "criterias"
+          }
+        },
+        {
+          icon: "content_copy",
+          text: "Упражнения",
+          route: {
+            name: "exercises"
+          }
+        }
+        /*   { icon: "history", text: "Упражнения", route: {name: "exercises"} },
        { icon: "content_copy", text: "Duplicates" },
         {
           icon: "keyboard_arrow_up",
