@@ -1,33 +1,33 @@
-﻿using System;
-using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
-using Microsoft.AspNet.SignalR;
-using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using Ninject;
-using Ninject.Web.Common;
-using WebUI;
-using WebUI.Infrastructure;
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(WebUI.App_Start.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(WebUI.App_Start.NinjectWebCommon), "Stop")]
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(NinjectWebCommon), "Stop")]
-
-namespace WebUI
+namespace WebUI.App_Start
 {
-    public static class NinjectWebCommon
+    using System;
+    using System.Web;
+    using System.Web.Http;
+    using System.Web.Mvc;
+    using Microsoft.AspNet.SignalR;
+    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+
+    using Ninject;
+    using Ninject.Web.Common;
+    using WebUI.Infrastructure;
+
+    public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start()
+        public static void Start() 
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-
+        
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -35,7 +35,7 @@ namespace WebUI
         {
             bootstrapper.ShutDown();
         }
-
+        
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -67,8 +67,7 @@ namespace WebUI
             var ninjectDependencyResolver = new NinjectDependencyResolver(kernel);
             DependencyResolver.SetResolver(ninjectDependencyResolver);
             GlobalConfiguration.Configuration.DependencyResolver = ninjectDependencyResolver;
-            GlobalHost.DependencyResolver = new Microsoft.AspNet.SignalR.Ninject.NinjectDependencyResolver(kernel); 
-
-        }
+            GlobalHost.DependencyResolver = new NinjecSignalRDependencyResolver(kernel);
+        }        
     }
 }

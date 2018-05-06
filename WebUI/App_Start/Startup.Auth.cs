@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 using Duke.Owin.VkontakteMiddleware;
 using Entity.Domain.User;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Google;
+using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.Security.Twitter;
 using Owin;
 using WebUI.Identity;
@@ -19,6 +25,13 @@ namespace WebUI
     public partial class Startup
     {
         public static IDataProtectionProvider DataProtectionProvider { get; private set; }
+        public static OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
+        {
+            AllowInsecureHttp = true,
+            TokenEndpointPath = new PathString("/api/account/token"),
+            AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+            Provider = new OAuthAuthorizationServerProvider()
+        };
         // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
@@ -28,6 +41,7 @@ namespace WebUI
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             // Configure the sign in cookie
+            app.SetDefaultSignInAsAuthenticationType(DefaultAuthenticationTypes.ApplicationCookie);
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
@@ -52,14 +66,17 @@ namespace WebUI
                 CookieName = "ApplicationAuth"
             });
 
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+
+            // Token Generation
+            app.UseOAuthAuthorizationServer(OAuthServerOptions);
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
 
             // Uncomment the following lines to enable logging in with third party login providers
             app.UseTwitterAuthentication(new TwitterAuthenticationOptions()
-                {
-                    ConsumerKey = "NMHW0d13DaqAaywHf7f2VvJYt",
-                    ConsumerSecret = "RQaRTSp8QIijhWiag8tBD1mCXruJ1OulbQPR2jOgPjMlwpJh6s",
-                    BackchannelCertificateValidator = new CertificateSubjectKeyIdentifierValidator(new[]
+            {
+                ConsumerKey = "NMHW0d13DaqAaywHf7f2VvJYt",
+                ConsumerSecret = "RQaRTSp8QIijhWiag8tBD1mCXruJ1OulbQPR2jOgPjMlwpJh6s",
+                BackchannelCertificateValidator = new CertificateSubjectKeyIdentifierValidator(new[]
                     {
                         "A5EF0B11CEC04103A34A659048B21CE0572D7D47", // VeriSign Class 3 Secure Server CA - G2
                         "0D445C165344C1827E1D20AB25F40163D8BE79A5", // VeriSign Class 3 Secure Server CA - G3
@@ -68,7 +85,7 @@ namespace WebUI
                         "5168FF90AF0207753CCCD9656462A212B859723B", //DigiCert SHA2 High Assurance Server C‎A 
                         "B13EC36903F8BF4701D498261A0802EF63642BC3" //DigiCert High Assurance EV Root CA
                     })
-                }
+            }
             );
 
 
@@ -94,4 +111,27 @@ namespace WebUI
             });
         }
     }
+    //public class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
+    //{
+    //    public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+    //    {
+    //        context.Validated();
+    //    }
+
+    //    public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
+    //    {
+    //        var _userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
+    //        var user = await _userManager.FindAsync(context.UserName, context.Password);
+    //        if (user == null)
+    //        {
+    //            context.SetError("invalid_grant", "The user name or password is incorrect.");
+    //            return;
+    //        }
+    //        var identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
+    //        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+    //        identity.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", await _userManager.GetRolesAsync(user.Id))));
+    //        context.Validated(identity);
+
+    //    }
+    //}
 }

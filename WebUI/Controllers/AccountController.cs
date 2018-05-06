@@ -21,7 +21,7 @@ namespace WebUI.Controllers
         private readonly IIdentityMessageService _messageService;
         private readonly IAuthenticationManager _authenticationManager;
         public AccountController(
-            ApplicationUserManager userManager, 
+            ApplicationUserManager userManager,
             ApplicationSignInManager signInManager,
             IIdentityMessageService messageService,
             IAuthenticationManager authenticationManager)

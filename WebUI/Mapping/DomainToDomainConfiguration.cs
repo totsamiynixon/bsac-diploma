@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AutoMapper;
+using Entity.Domain;
 
 namespace WebUI.Mapping
 {
@@ -10,7 +11,7 @@ namespace WebUI.Mapping
     {
         public DomainToDomainConfiguration()
         {
-
+            CreateMap<Criteria, Criteria>();
         }
     }
 }

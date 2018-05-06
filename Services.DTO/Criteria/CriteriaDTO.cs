@@ -10,7 +10,7 @@ namespace Services.DTO.Criteria
     public class CriteriaDTO
     {
         public int Id { get; set; }
-        [Required]
+
         public string Name { get; set; }
     }
 }

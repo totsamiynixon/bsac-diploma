@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Contracts;
+using Data.Implementations.Context;
 using Data.Interfaces;
 using Data.Interfaces.Repositories;
 using Data.Repository;
@@ -15,10 +16,10 @@ namespace Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DbContext _context;
+        private readonly DataContext _context;
         private Hashtable _repositories;
 
-        public UnitOfWork(DbContext context)
+        public UnitOfWork(DataContext context)
         {
             _context = context;
         }
