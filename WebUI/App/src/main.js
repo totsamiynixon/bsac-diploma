@@ -26,13 +26,6 @@ Vue.component("app-alerts", AlertsCmp);
 Vue.component("app-loading", LoadingCmp);
 Vue.config.productionTip = false;
 
-
-if(process.env.NODE_ENV == 'production') {
-  axios.defaults.baseURL = "/";
- }
- else {
-  axios.defaults.baseURL = "http://localhost:57327/";
- }
 /* eslint-disable no-new */
 new Vue({
   el: "#app",

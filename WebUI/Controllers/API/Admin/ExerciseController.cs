@@ -1,4 +1,5 @@
 ﻿using Services.DTO.Exercise;
+using Services.DTO.ExerciseCriteria;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,11 @@ namespace WebUI.Controllers.API.Admin
     public class ExerciseController : ApiController
     {
         private readonly IExerciseService _exerciseService;
-        public ExerciseController(IExerciseService service)
+        private readonly ICriteriaService _criteriaService;
+        public ExerciseController(IExerciseService service, ICriteriaService criteriaService)
         {
             _exerciseService = service;
+            _criteriaService = criteriaService;
         }
         // GET: api/ApiExercise
         [HttpGet]
@@ -29,10 +32,28 @@ namespace WebUI.Controllers.API.Admin
         // GET: api/ApiExercise/5
         [HttpGet]
         [Route("get")]
-        public async Task<IHttpActionResult> GetAsync(int id)
+        public async Task<IHttpActionResult> GetAsync(int? id = null)
         {
-            return Ok(await _exerciseService.GetByIdAsync(id));
+            var criterias = await _criteriaService.GetAllAsync();
+            if (id.HasValue)
+            {
+                return Ok(new {
+                    exercise = await _exerciseService.GetByIdAsync(id.Value),
+                    criterias = criterias
+                });
+            }
+            else
+            {
+                return Ok(new {
+                    exercise = new ExerciseDetailsDTO
+                    {
+                        Criterias = new List<ExerciseCriteriaDTO>()
+                    },
+                    criterias = criterias
+                });
+            }
         }
+
 
         [HttpPost]
         [Route("save")]

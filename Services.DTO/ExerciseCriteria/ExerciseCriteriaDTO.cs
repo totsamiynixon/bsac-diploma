@@ -11,5 +11,7 @@ namespace Services.DTO.ExerciseCriteria
         public int Id { get; set; }
 
         public int CriteriaId { get; set; }
+
+        public int Weight { get; set; }
     }
 }

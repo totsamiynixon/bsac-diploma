@@ -6,9 +6,10 @@ import AuthGuard from "./auth-guard";
 import ProjectLoader from "./project-loader";
 import DefaultLayout from "@/components/Default/Shared/Layout";
 import AuthLayout from "@/components/Auth/Shared/Layout";
-import AdminLayout from "@/components/Admin/Shared/Layout"
-import Criterias from "@/components/Admin/Criteria/Criterias"
-import Exercises from "@/components/Admin/Exercise/Exercises"
+import AdminLayout from "@/components/Admin/Shared/Layout";
+import Criterias from "@/components/Admin/Criteria/Criterias";
+import Exercises from "@/components/Admin/Exercise/Exercises";
+import AddOrUpdateexercise from "@/components/Admin/Exercise/AddOrUpdateExercise";
 
 Vue.use(Router);
 
@@ -44,6 +45,16 @@ export default new Router({
           path: "exercises",
           name: "exercises",
           component: Exercises
+        },
+        {
+          path: "exercises/create",
+          name: "create-exercise",
+          component: AddOrUpdateexercise
+        },
+        {
+          path: "exercises/edit/:id",
+          name: "edit-exercise",
+          component: AddOrUpdateexercise
         }
       ],
       beforeEnter: AuthGuard

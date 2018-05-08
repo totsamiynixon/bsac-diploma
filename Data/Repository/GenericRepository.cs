@@ -159,14 +159,7 @@ namespace Data.Repository
                 throw new NotSupportedException("Entity of this type only supports logical deletion");
             }
 
-            foreach (var item in items)
-            {
-                if (_context.Entry(item).State == EntityState.Detached)
-                {
-                    _dbSet.Attach(item);
-                }
-                _dbSet.Remove(item);
-            }
+            _dbSet.RemoveRange(items);
         }
 
         public void Update(params TEntity[] items)

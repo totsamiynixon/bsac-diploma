@@ -6,7 +6,7 @@
                   <h1>{{exercise.name}}</h1>
                 </v-card-text>
                 <v-card-actions>                
-                    <v-btn  @click="updateExercise(exercise)" target="_blank" icon>
+                    <v-btn  :to="'exercises/edit/'+exercise.id" icon>
                     <v-icon>update</v-icon>
                   </v-btn>
                   <v-spacer></v-spacer>
@@ -16,7 +16,6 @@
                 </v-card-actions>
               </v-card>                
               </v-flex>
-              <create-or-update-exercise-modal :dialog.sync="dialog" :exercise.sync="currentExercise"></create-or-update-exercise-modal>
       <v-btn
         :color="'pink'"
         dark
@@ -24,7 +23,7 @@
         fixed
         bottom
         right
-        @click="createExercise"
+        :to="'exercises/create'"
       >      <v-icon>add</v-icon>
       </v-btn>
   </v-layout>
@@ -32,7 +31,6 @@
 
 
 <script>
-import CreateOrUpdateExerciseModal from "@/components/Admin/Exercise/CreateOrUpdateExerciseModal";
 export default {
   data() {
     return {
@@ -49,20 +47,12 @@ export default {
     }
   },
   methods: {
-    createExercise() {
-      this.$store.dispatch("admin/exercise/setCurrentExercise", null);
-      this.dialog = true;
-    },
-    updateExercise(exercise) {
-      this.$store.dispatch("admin/exercise/setCurrentExercise", exercise);
-      this.dialog = true;
-    },
     deleteExercise(id) {
       this.$store.dispatch("admin/exercise/deleteExercise", id);
     }
   },
   components: {
-    CreateOrUpdateExerciseModal
+    
   }
 };
 </script>

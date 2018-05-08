@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Data.Implementations.Configurations;
 using Data.Implementations.Migrations;
-using Data.Migrations;
 using Entity.Domain.User;
 using Microsoft.AspNet.Identity.EntityFramework;
 

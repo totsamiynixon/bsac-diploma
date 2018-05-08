@@ -279,6 +279,37 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\.eslintrc.js" />
+    <Content Include="App\.gitignore" />
+    <Content Include="App\.postcssrc.js" />
+    <Content Include="App\build\build.js" />
+    <Content Include="App\build\check-versions.js" />
+    <Content Include="App\build\logo.png" />
+    <Content Include="App\build\utils.js" />
+    <Content Include="App\build\vue-loader.conf.js" />
+    <Content Include="App\build\webpack.base.conf.js" />
+    <Content Include="App\build\webpack.dev.conf.js" />
+    <Content Include="App\build\webpack.prod.conf.js" />
+    <Content Include="App\config\dev.env.js" />
+    <Content Include="App\config\index.js" />
+    <Content Include="App\config\prod.env.js" />
+    <Content Include="App\dist\index.html" />
+    <Content Include="App\dist\static\css\app.526441963b28724180f5a78eda5de887.css" />
+    <Content Include="App\dist\static\js\app.df8c07ba6fc7fb96fe08.js" />
+    <Content Include="App\dist\static\js\manifest.2ae2e69a05c33dfc65f8.js" />
+    <Content Include="App\dist\static\js\vendor.5c4073cd733e3624e1e4.js" />
+    <Content Include="App\index.html" />
+    <Content Include="App\src\assets\logo.png" />
+    <Content Include="App\src\main.js" />
+    <Content Include="App\src\router\auth-guard.js" />
+    <Content Include="App\src\router\index.js" />
+    <Content Include="App\src\router\project-loader.js" />
+    <Content Include="App\src\store\index.js" />
+    <Content Include="App\src\store\modules\admin\criteria.js" />
+    <Content Include="App\src\store\modules\admin\exercise.js" />
+    <Content Include="App\src\store\modules\shared.js" />
+    <Content Include="App\src\store\modules\sidebar.js" />
+    <Content Include="App\src\store\modules\user.js" />
     <Content Include="Content\bootstrap-material-design.css" />
     <Content Include="Content\bootstrap-material-design.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -307,6 +338,33 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="App\.babelrc" />
+    <Content Include="App\.editorconfig" />
+    <Content Include="App\.eslintignore" />
+    <Content Include="App\package-lock.json" />
+    <Content Include="App\package.json" />
+    <Content Include="App\README.md" />
+    <Content Include="App\src\.gitrepo" />
+    <Content Include="App\src\App.vue" />
+    <Content Include="App\src\components\Admin\Criteria\CreateOrUpdateCriteriaModal.vue" />
+    <Content Include="App\src\components\Admin\Criteria\Criterias.vue" />
+    <Content Include="App\src\components\Admin\Exercise\AddOrUpdateExercise.vue" />
+    <Content Include="App\src\components\Admin\Exercise\Exercises.vue" />
+    <Content Include="App\src\components\Admin\Shared\Layout.vue" />
+    <Content Include="App\src\components\Auth\Shared\Layout.vue" />
+    <Content Include="App\src\components\Auth\Signin.vue" />
+    <Content Include="App\src\components\Auth\Signup.vue" />
+    <Content Include="App\src\components\Default\Exercses\Projects.vue" />
+    <Content Include="App\src\components\Default\Shared\Layout.vue" />
+    <Content Include="App\src\components\Shared\Alerts.vue" />
+    <Content Include="App\src\components\Shared\Layout\Sidebar.vue" />
+    <Content Include="App\src\components\Shared\Layout\Toolbar.vue" />
+    <Content Include="App\src\components\Shared\Loading.vue" />
+    <Content Include="App\static\.gitkeep" />
+    <Content Include="App\dist\static\css\app.526441963b28724180f5a78eda5de887.css.map" />
+    <Content Include="App\dist\static\js\app.df8c07ba6fc7fb96fe08.js.map" />
+    <Content Include="App\dist\static\js\manifest.2ae2e69a05c33dfc65f8.js.map" />
+    <Content Include="App\dist\static\js\vendor.5c4073cd733e3624e1e4.js.map" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -374,7 +432,6 @@
     <Content Include="Views\Error\CustomError.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\" />
     <Folder Include="App_Data\" />
     <Folder Include="Extensions\" />
     <Folder Include="Helpers\" />
@@ -448,11 +505,12 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>if $(ConfigurationName) == Release (
-cd $PSScriptRoot"/WebUI/App"
-echo 'building watch app'
-npm build -prod
-)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
