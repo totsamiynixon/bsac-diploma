@@ -3,6 +3,7 @@ using Data.Interfaces;
 using Data.Interfaces.Repositories;
 using Entity.Domain;
 using Services.DTO.Exercise;
+using Services.DTO.ExerciseCriteria;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,17 @@ namespace Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IGenericRepository<Exercise> _exerciseRepository;
+        private readonly IGenericRepository<ExerciseCriteria> _exerciseCriteriaRepository;
         public ExerciseService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _exerciseRepository = _unitOfWork.Repository<Exercise>();
+            _exerciseCriteriaRepository = _unitOfWork.Repository<ExerciseCriteria>();
         }
         public async Task<int> AddOrUpdateExerciseAsync(ExerciseDetailsDTO dto)
         {
             var exercise = Mapper.Map<ExerciseDetailsDTO, Exercise>(dto);
-            var exerciseInDb = await _exerciseRepository.CollectionWithTracking.FirstOrDefaultAsync(f => f.Id == exercise.Id);
+            var exerciseInDb = await _exerciseRepository.CollectionWithTracking.Include(z => z.ExerciseCriterias).FirstOrDefaultAsync(f => f.Id == exercise.Id);
             if (exerciseInDb == null)
             {
                 _exerciseRepository.Insert(exercise);
@@ -34,6 +37,11 @@ namespace Services
             else
             {
                 Mapper.Map(exercise, exerciseInDb);
+                for(int i = 0; i< exerciseInDb.ExerciseCriterias.Count; i++)
+                {
+                    _exerciseCriteriaRepository.Delete(exerciseInDb.ExerciseCriterias.ToArray());
+                }
+                exerciseInDb.ExerciseCriterias.AddRange(exercise.ExerciseCriterias);
                 _exerciseRepository.Update(exerciseInDb);
             }
             await _unitOfWork.SaveChangesAsync();
@@ -50,7 +58,7 @@ namespace Services
             return await _exerciseRepository.Collection.Select(f => new ExerciseDTO
             {
                 Id = f.Id,
-                Description = f.Description
+                Name = f.Name
             }).ToListAsync();
         }
 

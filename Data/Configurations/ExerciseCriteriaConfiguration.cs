@@ -11,8 +11,6 @@ namespace Data.Implementations.Configurations
     {
         public ExerciseCriteriaConfiguration() : base()
         {
-            HasRequired(f => f.Excercise).WithMany(f => f.ExerciseCriterias).WillCascadeOnDelete(true);
-            HasRequired(f => f.Criteria).WithMany().WillCascadeOnDelete(true);
         }
     }
 }

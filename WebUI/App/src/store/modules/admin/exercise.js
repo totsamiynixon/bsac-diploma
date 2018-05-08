@@ -1,53 +1,47 @@
 import Vuex from "vuex";
 import axios from "axios";
 const state = {
-  loadedCriterias: [],
-  currentCriteria: null
+  loadedExercises: [],
+  currentExerciseData: null
 };
 const mutations = {
-  setLoadedCriterias(state, payload) {
-    state.loadedCriterias = payload;
+  setLoadedExercises(state, payload) {
+    state.loadedExercises = payload;
   },
-  createCriteria(state, payload) {
-    state.loadedCriterias.push(payload);
+  setLoadedExercise(state, payload) {
+    state.currentExerciseData = payload;
   },
-  updateCriteria(state, payload) {
-    var index = state.loadedCriterias.findIndex(criteria => {
-      return criteria.id == payload.id;
+  createExercise(state, payload) {
+    state.loadedExercises.push(payload);
+  },
+  updateExercise(state, payload) {
+    var index = state.loadedExercises.findIndex(exercise => {
+      return exercise.id == payload.id;
     });
     if (index != -1)
-      state.loadedCriterias[index] = payload;
+      state.loadedExercises[index] = payload;
   },
-  currentCriteria(state, payload) {
-    if (payload == null) {
-      payload = {
-        id: 0,
-        name: ""
-      };
-    }
-    state.currentCriteria = payload;
-  },
-  removeCriteria(state, payload) {
-    var index = state.loadedCriterias.findIndex(val => {
+  removeExercise(state, payload) {
+    var index = state.loadedExercises.findIndex(val => {
       if (val.id == payload) {
         return true;
       }
     });
     if (index != -1) {
-      state.loadedCriterias.splice(index, 1);
+      state.loadedExercises.splice(index, 1);
     }
   }
 };
 const actions = {
-  loadCriterias({
+  loadExercises({
     commit
-  }) {;
+  }) {
     commit("shared/setLoading", true, {
       root: true
     });
-    axios.get("/api/admin/criteria/getAll").then(
+    axios.get("/api/admin/exercise/getAll").then(
       response => {
-        commit("setLoadedCriterias", response.data);
+        commit("setLoadedExercises", response.data);
         commit("shared/setLoading", false, {
           root: true
         });
@@ -62,25 +56,47 @@ const actions = {
       }
     );
   },
-  addOrUpdateCriteria({
+  loadExercise({
+    commit
+  }, payload) {
+    commit("shared/setLoading", true, {
+      root: true
+    });
+    var params = payload == null ? null : {
+      id:payload.id
+    }
+    axios.get("/api/admin/exercise/get", { params:params }).then(
+      response => {
+        commit("setLoadedExercise", response.data);
+        commit("shared/setLoading", false, {
+          root: true
+        });
+      },
+      error => {
+        commit("shared/setLoading", false, {
+          root: true
+        });
+        commit("shared/setError", error, {
+          root: true
+        });
+      }
+      );
+  },
+  addOrUpdateExercise({
     commit,
     getters
   }, payload) {
     commit("shared/setLoading", true, {
       root: true
     });
-    const criteria = {
-      name: payload.name,
-      id: payload.id
-    };
     axios
-      .post("/api/admin/criteria/save", criteria)
+      .post("/api/admin/exercise/save", payload)
       .then(response => {
-        if (criteria.id == 0) {
-          criteria.id = response.data.id;
-          commit("createCriteria", criteria);
+        if (exercise.id == 0) {
+          exercise.id = response.data
+          commit("createExercise", exercise);
         } else {
-          commit("updateCriteria", criteria);
+          commit("updateExercise", exercise);
         }
         commit("shared/setLoading", false, {
           root: true
@@ -96,7 +112,7 @@ const actions = {
       });
     // Reach out to firebase and store it
   },
-  deleteCriteria({
+  deleteExercise({
     commit,
     getters
   }, id) {
@@ -104,11 +120,11 @@ const actions = {
       root: true
     });
     axios
-      .delete("/api/admin/criteria/delete", {
+      .delete("/api/admin/exercise/delete", {
         ids: [id]
       })
       .then(data => {
-        commit("removeCriteria", id);
+        commit("removeExercise", id);
         commit("shared/setLoading", false, {
           root: true
         });
@@ -122,19 +138,19 @@ const actions = {
         });
       });
   },
-  setCurrentCriteria({
+  setCurrentExercise({
     commit,
     getters
-  }, criteria) {
-    commit("currentCriteria", criteria);
+  }, exercise) {
+    commit("currentExerciseData", exercise);
   }
 };
 const getters = {
-  loadedCriterias(state) {
-    return state.loadedCriterias;
+  loadedExercises(state) {
+    return state.loadedExercises;
   },
-  currentCriteria(state) {
-    return state.currentCriteria;
+  currentExerciseData(state) {
+    return state.currentExerciseData;
   }
 };
 

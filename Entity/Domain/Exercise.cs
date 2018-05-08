@@ -15,6 +15,6 @@ namespace Entity.Domain
 
         public string Description { get; set; }
 
-        public ICollection<ExerciseCriteria> ExerciseCriterias { get; set; }
+        public List<ExerciseCriteria> ExerciseCriterias { get; set; }
     }
 }

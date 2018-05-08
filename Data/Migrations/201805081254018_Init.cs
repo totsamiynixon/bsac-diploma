@@ -77,20 +77,61 @@ namespace Data.Implementations.Migrations
                 .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
+            CreateTable(
+                "dbo.Criteria",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Exercises",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.ExerciseCriterias",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Weight = c.Int(nullable: false),
+                        ExerciseId = c.Int(nullable: false),
+                        CriteriaId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Criteria", t => t.CriteriaId, cascadeDelete: true)
+                .ForeignKey("dbo.Exercises", t => t.ExerciseId, cascadeDelete: true)
+                .Index(t => t.ExerciseId)
+                .Index(t => t.CriteriaId);
+            
         }
         
         public override void Down()
         {
+            DropForeignKey("dbo.ExerciseCriterias", "ExerciseId", "dbo.Exercises");
+            DropForeignKey("dbo.ExerciseCriterias", "CriteriaId", "dbo.Criteria");
             DropForeignKey("dbo.UserRoles", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserLogins", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserClaims", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserRoles", "RoleId", "dbo.Roles");
+            DropIndex("dbo.ExerciseCriterias", new[] { "CriteriaId" });
+            DropIndex("dbo.ExerciseCriterias", new[] { "ExerciseId" });
             DropIndex("dbo.UserLogins", new[] { "UserId" });
             DropIndex("dbo.UserClaims", new[] { "UserId" });
             DropIndex("dbo.Users", "UserNameIndex");
             DropIndex("dbo.UserRoles", new[] { "RoleId" });
             DropIndex("dbo.UserRoles", new[] { "UserId" });
             DropIndex("dbo.Roles", "RoleNameIndex");
+            DropTable("dbo.ExerciseCriterias");
+            DropTable("dbo.Exercises");
+            DropTable("dbo.Criteria");
             DropTable("dbo.UserLogins");
             DropTable("dbo.UserClaims");
             DropTable("dbo.Users");

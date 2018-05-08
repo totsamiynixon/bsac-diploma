@@ -65,13 +65,9 @@
     <Compile Include="Configurations\ExerciseConfiguration.cs" />
     <Compile Include="Configurations\ExerciseCriteriaConfiguration.cs" />
     <Compile Include="Context\DataContext.cs" />
-    <Compile Include="Migrations\201708212308229_Init.cs" />
-    <Compile Include="Migrations\201708212308229_Init.Designer.cs">
-      <DependentUpon>201708212308229_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805051308198_ExercisesAndCriterias.cs" />
-    <Compile Include="Migrations\201805051308198_ExercisesAndCriterias.Designer.cs">
-      <DependentUpon>201805051308198_ExercisesAndCriterias.cs</DependentUpon>
+    <Compile Include="Migrations\201805081254018_Init.cs" />
+    <Compile Include="Migrations\201805081254018_Init.Designer.cs">
+      <DependentUpon>201805081254018_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,11 +97,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708212308229_Init.resx">
-      <DependentUpon>201708212308229_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805051308198_ExercisesAndCriterias.resx">
-      <DependentUpon>201805051308198_ExercisesAndCriterias.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805081254018_Init.resx">
+      <DependentUpon>201805081254018_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
