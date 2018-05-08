@@ -63,9 +63,9 @@ const actions = {
       root: true
     });
     var params = payload == null ? null : {
-      id:payload.id
+      id: payload.id
     }
-    axios.get("/api/admin/exercise/get", { params:params }).then(
+    axios.get("/api/admin/exercise/get", { params: params }).then(
       response => {
         commit("setLoadedExercise", response.data);
         commit("shared/setLoading", false, {
@@ -80,7 +80,7 @@ const actions = {
           root: true
         });
       }
-      );
+    );
   },
   addOrUpdateExercise({
     commit,
@@ -92,11 +92,11 @@ const actions = {
     axios
       .post("/api/admin/exercise/save", payload)
       .then(response => {
-        if (exercise.id == 0) {
-          exercise.id = response.data
-          commit("createExercise", exercise);
+        if (payload.id == 0) {
+          payload.id = response.data
+          commit("createExercise", payload);
         } else {
-          commit("updateExercise", exercise);
+          commit("updateExercise", payload);
         }
         commit("shared/setLoading", false, {
           root: true
@@ -121,7 +121,7 @@ const actions = {
     });
     axios
       .delete("/api/admin/exercise/delete", {
-        ids: [id]
+        params: { ids: [id] }
       })
       .then(data => {
         commit("removeExercise", id);

@@ -68,7 +68,7 @@ namespace WebUI.Controllers.API.Admin
 
         [HttpDelete]
         [Route("delete")]
-        public async Task<IHttpActionResult> Delete(int[] ids)
+        public async Task<IHttpActionResult> Delete([FromUri]int[] ids)
         {
             await _exerciseService.DeleteAsync(ids);
             return Ok();

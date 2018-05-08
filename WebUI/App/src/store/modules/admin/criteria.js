@@ -105,7 +105,7 @@ const actions = {
     });
     axios
       .delete("/api/admin/criteria/delete", {
-        ids: [id]
+        params: { ids: [id] }
       })
       .then(data => {
         commit("removeCriteria", id);

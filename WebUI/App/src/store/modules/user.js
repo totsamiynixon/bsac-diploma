@@ -17,7 +17,7 @@ const actions = {
     commit("shared/setLoading", true, {
       root: true
     });
-    axios.post("api/account/sing-up", payload)
+    axios.post("/api/account/sing-up", payload)
       .then(user => {
         const newUser = {
           id: user.id,
@@ -43,7 +43,7 @@ const actions = {
     commit("shared/setLoading", true, {
       root: true
     });
-    axios.post("api/account/sign-in", payload)
+    axios.post("/api/account/sign-in", payload)
       .then(result => {
         var token = localStorage.setItem("token", result.data.token);
         commit("setUser", {
@@ -79,7 +79,7 @@ const actions = {
         root: true
       });
       axios.defaults.headers.common['Authorization'] = "Bearer " + token;
-      axios.get("api/account/check-login").then(
+      axios.get("/api/account/check-login").then(
         user => {
           commit("setUser", user);
           resolve(user);
