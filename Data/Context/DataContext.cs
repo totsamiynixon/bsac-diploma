@@ -35,6 +35,8 @@ namespace Data.Implementations.Context
             modelBuilder.Configurations.Add(new CriteriaConfiguration());
             modelBuilder.Configurations.Add(new ExerciseConfiguration());
             modelBuilder.Configurations.Add(new ExerciseCriteriaConfiguration());
+            modelBuilder.Configurations.Add(new ProfessionConfiguration());
+            modelBuilder.Configurations.Add(new ProfessionCriteriaConfiguration());
 
         }
     }

@@ -23,6 +23,13 @@ export default {
           route: {
             name: "exercises"
           }
+        },
+        {
+          icon: "content_copy",
+          text: "Профессии",
+          route: {
+            name: "professions"
+          }
         }
         /*   { icon: "history", text: "Упражнения", route: {name: "exercises"} },
        { icon: "content_copy", text: "Duplicates" },

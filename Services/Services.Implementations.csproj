@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="CriteriaService.cs" />
     <Compile Include="ExerciseService.cs" />
+    <Compile Include="ProfessionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

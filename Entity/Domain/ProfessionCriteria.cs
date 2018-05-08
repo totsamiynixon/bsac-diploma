@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Entity.Domain
 {
-    public class ExerciseCriteria : IEntity
+    public class ProfessionCriteria : IEntity
     {
         public int Id { get; set; }
         public int Weight { get; set; }
-        public Exercise Exercise { get; set; }
-        public int ExerciseId { get; set; }
+        public Profession Profession { get; set; }
+        public int ProfessionId { get; set; }
         public Criteria Criteria { get; set; }
         public int CriteriaId { get; set; }
     }

@@ -9,7 +9,10 @@ import AuthLayout from "@/components/Auth/Shared/Layout";
 import AdminLayout from "@/components/Admin/Shared/Layout";
 import Criterias from "@/components/Admin/Criteria/Criterias";
 import Exercises from "@/components/Admin/Exercise/Exercises";
-import AddOrUpdateexercise from "@/components/Admin/Exercise/AddOrUpdateExercise";
+import AddOrUpdateExercise from "@/components/Admin/Exercise/AddOrUpdateExercise";
+import Professions from "@/components/Admin/Profession/Professions";
+import AddOrUpdateProfession from "@/components/Admin/Profession/AddOrUpdateProfession";
+
 
 Vue.use(Router);
 
@@ -49,12 +52,27 @@ export default new Router({
         {
           path: "exercises/create",
           name: "create-exercise",
-          component: AddOrUpdateexercise
+          component: AddOrUpdateExercise
         },
         {
           path: "exercises/edit/:id",
           name: "edit-exercise",
-          component: AddOrUpdateexercise
+          component: AddOrUpdateExercise
+        },
+        {
+          path: "professions",
+          name: "professions",
+          component: Professions
+        },
+        {
+          path: "professions/create",
+          name: "create-profession",
+          component: AddOrUpdateProfession
+        },
+        {
+          path: "professions/edit/:id",
+          name: "edit-profession",
+          component: AddOrUpdateProfession
         }
       ],
       beforeEnter: AuthGuard
