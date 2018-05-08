@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Data.Implementations.Configurations
 {
-    public class ExerciseConfiguration: ConfigurationBase<Exercise>
+    public class ProfessionCriteriaConfiguration : ConfigurationBase<ProfessionCriteria>
     {
-        public ExerciseConfiguration() : base()
+        public ProfessionCriteriaConfiguration() : base()
         {
-            HasMany(f => f.ExerciseCriterias).WithRequired(f => f.Exercise).WillCascadeOnDelete(true);
         }
     }
 }

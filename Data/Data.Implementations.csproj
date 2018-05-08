@@ -64,10 +64,16 @@
     <Compile Include="Configurations\CriteriaConfiguration.cs" />
     <Compile Include="Configurations\ExerciseConfiguration.cs" />
     <Compile Include="Configurations\ExerciseCriteriaConfiguration.cs" />
+    <Compile Include="Configurations\ProfessionConfiguration.cs" />
+    <Compile Include="Configurations\ProfessionCriteriaConfiguration.cs" />
     <Compile Include="Context\DataContext.cs" />
     <Compile Include="Migrations\201805081254018_Init.cs" />
     <Compile Include="Migrations\201805081254018_Init.Designer.cs">
       <DependentUpon>201805081254018_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805082159257_ProfessionAdded.cs" />
+    <Compile Include="Migrations\201805082159257_ProfessionAdded.Designer.cs">
+      <DependentUpon>201805082159257_ProfessionAdded.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,6 +105,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201805081254018_Init.resx">
       <DependentUpon>201805081254018_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805082159257_ProfessionAdded.resx">
+      <DependentUpon>201805082159257_ProfessionAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

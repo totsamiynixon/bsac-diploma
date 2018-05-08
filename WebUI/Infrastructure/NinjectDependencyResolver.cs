@@ -63,6 +63,7 @@ namespace WebUI.Infrastructure
 
             _kernel.Bind<ICriteriaService>().To<CriteriaService>().InRequestScope();
             _kernel.Bind<IExerciseService>().To<ExerciseService>().InRequestScope();
+            _kernel.Bind<IProfessionService>().To<ProfessionService>().InRequestScope();
 
             _kernel.Bind<IIdentityMessageService>().To<EmailService>().InRequestScope();
             _kernel.Bind<IDataSerializer<AuthenticationTicket>>().To<TicketSerializer>();

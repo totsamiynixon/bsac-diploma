@@ -250,6 +250,7 @@
     <Compile Include="Controllers\API\Admin\CriteriaController.cs" />
     <Compile Include="Controllers\API\AccountController.cs" />
     <Compile Include="Controllers\API\Admin\ExerciseController.cs" />
+    <Compile Include="Controllers\API\Admin\ProfessionController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -307,6 +308,7 @@
     <Content Include="App\src\store\index.js" />
     <Content Include="App\src\store\modules\admin\criteria.js" />
     <Content Include="App\src\store\modules\admin\exercise.js" />
+    <Content Include="App\src\store\modules\admin\profession.js" />
     <Content Include="App\src\store\modules\shared.js" />
     <Content Include="App\src\store\modules\sidebar.js" />
     <Content Include="App\src\store\modules\user.js" />
@@ -365,6 +367,8 @@
     <Content Include="App\dist\static\js\app.df8c07ba6fc7fb96fe08.js.map" />
     <Content Include="App\dist\static\js\manifest.2ae2e69a05c33dfc65f8.js.map" />
     <Content Include="App\dist\static\js\vendor.5c4073cd733e3624e1e4.js.map" />
+    <Content Include="App\src\components\Admin\Profession\AddOrUpdateProfession.vue" />
+    <Content Include="App\src\components\Admin\Profession\Professions.vue" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

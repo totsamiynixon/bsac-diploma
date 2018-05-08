@@ -58,6 +58,8 @@
     <Compile Include="Domain\Criteria.cs" />
     <Compile Include="Domain\ExerciseCriteria.cs" />
     <Compile Include="Domain\Exercise.cs" />
+    <Compile Include="Domain\Profession.cs" />
+    <Compile Include="Domain\ProfessionCriteria.cs" />
     <Compile Include="Domain\User\Role.cs" />
     <Compile Include="Domain\User\User.cs" />
     <Compile Include="Domain\User\UserClaim.cs" />
