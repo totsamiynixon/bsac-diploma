@@ -37,10 +37,7 @@ namespace Services
             else
             {
                 Mapper.Map(exercise, exerciseInDb);
-                for(int i = 0; i< exerciseInDb.ExerciseCriterias.Count; i++)
-                {
-                    _exerciseCriteriaRepository.Delete(exerciseInDb.ExerciseCriterias.ToArray());
-                }
+                _exerciseCriteriaRepository.Delete(exerciseInDb.ExerciseCriterias.ToArray());
                 exerciseInDb.ExerciseCriterias.AddRange(exercise.ExerciseCriterias);
                 _exerciseRepository.Update(exerciseInDb);
             }

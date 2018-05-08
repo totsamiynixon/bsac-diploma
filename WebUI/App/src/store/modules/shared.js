@@ -3,16 +3,17 @@ const state = {
   loading: false,
   errors: []
 };
-var isLoadingCanceled = false
+var isLoadingCanceled = false;
 const mutations = {
   setLoading(state, payload) {
     if (payload == true) {
+      isLoadingCanceled = false;
       setTimeout(() => {
         if (!isLoadingCanceled) {
-          state.loading = true
+          state.loading = true;
+          return;
         }
-        isLoadingCanceled = false
-      }, 300);
+      },500);
     } else {
       isLoadingCanceled = true
       state.loading = payload;

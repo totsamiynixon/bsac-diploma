@@ -8,10 +8,11 @@
       <v-text-field v-model="currentExercise.description"
                     :rules="validation.exercise.description"
                     label="Description"
+                    multi-line
                     required></v-text-field>
       <v-layout row v-for="(currentExerciseCriteria,index) in currentExercise.criterias">
         <v-flex px-5 md5>
-          <v-select :items="selectOptions(index)"
+          <v-select :items="selectOptions"
                     :value="currentExercise.criterias[index]"
                     @change="setCriteria($event, index)"
                     label="Select Criteria"
@@ -61,31 +62,12 @@
           criterias: []
         },
         criterias: [],
-        model: []
       };
     },
     methods: {
       setCriteria(criteria, index) {
         this.currentExercise.criterias[index] = criteria;
-        //dirty hack, should be fixed
         this.currentExercise.criterias = this.currentExercise.criterias.slice();
-      },
-      selectOptions(index) {
-        var currentExerciseCriteria = this.currentExercise.criterias[index];
-        var options = this.criterias.map(c => {
-          var item = this.currentExercise.criterias.filter(z => z.criteriaId == c.id)[0];
-          return {
-            text: c.name,
-            value: item || {
-              id: 0,
-              criteriaId: c.id,
-              weight: 10
-            },
-            disabled: currentExerciseCriteria.criteriaId == c.id || item != null,
-            selected: currentExerciseCriteria.criteriaId == c.id
-          }
-        });
-        return options;
       },
       addCriteria() {
         this.currentExercise.criterias.push({
@@ -129,6 +111,23 @@
             this.criterias = data.criterias;
           }
           return this.exercise;
+        }
+      },
+      selectOptions: {
+        get() {
+          var options = this.criterias.map(c => {
+            var item = this.currentExercise.criterias.filter(z => z.criteriaId == c.id)[0];
+            return {
+              text: c.name,
+              value: item || {
+                id: 0,
+                criteriaId: c.id,
+                weight: 10
+              },
+              disabled: item != null
+            }
+          });
+          return options;
         }
       }
     }
