@@ -1,53 +1,45 @@
 // Import Vue
-import Vue from 'vue'
+import Vue from 'vue';
 
-// Import Framework7
+// Import F7
 import Framework7 from 'framework7/dist/framework7.esm.bundle.js';
 
-// Import Framework7 Vue
+// Import F7 Vue Plugin
 import Framework7Vue from 'framework7-vue/dist/framework7-vue.esm.bundle.js';
 
-// Import F7 Style
-import Framework7CSS from 'framework7/dist/css/framework7.css'
+// Import F7 Styles
+import Framework7Styles from 'framework7/dist/css/framework7.css';
 
-// Import F7 iOS Icons
-import Framework7Icons from 'framework7-icons/css/framework7-icons.css'
-
-// Import Fontawesome Theme Styles
-import FontAwesome from 'font-awesome/css/font-awesome.css'
-
-// Import App Custom Styles
-// import AppStyles from './assets/sass/main.scss'
-
-// Import App Component
-import app from './main.vue'
+// Import Icons and App Custom Styles
+import IconsStyles from './assets/css/icons.css';
+import AppStyles from './assets/css/app.css';
 
 // Import Routes
-import routes from './routes.js'
+import Routes from './router'
 
-// Import Vuex Storage
-import store from './assets/vuex/storage.js'
+// Import App Component
+import App from './app';
 
-// Install Plugin
-Vue.use(Framework7Vue, Framework7);
+import { store } from "./store";
 
-let theme = 'auto';
-if (document.location.search.indexOf('theme=') >= 0) {
-  theme = document.location.search.split('theme=')[1].split('&')[0];
-}
+// Init F7 Vue Plugin
+Vue.use(Framework7Vue, Framework7)
 
-// Init Vue App
-export default new Vue({
-  // Root Element
+// Init App
+var app = new Vue({
   el: '#app',
-  store,
-  render: c => c('app'),
-  components: {
-    app,
-  },
+  template: '<app/>',
+  // Init Framework7 by passing parameters here
   framework7: {
-    id: 'io.framework7.testapp',
-    theme, // md or ios
+    id: 'io.framework7.testapp', // App bundle ID
+    name: 'Framework7', // App name
+    theme: 'auto', // Automatic theme detection
+    // App routes
+    routes: Routes,
   },
-  routes,
+  store,
+  // Register App Component
+  components: {
+    app: App
+  }
 });
