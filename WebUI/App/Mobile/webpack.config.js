@@ -22,8 +22,8 @@ let config = function (env) {
         'vue$': 'vue/dist/vue.common.js',
         'src': path.resolve(__dirname, 'src/'),
         'assets': path.resolve(__dirname, 'src/assets/'),
-        'pages': path.resolve(__dirname, 'src/assets/vue/pages/'),
-        'components': path.resolve(__dirname, 'src/assets/vue/components/')
+        'pages': path.resolve(__dirname, 'src/pages/'),
+        'components': path.resolve(__dirname, 'src/components/')
       }
     },
     
@@ -104,7 +104,16 @@ let config = function (env) {
           "Access-Control-Allow-Origin": "*"
         },
         host: "127.0.0.1",
-        disableHostCheck: true
+        disableHostCheck: true,
+        proxy: {
+          '/api': {
+            target: 'http://localhost:57327/api/',
+            changeOrigin: true,
+            pathRewrite: {
+              '^/api': ''
+            }
+          },
+        },
       }
       returner.plugins.push(new webpack.NamedModulesPlugin())
     } else if (typeof env.release !== 'undefined' && env.release) {
