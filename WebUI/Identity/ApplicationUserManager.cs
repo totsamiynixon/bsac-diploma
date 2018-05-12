@@ -1,6 +1,6 @@
 using System;
 using Data.Implementations.Context;
-using Entity.Domain.User;
+using Entity.Domain.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;

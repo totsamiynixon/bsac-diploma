@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Entity.Domain.User
+namespace Entity.Domain.Identity
 {
     public class UserRole : IdentityUserRole<int>
     {

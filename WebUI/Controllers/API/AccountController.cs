@@ -1,8 +1,12 @@
-﻿using Entity.Domain.User;
+﻿using Entity.Domain.Identity;
+using Entity.Domain.Settings;
+using Entity.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
+using Services.DTO.Settings;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,16 +27,19 @@ namespace WebUI.Controllers.API
         private ApplicationUserManager _userManager;
         private readonly IIdentityMessageService _messageService;
         private readonly IAuthenticationManager _authenticationManager;
+        private readonly ISettingsService _settingsService;
         public AccountController(
             ApplicationUserManager userManager,
             ApplicationSignInManager signInManager,
             IIdentityMessageService messageService,
-            IAuthenticationManager authenticationManager)
+            IAuthenticationManager authenticationManager,
+            ISettingsService settingsService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _messageService = messageService;
             _authenticationManager = authenticationManager;
+            _settingsService = settingsService;
         }
 
         // POST: /Account/Login
@@ -49,18 +56,21 @@ namespace WebUI.Controllers.API
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var user = await _userManager.FindAsync(model.Email, model.Password);
-            if(user == null)
+            if (user == null)
             {
                 return BadRequest("No such user!");
             }
             var token = await GenerateTokenAsync(user);
-            return Ok(new
+            var roles = await _userManager.GetRolesAsync(user.Id);
+            var result = new
             {
                 Id = user.Id,
                 Name = user.UserName,
                 Roles = _userManager.GetRolesAsync(user.Id),
-                Token = token
-            });
+                Token = token,
+                Settings = roles.Any(z => z == Roles.User) ? await _settingsService.GetSettingsAsync(user.Id) : default(SettingsDTO)
+            };
+            return Ok(result);
         }
         // POST: /Account/Register
         [HttpPost]
@@ -70,18 +80,22 @@ namespace WebUI.Controllers.API
         {
             if (ModelState.IsValid)
             {
-                var user = new User() { UserName = model.Email, Email = model.Email };
+                var user = new User() { UserName = model.Email, Email = model.Email, Settings = new Settings() };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var token = await GenerateTokenAsync(user);
-                    return Ok(new
+                    result = await _userManager.AddToRoleAsync(user.Id, Roles.User);
+                    if (result.Succeeded)
                     {
-                        Id = user.Id,
-                        Name = user.UserName,
-                        Roles = await _userManager.GetRolesAsync(user.Id),
-                        Token = token
-                    });
+                        var token = await GenerateTokenAsync(user);
+                        return Ok(new
+                        {
+                            Id = user.Id,
+                            Name = user.UserName,
+                            Roles = await _userManager.GetRolesAsync(user.Id),
+                            Token = token
+                        });
+                    }
                 }
             }
             return BadRequest("Error");

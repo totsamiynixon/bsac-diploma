@@ -43,6 +43,7 @@
     <Compile Include="IBusinessError.cs" />
     <Compile Include="IDeleted.cs" />
     <Compile Include="IEntity.cs" />
+    <Compile Include="IIdEntity.cs" />
     <Compile Include="ILogUnhandledException.cs" />
     <Compile Include="ITimeStamp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

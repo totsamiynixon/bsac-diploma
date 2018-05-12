@@ -43,6 +43,7 @@
     <Compile Include="ICriteriaService.cs" />
     <Compile Include="IExerciseService.cs" />
     <Compile Include="IProfessionService.cs" />
+    <Compile Include="ISettingsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

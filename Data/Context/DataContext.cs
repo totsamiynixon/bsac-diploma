@@ -6,14 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Data.Implementations.Configurations;
 using Data.Implementations.Migrations;
-using Entity.Domain.User;
+using Entity.Domain.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Data.Implementations.Context
 {
     public class DataContext : IdentityDbContext<User, Role, int, UserLogin, UserRole, UserClaim>
     {
-        public DataContext():base("DefaultConnection")
+        public DataContext() : base("DefaultConnection")
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataContext, Configuration>());
             Configuration.LazyLoadingEnabled = false;
@@ -28,6 +28,7 @@ namespace Data.Implementations.Context
             // as they would have overriden the pre-defined in-house configuration
             //
             modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<User>().HasRequired(s=>s.Settings).WithRequiredPrincipal(s=>s.User);
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<UserRole>().ToTable("UserRoles");
             modelBuilder.Entity<UserClaim>().ToTable("UserClaims");
@@ -37,6 +38,8 @@ namespace Data.Implementations.Context
             modelBuilder.Configurations.Add(new ExerciseCriteriaConfiguration());
             modelBuilder.Configurations.Add(new ProfessionConfiguration());
             modelBuilder.Configurations.Add(new ProfessionCriteriaConfiguration());
+            modelBuilder.Configurations.Add(new SettingsConfiguration());
+            modelBuilder.Configurations.Add(new TrainingTimeConfiguration());
 
         }
     }

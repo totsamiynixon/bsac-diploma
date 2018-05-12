@@ -1,13 +1,12 @@
-﻿using Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity.Domain
+namespace Services.DTO.Settings
 {
-    public class Criteria : IIdEntity
+    public class SettingsProfessionDTO
     {
         public int Id { get; set; }
 

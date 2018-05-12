@@ -251,6 +251,7 @@
     <Compile Include="Controllers\API\AccountController.cs" />
     <Compile Include="Controllers\API\Admin\ExerciseController.cs" />
     <Compile Include="Controllers\API\Admin\ProfessionController.cs" />
+    <Compile Include="Controllers\API\Mobile\SettingsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entity.Domain
 {
-    public class ProfessionCriteria : IEntity
+    public class ProfessionCriteria : IIdEntity
     {
         public int Id { get; set; }
         public int Weight { get; set; }
