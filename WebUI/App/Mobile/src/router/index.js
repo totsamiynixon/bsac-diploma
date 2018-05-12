@@ -17,6 +17,10 @@ import PreferredTimeSettings from "../pages/Settings/PreferredTime.vue"
 
 /*EXERCISES*/
 import Exercises from "../pages/Exercises/Exercises.vue"
+/*TRAINING*/
+import Training from "../pages/Training/Training.vue"
+import TrainingList from "../pages/Training/TrainingList.vue"
+import TrainingResult from "../pages/Training/TrainingResult.vue"
 /*AUTH*/
 import Signin from "../pages/Auth/SignIn.vue";
 /*Guards*/
@@ -39,6 +43,18 @@ export default [
     {
     path: "/exercises",
     component: Exercises
+  },
+      {
+    path: "/training-list",
+    component: TrainingList
+  },
+        {
+    path: "/training",
+    component: Training
+  },
+          {
+    path: "/training-result",
+    component: TrainingResult
   },
   {
     path: "/settings",

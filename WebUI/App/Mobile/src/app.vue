@@ -1,7 +1,7 @@
 <template>
   <!-- App -->
   <div id="app">
-
+    <app-loading/>
     <!-- Statusbar -->
     <f7-statusbar></f7-statusbar>
 
