@@ -60,11 +60,13 @@
     <Compile Include="Domain\Exercise.cs" />
     <Compile Include="Domain\Profession.cs" />
     <Compile Include="Domain\ProfessionCriteria.cs" />
-    <Compile Include="Domain\User\Role.cs" />
-    <Compile Include="Domain\User\User.cs" />
-    <Compile Include="Domain\User\UserClaim.cs" />
-    <Compile Include="Domain\User\UserLogin.cs" />
-    <Compile Include="Domain\User\UserRole.cs" />
+    <Compile Include="Domain\Settings\TrainingTime.cs" />
+    <Compile Include="Domain\Settings\Settings.cs" />
+    <Compile Include="Domain\Idenity\Role.cs" />
+    <Compile Include="Domain\Idenity\User.cs" />
+    <Compile Include="Domain\Idenity\UserClaim.cs" />
+    <Compile Include="Domain\Idenity\UserLogin.cs" />
+    <Compile Include="Domain\Idenity\UserRole.cs" />
     <Compile Include="Identity\Roles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

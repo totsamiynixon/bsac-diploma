@@ -49,6 +49,8 @@
     <Compile Include="Profession\ProfessionDetailsDTO.cs" />
     <Compile Include="Profession\ProfessionDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\SettingsDTO.cs" />
+    <Compile Include="Settings\SettingsProfessionDTO.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

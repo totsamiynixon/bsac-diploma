@@ -78,6 +78,56 @@ namespace Data.Implementations.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
+                "dbo.Settings",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        ProfessionId = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Professions", t => t.ProfessionId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.Id)
+                .Index(t => t.Id)
+                .Index(t => t.ProfessionId);
+            
+            CreateTable(
+                "dbo.TrainingTimes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Value = c.Time(nullable: false, precision: 7),
+                        SettingsId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Settings", t => t.SettingsId, cascadeDelete: true)
+                .Index(t => t.SettingsId);
+            
+            CreateTable(
+                "dbo.Professions",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.ProfessionCriterias",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Weight = c.Int(nullable: false),
+                        ProfessionId = c.Int(nullable: false),
+                        CriteriaId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Criteria", t => t.CriteriaId, cascadeDelete: true)
+                .ForeignKey("dbo.Professions", t => t.ProfessionId, cascadeDelete: true)
+                .Index(t => t.ProfessionId)
+                .Index(t => t.CriteriaId);
+            
+            CreateTable(
                 "dbo.Criteria",
                 c => new
                     {
@@ -117,12 +167,22 @@ namespace Data.Implementations.Migrations
         {
             DropForeignKey("dbo.ExerciseCriterias", "ExerciseId", "dbo.Exercises");
             DropForeignKey("dbo.ExerciseCriterias", "CriteriaId", "dbo.Criteria");
+            DropForeignKey("dbo.Settings", "Id", "dbo.Users");
+            DropForeignKey("dbo.Settings", "ProfessionId", "dbo.Professions");
+            DropForeignKey("dbo.ProfessionCriterias", "ProfessionId", "dbo.Professions");
+            DropForeignKey("dbo.ProfessionCriterias", "CriteriaId", "dbo.Criteria");
+            DropForeignKey("dbo.TrainingTimes", "SettingsId", "dbo.Settings");
             DropForeignKey("dbo.UserRoles", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserLogins", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserClaims", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserRoles", "RoleId", "dbo.Roles");
             DropIndex("dbo.ExerciseCriterias", new[] { "CriteriaId" });
             DropIndex("dbo.ExerciseCriterias", new[] { "ExerciseId" });
+            DropIndex("dbo.ProfessionCriterias", new[] { "CriteriaId" });
+            DropIndex("dbo.ProfessionCriterias", new[] { "ProfessionId" });
+            DropIndex("dbo.TrainingTimes", new[] { "SettingsId" });
+            DropIndex("dbo.Settings", new[] { "ProfessionId" });
+            DropIndex("dbo.Settings", new[] { "Id" });
             DropIndex("dbo.UserLogins", new[] { "UserId" });
             DropIndex("dbo.UserClaims", new[] { "UserId" });
             DropIndex("dbo.Users", "UserNameIndex");
@@ -132,6 +192,10 @@ namespace Data.Implementations.Migrations
             DropTable("dbo.ExerciseCriterias");
             DropTable("dbo.Exercises");
             DropTable("dbo.Criteria");
+            DropTable("dbo.ProfessionCriterias");
+            DropTable("dbo.Professions");
+            DropTable("dbo.TrainingTimes");
+            DropTable("dbo.Settings");
             DropTable("dbo.UserLogins");
             DropTable("dbo.UserClaims");
             DropTable("dbo.Users");

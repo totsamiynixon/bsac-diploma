@@ -7,7 +7,7 @@ using Contracts;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Entity.Domain.User
+namespace Entity.Domain.Identity
 {
     // You can add profile data for the user by adding more properties to your User class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class User : IdentityUser<int, UserLogin, UserRole, UserClaim>, ITimeStamp, IEntity
@@ -24,5 +24,9 @@ namespace Entity.Domain.User
         }
 
         public DateTime CreatedUtc { get; set; }
+
+        public Settings.Settings Settings { get; set; }
+
+ 
     }
 }

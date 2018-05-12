@@ -55,8 +55,8 @@ namespace WebUI.Infrastructure
             var appName = "Application";
 
 
-            _kernel.Bind<DataContext>().To<DataContext>().InRequestScope();
-            _kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();           
+            _kernel.Bind<DataContext>().To<DataContext>().InThreadScope();
+            _kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InThreadScope();           
             _kernel.Bind<ApplicationUserManager>().ToSelf().InRequestScope();
             _kernel.Bind<ApplicationRoleManager>().ToSelf().InRequestScope();
             _kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
@@ -64,6 +64,7 @@ namespace WebUI.Infrastructure
             _kernel.Bind<ICriteriaService>().To<CriteriaService>().InRequestScope();
             _kernel.Bind<IExerciseService>().To<ExerciseService>().InRequestScope();
             _kernel.Bind<IProfessionService>().To<ProfessionService>().InRequestScope();
+            _kernel.Bind<ISettingsService>().To<SettingsService>().InRequestScope();
 
             _kernel.Bind<IIdentityMessageService>().To<EmailService>().InRequestScope();
             _kernel.Bind<IDataSerializer<AuthenticationTicket>>().To<TicketSerializer>();

@@ -66,14 +66,12 @@
     <Compile Include="Configurations\ExerciseCriteriaConfiguration.cs" />
     <Compile Include="Configurations\ProfessionConfiguration.cs" />
     <Compile Include="Configurations\ProfessionCriteriaConfiguration.cs" />
+    <Compile Include="Configurations\SettingsConfiguration.cs" />
+    <Compile Include="Configurations\TrainingTimeConfiguration.cs" />
     <Compile Include="Context\DataContext.cs" />
-    <Compile Include="Migrations\201805081254018_Init.cs" />
-    <Compile Include="Migrations\201805081254018_Init.Designer.cs">
-      <DependentUpon>201805081254018_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805082159257_ProfessionAdded.cs" />
-    <Compile Include="Migrations\201805082159257_ProfessionAdded.Designer.cs">
-      <DependentUpon>201805082159257_ProfessionAdded.cs</DependentUpon>
+    <Compile Include="Migrations\201805102350524_Init.cs" />
+    <Compile Include="Migrations\201805102350524_Init.Designer.cs">
+      <DependentUpon>201805102350524_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,11 +101,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805081254018_Init.resx">
-      <DependentUpon>201805081254018_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805082159257_ProfessionAdded.resx">
-      <DependentUpon>201805082159257_ProfessionAdded.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805102350524_Init.resx">
+      <DependentUpon>201805102350524_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

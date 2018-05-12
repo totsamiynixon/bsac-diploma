@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using Duke.Owin.VkontakteMiddleware;
-using Entity.Domain.User;
+using Entity.Domain.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;

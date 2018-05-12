@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entity.Domain
 {
-    public class ExerciseCriteria : IEntity
+    public class ExerciseCriteria : IIdEntity
     {
         public int Id { get; set; }
         public int Weight { get; set; }

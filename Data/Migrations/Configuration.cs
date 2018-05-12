@@ -3,7 +3,8 @@ using Microsoft.AspNet.Identity;
 
 namespace Data.Implementations.Migrations
 {
-    using Entity.Domain.User;
+    using Entity.Domain.Identity;
+    using Entity.Domain.Settings;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -40,7 +41,8 @@ namespace Data.Implementations.Migrations
                     PhoneNumber = "123-123-123",
                     SecurityStamp = Guid.NewGuid().ToString(),
                     PasswordHash = hasher.HashPassword("admin"),
-                    UserName = "admin"
+                    UserName = "admin",
+                    Settings = new Settings()
                 };
                 context.Users.Add(userAdmin);
                 context.SaveChanges();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entity.Domain
 {
-    public class Exercise : IEntity
+    public class Exercise : IIdEntity
     {
         public int Id { get; set; }
 
