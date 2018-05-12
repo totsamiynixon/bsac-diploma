@@ -22,8 +22,13 @@ import App from './app';
 
 import { store } from "./store";
 
+// SHARED
+import AppLoading from "./pages/Shared/Loading.vue"
+
+
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue, Framework7)
+Vue.component("app-loading", AppLoading)
 
 // Init App
 var app = new Vue({
