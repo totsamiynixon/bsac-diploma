@@ -1,6 +1,10 @@
 <template>
     <f7-page with-subnavbar>
         <f7-navbar back-link="Back" title="Tab Routes" sliding>
+                <f7-nav-right>
+      <f7-button round @click="openSheet()" icon-f7="more"></f7-button>
+      </f7-nav-right>
+    </f7-navbar>
         </f7-navbar>
         <f7-toolbar tabbar>
             <f7-link tab-link href="#tab1">Tab 1</f7-link>
@@ -18,6 +22,17 @@
                 <tab3/>
             </f7-tab>
         </f7-tabs>
+            <f7-sheet id="settings-sheet">
+  <select name="fruits">
+      <option value="apple" selected>Apple</option>
+      <option value="pineapple">Pineapple</option>
+      <option value="pear">Pear</option>
+      <option value="orange">Orange</option>
+      <option value="melon">Melon</option>
+      <option value="peach">Peach</option>
+      <option value="banana">Banana</option>
+    </select>
+</f7-sheet>
     </f7-page>
 </template>
 
@@ -29,6 +44,11 @@ export default {
   data() {
     return {};
   },
+    methods:{
+    openSheet(){
+      this.$f7.sheet.open("#settings-sheet", true);
+    }
+    },
   components: {
     Tab1,
     Tab2,
