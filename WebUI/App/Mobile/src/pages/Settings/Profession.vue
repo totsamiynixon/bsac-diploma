@@ -1,38 +1,74 @@
 <template>
   <f7-page>
-    <f7-navbar title="Профессия" back-link="Back"></f7-navbar>
-    <f7-row no-gap>
-        <f7-col width="50" v-for="profession in professions" :key="profession.id">
-      <f7-card >
-  <f7-card-header>{{profession.name}}</f7-card-header>
-  <f7-card-content>{{profession.description}}</f7-card-content>
-</f7-card>
-</f7-col>
-</f7-row>
+    <f7-navbar back-link="Back" title="Профессия" sliding></f7-navbar>
+   <f7-searchbar
+      disable-link-text="Cancel"
+      search-container="#search-list"
+      placeholder="Найти профессию"
+      :clear-button="true"
+      @input="onSearch($event.target.value)"
+      :enable="true"
+      @searchbar:clear="onClear"
+    ></f7-searchbar>
+        <f7-list class="searchbar-not-found">
+      <f7-list-item title="Nothing found"></f7-list-item>
+    </f7-list>
+    <f7-list contacts-list>
+      <f7-list-group v-for="(group, key) in filtered" :key="key">
+        <f7-list-item :title="key" group-title></f7-list-item>
+        <f7-list-item v-for="name in group" :title="name" :key="name"  :value="name" :checked="profession == name" @change="setCurrentProfession(name)" radio ></f7-list-item>
+      </f7-list-group>
+    </f7-list>
+
   </f7-page>
 </template>
 <script>
 export default {
-  data() {
+  data: function() {
     return {
-      professions: [
-        {
-          id: 0,
-          name: "Бухгалтер",
-          description: "Описания"
-        },
-        {
-          id: 1,
-          name: "Бухгалтер 1",
-          description: "Описания 1"
-        },
-        {
-          id: 2,
-          name: "Бухгалтер 2",
-          description: "Описания 2"
-        }
-      ]
+      professions: professions,
+      filter: "",
+      profession:"Бухгалтер"
     };
+  },
+  computed: {
+    filtered() {
+      let result = {};
+      for (var key in professions) {
+        if (professions.hasOwnProperty(key)) {
+          let items = professions[key].filter(profession =>
+            profession.includes(this.filter)
+          );
+          if (items.length > 0) {
+            result[key] = items;
+          }
+        }
+      }
+      return result;
+    }
+  },
+  methods: {
+    onSearch(query) {
+      this.filter = query;
+    },
+    onClear() {
+      this.filter = "";
+    },
+    setCurrentProfession(value){
+      this.profession = value;
+    }
   }
 };
+
+var professions = {
+  "A": [
+    "Автогонщик",
+    "Адвокат",
+    "Архитектор"
+  ],
+  "Б": ["Блогер", "Ботаник", "Бухгалтер", ],
+  "В": ["Вахтер", "Водител", "Военнослужащий", "Врач"],
+  V: ["Vladimir"]
+};
 </script>
+

@@ -14,6 +14,9 @@ import PanelRightPage from "../pages/panel-right.vue";
 import Settings from "../pages/Settings/Settings.vue"
 import ProfessionSettings from "../pages/Settings/Profession.vue"
 import PreferredTimeSettings from "../pages/Settings/PreferredTime.vue"
+
+/*EXERCISES*/
+import Exercises from "../pages/Exercises/Exercises.vue"
 /*AUTH*/
 import Signin from "../pages/Auth/SignIn.vue";
 /*Guards*/
@@ -32,6 +35,10 @@ export default [
     on: {
       pageBeforeIn: authGuard
     }
+  },
+    {
+    path: "/exercises",
+    component: Exercises
   },
   {
     path: "/settings",
