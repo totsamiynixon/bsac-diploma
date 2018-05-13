@@ -2,12 +2,27 @@ import Vuex from 'vuex'
 
 const state = {
   items: [{
-    icon: "content_copy",
-    text: "Главная",
-    route: {
-      name: "exercises"
-    }
-  }],
+      icon: "content_copy",
+      text: "Главная",
+      route: {
+        name: "exercises"
+      }
+    },
+    {
+      icon: "directions_run",
+      text: "Начать тренировку!",
+      route: {
+        name: "training-list"
+      }
+    },
+    {
+      icon: "settings",
+      text: "Настройки",
+      route: {
+        name: "settings"
+      }
+    },
+  ],
   showMenu: false,
   showMenuIcon: true
 }

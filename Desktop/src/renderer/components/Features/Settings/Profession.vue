@@ -1,13 +1,15 @@
 <template>
-  <v-layout>
+  <v-flex>
     <v-dialog v-model="dialog"
               scrollable
               max-width="300px">
-      <v-btn slot="activator"
-             color="primary"
-             dark>Open Dialog</v-btn>
+      <div slot="activator">
+        <v-btn color="primary"
+               dark>Выбрать профессию</v-btn>
+        <v-chip>{{value}}</v-chip>
+      </div>
       <v-card>
-        <v-card-title>Select Country</v-card-title>
+        <v-card-title>Выберите профессию</v-card-title>
         <v-text-field flat
                       solo-inverted
                       prepend-icon="search"
@@ -16,10 +18,11 @@
                       v-model="filter"></v-text-field>
         <v-divider></v-divider>
         <v-card-text style="height: 300px;">
-          <v-radio-group v-model="profession"
-                         column
+          <v-radio-group column
+                         v-model="profession"
                          v-for="(group, key) in filtered"
-                         :key="key">
+                         :key="key"
+                         :label="key">
             <v-radio v-for="name in group"
                      :label="name"
                      :key="name"
@@ -33,20 +36,30 @@
                  @click.native="dialog = false">Close</v-btn>
           <v-btn color="blue darken-1"
                  flat
-                 @click.native="dialog = false">Save</v-btn>
+                 @click.native="dialog = false; update();">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-layout>
+  </v-flex>
 </template>
 <script>
 export default {
-  props: ["profession"],
+  props: ["value"],
   data: function() {
     return {
+      profession: null,
       professions: professions,
+      dialog: false,
       filter: ""
     };
+  },
+  watch: {
+    value(value) {
+      this.profession = this.value != null ? this.value.slice() : "";
+    }
+  },
+  created() {
+    this.profession = this.value != null ? this.value.slice() : "";
   },
   computed: {
     filtered() {
@@ -73,6 +86,9 @@ export default {
     },
     setCurrentProfession(value) {
       this.profession = value;
+    },
+    update() {
+      this.$emit("update:value", this.profession);
     }
   }
 };

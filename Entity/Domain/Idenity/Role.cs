@@ -6,6 +6,7 @@ namespace Entity.Domain.Identity
 {
     public class Role : IdentityRole<int, UserRole>, ITimeStamp, IEntity
     { 
+
         public Role()
         {
             CreatedUtc = DateTime.UtcNow;

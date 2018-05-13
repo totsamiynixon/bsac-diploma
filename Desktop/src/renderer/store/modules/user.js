@@ -18,7 +18,7 @@ const actions = {
       root: true
     });
     axios.post("/api/account/sign-up", payload)
-      .then(user => {
+      .then(result => {
         localStorage.setItem("token", result.data.token);
         commit("setUser", {
           id: result.data.id,

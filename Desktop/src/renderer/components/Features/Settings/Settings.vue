@@ -1,8 +1,8 @@
 <template>
-  <v-layout>
-    <profession-settings :profession.sync="profession"></profession-settings>
+  <v-flex class="px-2 py-2">
+    <profession-settings :value.sync="profession"></profession-settings>
     <preferred-time-settings :times.sync="times"></preferred-time-settings>
-    <v-layout>
+  </v-flex>
 </template>
 <script>
 import ProfessionSettings from "./Profession";

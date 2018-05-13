@@ -25,15 +25,20 @@ namespace Services
 
         public async Task<SettingsDTO> GetSettingsAsync(int userId)
         {
-            return await _settingsRepository.Collection.Where(s => s.Id == userId).Select(s => new SettingsDTO
+            var result =  await _settingsRepository.Collection.Include(s=>s.Profession).Include(s=>s.DefaultTrainingTimes).FirstOrDefaultAsync(s => s.Id == userId);
+            if(result != null)
             {
-                Profession = new SettingsProfessionDTO
+                return new SettingsDTO
                 {
-                    Id = s.Profession.Id,
-                    Name = s.Profession.Name
-                },
-                SettingsTrainingTime = s.DefaultTrainingTimes.Select(r => r.Value).ToList()
-            }).FirstOrDefaultAsync();
+                    Profession = result.Profession != null ? new SettingsProfessionDTO
+                    {
+                        Id = result.Profession.Id,
+                        Name = result.Profession.Name
+                    } : null,
+                    SettingsTrainingTime = result.DefaultTrainingTimes.Select(s => s.Value).ToList()
+                };
+            }
+            return null;
         }
 
         public async Task UpdateDefaultTrainingTimesAsync(int userId, List<TimeSpan> times)
