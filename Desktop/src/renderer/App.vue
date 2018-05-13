@@ -30,4 +30,18 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons");
 /* Global CSS */
+.media-holder {
+  position: relative;
+  height: 0;
+  padding-bottom: 56.25%;
+  width: 100%;
+}
+
+.media-holder iframe {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
 </style>

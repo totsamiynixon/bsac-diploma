@@ -1,26 +1,25 @@
 <template>
-  <v-layout>
+  <v-flex>
     <v-list two-line
             subheader>
       <v-subheader>Предпочтительное время</v-subheader>
       <v-list-tile v-for="(item,index) in times"
                    :key="index">
         <v-list-tile-content>
-          <v-list-tile-title>{{'Время ' + (index+1)}}</v-list-tile-title>
           <v-list-tile-sub-title>
-            <v-dialog ref="{{'dialog'+(index+1)}}"
+            <v-dialog ref="dialog"
                       v-model="item.dialog"
-                      :return-value.sync="time"
+                      :return-value.sync="item.value"
                       persistent
                       lazy
                       full-width
                       width="290px">
               <v-text-field slot="activator"
                             v-model="item.value"
-                            label="Выберите время"
+                            :label="'Выберите время ' + (index+1)"
                             prepend-icon="access_time"
                             readonly></v-text-field>
-              <v-time-picker v-model="time"
+              <v-time-picker v-model="item.value"
                              actions>
                 <v-spacer></v-spacer>
                 <v-btn flat
@@ -28,14 +27,14 @@
                        @click="item.dialog = false">Cancel</v-btn>
                 <v-btn flat
                        color="primary"
-                       @click="$refs['dialog'+(index+1)].save(time)">OK</v-btn>
+                       @click="$refs.dialog[index].save(item.value)">OK</v-btn>
               </v-time-picker>
             </v-dialog>
           </v-list-tile-sub-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
-    <v-layout>
+  </v-flex>
 </template>
     
 <script>
