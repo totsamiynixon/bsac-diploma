@@ -22,7 +22,6 @@ export default {
     AppToolbar,
     AppSidebar
   },
-  beforeEnter: AuthGuard,
   name: "App"
 };
 </script>

@@ -27,8 +27,11 @@ Vue.component("app-alerts", AlertsCmp);
 Vue.component("app-loading", LoadingCmp);
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
+if (process.env.NODE_ENV === 'production') {
+  axios.defaults.baseURL = "http://localhost:57327/";
+}
 /* eslint-disable no-new */
 new Vue({
   components: {
@@ -38,7 +41,6 @@ new Vue({
   store,
   template: '<App/>'
 }).$mount('#app');
-
 
 Storage.prototype.setObject = function(key, value) {
   this.setItem(key, JSON.stringify(value));
