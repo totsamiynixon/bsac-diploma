@@ -1,11 +1,15 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
+import SidebarStore from "./modules/sidebar.js";
+import UserStore from "./modules/user.js";
+import SharedStore from "./modules/shared.js";
+Vue.use(Vuex);
 
-import modules from './modules'
-
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  modules,
+export const store = new Vuex.Store({
+  modules: {
+    sidebar: SidebarStore,
+    user: UserStore,
+    shared: SharedStore
+  },
   strict: process.env.NODE_ENV !== 'production'
-})
+});

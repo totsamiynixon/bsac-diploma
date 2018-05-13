@@ -73,6 +73,10 @@
     <Compile Include="Migrations\201805102350524_Init.Designer.cs">
       <DependentUpon>201805102350524_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805130218000_CascadeDelete.cs" />
+    <Compile Include="Migrations\201805130218000_CascadeDelete.Designer.cs">
+      <DependentUpon>201805130218000_CascadeDelete.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
@@ -103,6 +107,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201805102350524_Init.resx">
       <DependentUpon>201805102350524_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805130218000_CascadeDelete.resx">
+      <DependentUpon>201805130218000_CascadeDelete.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

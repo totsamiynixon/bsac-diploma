@@ -28,7 +28,7 @@ namespace Data.Implementations.Context
             // as they would have overriden the pre-defined in-house configuration
             //
             modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<User>().HasRequired(s=>s.Settings).WithRequiredPrincipal(s=>s.User);
+            modelBuilder.Entity<User>().HasRequired(s=>s.Settings).WithRequiredPrincipal(s=>s.User).WillCascadeOnDelete(true);
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<UserRole>().ToTable("UserRoles");
             modelBuilder.Entity<UserClaim>().ToTable("UserClaims");
