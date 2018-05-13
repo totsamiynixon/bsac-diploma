@@ -5,9 +5,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 namespace Entity.Domain.Identity
 {
     public class Role : IdentityRole<int, UserRole>, ITimeStamp, IEntity
-    {
-        public new int Id { get; set; }
-
+    { 
         public Role()
         {
             CreatedUtc = DateTime.UtcNow;

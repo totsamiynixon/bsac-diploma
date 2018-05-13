@@ -66,7 +66,7 @@ namespace WebUI.Controllers.API
             {
                 Id = user.Id,
                 Name = user.UserName,
-                Roles = _userManager.GetRolesAsync(user.Id),
+                Roles = await _userManager.GetRolesAsync(user.Id),
                 Token = token,
                 Settings = roles.Any(z => z == Roles.User) ? await _settingsService.GetSettingsAsync(user.Id) : default(SettingsDTO)
             };
@@ -84,10 +84,11 @@ namespace WebUI.Controllers.API
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    result = await _userManager.AddToRoleAsync(user.Id, Roles.User);
+                    var userInDb = await _userManager.FindByEmailAsync(user.Email);
+                    result = await _userManager.AddToRoleAsync(userInDb.Id, Roles.User);
                     if (result.Succeeded)
                     {
-                        var token = await GenerateTokenAsync(user);
+                        var token = await GenerateTokenAsync(userInDb);
                         return Ok(new
                         {
                             Id = user.Id,
