@@ -80,6 +80,10 @@ export default new Router({
           component: Signin
         }
       ]
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ],
   mode: "history",

@@ -2,7 +2,8 @@ import {
   app,
   BrowserWindow,
   ipcMain,
-  remote
+  remote,
+  Menu
 } from 'electron'
 
 /**
@@ -29,14 +30,18 @@ function createWindow() {
     width: 1600
   })
 
-  mainWindow.loadURL(winURL)
+  mainWindow.loadURL(winURL);
 
   mainWindow.on('closed', () => {
     mainWindow = null
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', function() {
+  createWindow();
+  buildMenu();
+
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -49,7 +54,6 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
 ipcMain.on('ping', (event, data) => {
   console.log(mainWindow);
   mainWindow.show();
@@ -64,7 +68,7 @@ ipcMain.on('ping', (event, data) => {
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
  */
 
-import {
+/*import {
   autoUpdater
 } from 'electron-updater'
 
@@ -74,4 +78,25 @@ autoUpdater.on('update-downloaded', () => {
 
 app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
-})
+})*/
+
+function buildMenu() {
+  const template = [{
+    label: "Настройки",
+    submenu: [{
+        label: "Открыть инструменты разработчика",
+        click: function() {
+          mainWindow.webContents.openDevTools();
+        }
+      },
+      {
+        label: "Выйти",
+        click: function() {
+          app.quit();
+        }
+      }
+    ]
+  }];
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+}
