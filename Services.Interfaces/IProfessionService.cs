@@ -13,5 +13,6 @@ namespace Services.Interfaces
         Task DeleteAsync(params int[] ids);
         Task<List<ProfessionDTO>> GetAllAsync();
         Task<ProfessionDetailsDTO> GetByIdAsync(int id);
+        Task<List<IGrouping<string, ProfessionDTO>>> GetAllGrouped();
     }
 }

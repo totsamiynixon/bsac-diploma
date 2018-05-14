@@ -1,5 +1,5 @@
-﻿using Services.DTO.Profession;
-using Services.DTO.ProfessionCriteria;
+﻿using Services.DTO.Exercise;
+using Services.DTO.ExerciseCriteria;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,25 +11,25 @@ using System.Web.Http;
 
 namespace WebUI.Controllers.API.Admin
 {
-    [RoutePrefix("api/admin/profession")]
-    public class ProfessionController : ApiController
+    [RoutePrefix("api/admin/exercise")]
+    public class AdminExerciseController : ApiController
     {
-        private readonly IProfessionService _professionService;
+        private readonly IExerciseService _exerciseService;
         private readonly ICriteriaService _criteriaService;
-        public ProfessionController(IProfessionService service, ICriteriaService criteriaService)
+        public AdminExerciseController(IExerciseService service, ICriteriaService criteriaService)
         {
-            _professionService = service;
+            _exerciseService = service;
             _criteriaService = criteriaService;
         }
-        // GET: api/ApiProfession
+        // GET: api/ApiExercise
         [HttpGet]
         [Route("getAll")]
         public async Task<IHttpActionResult> GetAllAsync()
         {
-            return Ok(await _professionService.GetAllAsync());
+            return Ok(await _exerciseService.GetAllAsync());
         }
 
-        // GET: api/ApiProfession/5
+        // GET: api/ApiExercise/5
         [HttpGet]
         [Route("get")]
         public async Task<IHttpActionResult> GetAsync(int? id = null)
@@ -37,19 +37,17 @@ namespace WebUI.Controllers.API.Admin
             var criterias = await _criteriaService.GetAllAsync();
             if (id.HasValue)
             {
-                return Ok(new
-                {
-                    profession = await _professionService.GetByIdAsync(id.Value),
+                return Ok(new {
+                    exercise = await _exerciseService.GetByIdAsync(id.Value),
                     criterias = criterias
                 });
             }
             else
             {
-                return Ok(new
-                {
-                    profession = new ProfessionDetailsDTO
+                return Ok(new {
+                    exercise = new ExerciseDetailsDTO
                     {
-                        Criterias = new List<ProfessionCriteriaDTO>()
+                        Criterias = new List<ExerciseCriteriaDTO>()
                     },
                     criterias = criterias
                 });
@@ -59,20 +57,20 @@ namespace WebUI.Controllers.API.Admin
 
         [HttpPost]
         [Route("save")]
-        public async Task<IHttpActionResult> Save(ProfessionDetailsDTO model)
+        public async Task<IHttpActionResult> Save(ExerciseDetailsDTO model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Invalid Model");
             }
-            return Ok(await _professionService.AddOrUpdateProfessionAsync(model));
+            return Ok(await _exerciseService.AddOrUpdateExerciseAsync(model));
         }
 
         [HttpDelete]
         [Route("delete")]
         public async Task<IHttpActionResult> Delete([FromUri]int[] ids)
         {
-            await _professionService.DeleteAsync(ids);
+            await _exerciseService.DeleteAsync(ids);
             return Ok();
         }
     }

@@ -80,21 +80,13 @@ const actions = {
       });
       axios.defaults.headers.common['Authorization'] = "Bearer " + token;
       axios.get("/api/account/check-login").then(
-        user => {
-          commit("setUser", user);
+        response => {
+          commit("setUser", response.data);
+          commit("setSettings", response.data.settings);
           resolve(user);
-          commit("shared/setLoading", false, {
-            root: true
-          });
         },
         error => {
           reject(error);
-          commit("shared/setLoading", false, {
-            root: true
-          });
-          commit("shared/setError", error, {
-            root: true
-          });
         }
       );
     });

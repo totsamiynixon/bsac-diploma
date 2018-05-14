@@ -13,49 +13,31 @@ const mutations = {
           state.loading = true;
           return;
         }
-      },500);
+      }, 500);
     } else {
       isLoadingCanceled = true
       state.loading = payload;
     }
   },
-  setError(state, payload) {
-    payload.dismissed = false;
-    state.errors.push(payload);
-    setTimeout(() => {
-      payload.dismissed = true;
-    }, 3000);
-  },
-  clearError(state, payload) {
-    var index = state.errors.findIndex(value => {
-      return value == payload;
-    });
-    if (index != -1) {
-      state.errors.splice(index, 1);
-    }
-  },
-  clearErrors(state) {
-    state.errors = [];
-  }
 };
 const actions = {
-  loading(state) {
-    return state.loading;
+  startLoading({
+    commit,
+    state
+  }) {
+    commit("setLoading", true)
   },
-  error(state) {
-    return state.error;
-  },
-  clearError({ commit, state }, payload) {
-    commit("clearError", payload);
+  stopLoading({
+    commit,
+    state
+  }) {
+    commit("setLoading", false)
   }
 };
 
 const getters = {
   loading(state) {
     return state.loading;
-  },
-  errors(state) {
-    return state.errors;
   }
 };
 

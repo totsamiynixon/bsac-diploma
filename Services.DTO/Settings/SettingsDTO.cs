@@ -10,6 +10,6 @@ namespace Services.DTO.Settings
     {
         public SettingsProfessionDTO Profession { get; set; }
         
-        public List<TimeSpan> SettingsTrainingTime { get; set; }
+        public List<TimeSpan> PreferredTrainingTime { get; set; }
     }
 }
