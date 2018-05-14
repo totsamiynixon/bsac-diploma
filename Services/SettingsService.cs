@@ -35,7 +35,7 @@ namespace Services
                         Id = result.Profession.Id,
                         Name = result.Profession.Name
                     } : null,
-                    SettingsTrainingTime = result.DefaultTrainingTimes.Select(s => s.Value).ToList()
+                    PreferredTrainingTime = result.DefaultTrainingTimes.Select(s => s.Value).ToList()
                 };
             }
             return null;

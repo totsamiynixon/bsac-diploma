@@ -59,6 +59,16 @@ namespace Services
             }).ToListAsync();
         }
 
+        public async Task<List<IGrouping<string, ProfessionDTO>>> GetAllGrouped()
+        {
+            return await _professionRepository.Collection.Select(f => new ProfessionDTO
+            {
+                Id = f.Id,
+                Name = f.Name
+            }).GroupBy(s=>s.Name.ToUpper().Substring(0,1)).ToListAsync();
+            
+        }
+
         public async Task<ProfessionDetailsDTO> GetByIdAsync(int id)
         {
             var profession = await _professionRepository.Collection.Include(f => f.ProfessionCriterias).FirstOrDefaultAsync(f => f.Id == id);

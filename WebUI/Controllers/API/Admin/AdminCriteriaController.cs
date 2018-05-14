@@ -12,10 +12,10 @@ namespace WebUI.Controllers.API.Admin
 {
     //[Authorize(Roles = "Admin")]
     [RoutePrefix("api/admin/criteria")]
-    public class CriteriaController : ApiController
+    public class AdminCriteriaController : ApiController
     {
         private readonly ICriteriaService _criteriaService;
-        public CriteriaController(ICriteriaService service)
+        public AdminCriteriaController(ICriteriaService service)
         {
             _criteriaService = service;
         }

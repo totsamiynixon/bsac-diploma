@@ -20,7 +20,10 @@ import Routes from './router'
 // Import App Component
 import App from './app';
 
-import { store } from "./store";
+import {
+  store
+} from "./store";
+import axios from "axios";
 
 // SHARED
 import AppLoading from "./pages/Shared/Loading.vue"
@@ -29,6 +32,22 @@ import AppLoading from "./pages/Shared/Loading.vue"
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue, Framework7)
 Vue.component("app-loading", AppLoading)
+
+axios.interceptors.request.use((config) => {
+  store.dispatch("shared/startLoading");
+  return config;
+}, (error) => {
+  store.dispatch("shared/stopLoading");
+  return Promise.reject(error);
+});
+
+axios.interceptors.response.use(function(response) {
+  store.dispatch("shared/stopLoading");
+  return response;
+}, function(error) {
+  store.dispatch("shared/stopLoading");
+  return Promise.reject(error);
+});
 
 // Init App
 var app = new Vue({

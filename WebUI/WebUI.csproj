@@ -247,11 +247,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\CustomHandleErrorAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\API\Admin\CriteriaController.cs" />
+    <Compile Include="Controllers\API\Admin\AdminCriteriaController.cs" />
     <Compile Include="Controllers\API\AccountController.cs" />
-    <Compile Include="Controllers\API\Admin\ExerciseController.cs" />
-    <Compile Include="Controllers\API\Admin\ProfessionController.cs" />
-    <Compile Include="Controllers\API\Mobile\SettingsController.cs" />
+    <Compile Include="Controllers\API\Admin\AdminExerciseController.cs" />
+    <Compile Include="Controllers\API\Admin\AdminProfessionController.cs" />
+    <Compile Include="Controllers\API\Features\ProfessionController.cs" />
+    <Compile Include="Controllers\API\Features\SettingsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
