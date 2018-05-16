@@ -6,7 +6,8 @@
           <template v-for="(item, index) in items">
             <v-subheader :key="item.header">{{ item.header }}</v-subheader>
             <v-divider :key="index"></v-divider>
-            <v-list-tile :key="exercise.title" v-for="exercise in item.exercises"
+            <v-list-tile :key="exercise.title"
+                         v-for="exercise in item.exercises"
                          ripple
                          avatar
                          :to="{name:'training', params:{id:0}}">
@@ -35,6 +36,18 @@ export default {
     return {
       items: [
         {
+          header: "Низкая сложность",
+          exercises: [
+            {
+              avatar: "https://www.wikireading.ru/img/143620_73_i_042.png",
+              title: "Наклоны",
+              countOfRepeats: 10,
+              subtitle:
+                "oчeнь пpocтoe yпpaжнeниe, koтopoe знakomo нam eщe c дeтcтвa"
+            }
+          ]
+        },
+        {
           exercises: [
             {
               avatar:
@@ -43,6 +56,13 @@ export default {
               countOfRepeats: 10,
               subtitle:
                 "Постарайтесь соблюдать технику выполнения. Вдох на во время опускания туловища, выдох на подъеме"
+            },
+            {
+              avatar: "http://sportwiki.to/images/3/3f/Sil_men_prised.jpg",
+              title: "Приседания",
+              countOfRepeats: 10,
+              subtitle:
+                "Одно из базовых силовых упражнений (в том числе в пауэрлифтинге и культуризме)"
             }
           ],
           header: "Средняя сложность"

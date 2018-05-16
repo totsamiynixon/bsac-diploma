@@ -19,7 +19,10 @@ namespace WebUI.Controllers.API.Admin
         {
             _criteriaService = service;
         }
-        // GET: api/ApiCriteria
+        /// <summary>
+        /// Метод, кторый возвращает все критерии
+        /// </summary>
+        /// <returns> Все критерии </returns>
         [HttpGet]
         [Route("getAll")]
         public async Task<IHttpActionResult> GetAllAsync()

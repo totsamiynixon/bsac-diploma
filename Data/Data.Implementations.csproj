@@ -68,6 +68,8 @@
     <Compile Include="Configurations\ProfessionCriteriaConfiguration.cs" />
     <Compile Include="Configurations\SettingsConfiguration.cs" />
     <Compile Include="Configurations\TrainingTimeConfiguration.cs" />
+    <Compile Include="Configurations\UserExerciseConfiguration.cs" />
+    <Compile Include="Configurations\UserTrainingConfiguration.cs" />
     <Compile Include="Context\DataContext.cs" />
     <Compile Include="Migrations\201805102350524_Init.cs" />
     <Compile Include="Migrations\201805102350524_Init.Designer.cs">
@@ -76,6 +78,18 @@
     <Compile Include="Migrations\201805130218000_CascadeDelete.cs" />
     <Compile Include="Migrations\201805130218000_CascadeDelete.Designer.cs">
       <DependentUpon>201805130218000_CascadeDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805141708173_ChangesForUserTraining.cs" />
+    <Compile Include="Migrations\201805141708173_ChangesForUserTraining.Designer.cs">
+      <DependentUpon>201805141708173_ChangesForUserTraining.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805142042117_UpdateExercises.cs" />
+    <Compile Include="Migrations\201805142042117_UpdateExercises.Designer.cs">
+      <DependentUpon>201805142042117_UpdateExercises.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805142118545_UpdateUserExercisesAddedCountOfRepeats.cs" />
+    <Compile Include="Migrations\201805142118545_UpdateUserExercisesAddedCountOfRepeats.Designer.cs">
+      <DependentUpon>201805142118545_UpdateUserExercisesAddedCountOfRepeats.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,6 +124,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805130218000_CascadeDelete.resx">
       <DependentUpon>201805130218000_CascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805141708173_ChangesForUserTraining.resx">
+      <DependentUpon>201805141708173_ChangesForUserTraining.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805142042117_UpdateExercises.resx">
+      <DependentUpon>201805142042117_UpdateExercises.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805142118545_UpdateUserExercisesAddedCountOfRepeats.resx">
+      <DependentUpon>201805142118545_UpdateUserExercisesAddedCountOfRepeats.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

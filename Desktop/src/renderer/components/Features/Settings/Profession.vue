@@ -33,10 +33,10 @@
         <v-card-actions>
           <v-btn color="blue darken-1"
                  flat
-                 @click.native="dialog = false">Close</v-btn>
+                 @click.native="dialog = false">Закрыть</v-btn>
           <v-btn color="blue darken-1"
                  flat
-                 @click.native="dialog = false; update();">Save</v-btn>
+                 @click.native="dialog = false; update();">Сохранить</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Entity.Domain.Criteria" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Criteria.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.Exercise" BaseTypeListCollapsed="true">
+    <Position X="3" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAgAAAAAAAAAAQAAAAIAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Domain\Exercise.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.ExerciseCriteria" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQEAAAAAAAAAAAAEAAAAAECAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\ExerciseCriteria.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.Profession" BaseTypeListCollapsed="true">
+    <Position X="9" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAAAQAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Profession.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.ProfessionCriteria" BaseTypeListCollapsed="true">
+    <Position X="7" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQEAAAAAAAAAAAAAAAAAAACAAAAAAAAAgAAABAAA=</HashCode>
+      <FileName>Domain\ProfessionCriteria.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.Identity.Role" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Idenity\Role.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.Identity.User" BaseTypeListCollapsed="true">
+    <Position X="9" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAADAAAAAAAAAAAAAAAEAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Idenity\User.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.Identity.UserClaim">
+    <Position X="11.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Idenity\UserClaim.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Domain.Identity.UserLogin">
+    <Position X="11.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Idenity\UserLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Domain.Identity.UserRole">
+    <Position X="11.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Idenity\UserRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Domain.Settings.Settings" BaseTypeListCollapsed="true">
+    <Position X="11.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAgAAABAAA=</HashCode>
+      <FileName>Domain\Settings\Settings.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.Settings.TrainingTime" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAAAAAAAAAAAgAAgAAAAAAA=</HashCode>
+      <FileName>Domain\Settings\TrainingTime.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.Training.UserExercise" BaseTypeListCollapsed="true">
+    <Position X="9" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAEAIAAAEAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Domain\Training\UserExercise.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Domain.Training.UserTraining" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAAAAEIAAgAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Training\UserTraining.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Identity.Roles">
+    <Position X="13.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABEAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Identity\Roles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Entity.Enums.DifficultyLevel">
+    <Position X="3.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkAAA=</HashCode>
+      <FileName>Enums\DifficultyLevel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

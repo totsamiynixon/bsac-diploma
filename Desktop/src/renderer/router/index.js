@@ -12,6 +12,7 @@ import FeaturesLayout from "@/components/Features/Shared/Layout"
 
 //EXERCISES
 import Exercises from "@/components/Features/Exercises/Exercises.vue"
+import SingleExercise from "@/components/Features/Exercises/Exercise.vue"
 
 //TRAINING
 import TrainingList from "@/components/Features/Training/TrainingList.vue"
@@ -41,6 +42,11 @@ export default new Router({
           path: "exercises",
           name: "exercises",
           component: Exercises,
+        },
+        {
+          path: "exercises/:id",
+          name: "exercise",
+          component: SingleExercise,
         },
         {
           path: "settings",

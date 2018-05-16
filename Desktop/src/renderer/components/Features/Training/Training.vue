@@ -4,12 +4,11 @@
       <v-card class="px-5 py-5">
         <v-card-media>
           <div class="media-holder">
-          <iframe 
-                  src="https://www.youtube.com/embed/Znq2dUzZN0Y"
-                  webkitallowfullscreen
-                  mozallowfullscreen
-                  allowfullscreen></iframe>
-                              
+            <iframe src="https://www.youtube.com/embed/_U8XRJi_1KY"
+                    webkitallowfullscreen
+                    mozallowfullscreen
+                    allowfullscreen></iframe>
+
           </div>
         </v-card-media>
         <v-card-title primary-title>
@@ -24,7 +23,8 @@
         <v-card-actions>
           <h3 class="headline mb-0">Упражнение 1 из 3</h3>
           <v-spacer></v-spacer>
-                    <v-btn flat :to="{name:'training-result'}"
+          <v-btn flat
+                 :to="{name:'training-result'}"
                  color="orange">Выполнено!</v-btn>
         </v-card-actions>
       </v-card>

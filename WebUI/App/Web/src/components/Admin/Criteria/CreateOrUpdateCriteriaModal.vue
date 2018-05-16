@@ -1,28 +1,32 @@
 <template>
-    <v-dialog :value="dialog" @input="$emit('update:dialog',false)" max-width="500px">
-                 <form @submit.prevent="onCreateCriteria">
-        <v-card>
-          <v-card-title>
-            Создать новый критерий
-          </v-card-title>
-          <v-card-text>
+  <v-dialog :value="dialog"
+            @input="$emit('update:dialog',false)"
+            max-width="500px">
+    <form @submit.prevent="onCreateCriteria">
+      <v-card>
+        <v-card-title>
+          {{ source.id == 0 ? 'Создать новый' : 'Обновить'}} критерий
+        </v-card-title>
+        <v-card-text>
           <v-layout row>
-            <v-flex xs12  >
-              <v-text-field
-                name="name"
-                label="name"
-                id="name"
-                v-model="source.name"
-                required></v-text-field>
+            <v-flex xs12>
+              <v-text-field name="name"
+                            label="Назвение"
+                            id="name"
+                            v-model="source.name"
+                            required></v-text-field>
             </v-flex>
           </v-layout>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary"  @click.prevent="onCreateCriteria" type="submit" flat>Создать</v-btn>
-          </v-card-actions>
-        </v-card>
-        </form>
-      </v-dialog>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary"
+                 @click.prevent="onCreateCriteria"
+                 type="submit"
+                 flat>{{ source.id == 0 ? 'Создать' : 'Обновить'}}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </form>
+  </v-dialog>
 </template>
 
 <script>

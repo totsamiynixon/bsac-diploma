@@ -22,7 +22,7 @@
                       :title="name"
                       :key="name"
                       :value="name"
-                      :checked="profession == name"
+                      :checked="currentProfession.name == name"
                       @change="setCurrentProfession(id)"
                       radio></f7-list-item>
       </f7-list-group>
@@ -50,9 +50,9 @@ export default {
   computed: {
     filtered() {
       let result = {};
-      for (var key in professions) {
-        if (professions.hasOwnProperty(key)) {
-          let items = professions[key].filter(profession =>
+      for (var key in this.professions) {
+        if (this.professions.hasOwnProperty(key)) {
+          let items = this.professions[key].filter(profession =>
             profession.includes(this.filter)
           );
           if (items.length > 0) {
@@ -78,6 +78,13 @@ export default {
       this.profession = value;
     }
   }
+};
+
+var professions = {
+  A: ["Автогонщик", "Адвокат", "Архитектор"],
+  Б: ["Блогер", "Ботаник", "Бухгалтер"],
+  В: ["Вахтер", "Водител", "Военнослужащий", "Врач"],
+  V: ["Vladimir"]
 };
 </script>
 

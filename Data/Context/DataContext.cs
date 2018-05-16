@@ -29,6 +29,7 @@ namespace Data.Implementations.Context
             //
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().HasRequired(s=>s.Settings).WithRequiredPrincipal(s=>s.User).WillCascadeOnDelete(true);
+            modelBuilder.Entity<User>().HasMany(s => s.Trainings).WithRequired(s => s.User).WillCascadeOnDelete(true);
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<UserRole>().ToTable("UserRoles");
             modelBuilder.Entity<UserClaim>().ToTable("UserClaims");
@@ -40,6 +41,8 @@ namespace Data.Implementations.Context
             modelBuilder.Configurations.Add(new ProfessionCriteriaConfiguration());
             modelBuilder.Configurations.Add(new SettingsConfiguration());
             modelBuilder.Configurations.Add(new TrainingTimeConfiguration());
+            modelBuilder.Configurations.Add(new UserTrainingConfiguration());
+            modelBuilder.Configurations.Add(new UserExerciseConfiguration());
 
         }
     }
