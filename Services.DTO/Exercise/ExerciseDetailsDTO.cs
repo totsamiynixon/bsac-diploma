@@ -15,6 +15,8 @@ namespace Services.DTO.Exercise
 
         public string Description { get; set; }
 
+        public string VideoUrl { get; set; }
+
         public List<ExerciseCriteriaDTO> Criterias { get; set; }
 
     }

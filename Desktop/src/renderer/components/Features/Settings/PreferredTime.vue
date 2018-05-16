@@ -24,10 +24,10 @@
                 <v-spacer></v-spacer>
                 <v-btn flat
                        color="primary"
-                       @click="item.dialog = false">Cancel</v-btn>
+                       @click="item.dialog = false">Закрыть</v-btn>
                 <v-btn flat
                        color="primary"
-                       @click="$refs.dialog[index].save(item.value)">OK</v-btn>
+                       @click="$refs.dialog[index].save(item.value)">Сохранить</v-btn>
               </v-time-picker>
             </v-dialog>
           </v-list-tile-sub-title>

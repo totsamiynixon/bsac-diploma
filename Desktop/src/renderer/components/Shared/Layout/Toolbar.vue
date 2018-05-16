@@ -13,7 +13,7 @@
     <v-text-field flat
                   solo-inverted
                   prepend-icon="search"
-                  label="Search"
+                  label="Поиск"
                   class="hidden-sm-and-down"></v-text-field>
     <v-spacer></v-spacer>
     <v-btn :to="{name:'default'}"
@@ -23,14 +23,6 @@
     <v-btn icon
            @click.prevent="logout">
       <v-icon>notifications</v-icon>
-    </v-btn>
-    <v-btn icon
-           large>
-      <v-avatar size="32px"
-                tile>
-        <img src="https://vuetifyjs.com/static/doc-images/logo.svg"
-             alt="Vuetify">
-      </v-avatar>
     </v-btn>
   </v-toolbar>
 </template>

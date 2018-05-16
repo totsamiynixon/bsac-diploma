@@ -67,15 +67,18 @@
     <Compile Include="Domain\Idenity\UserClaim.cs" />
     <Compile Include="Domain\Idenity\UserLogin.cs" />
     <Compile Include="Domain\Idenity\UserRole.cs" />
+    <Compile Include="Domain\Training\UserExercise.cs" />
+    <Compile Include="Domain\Training\UserTraining.cs" />
+    <Compile Include="Enums\DifficultyLevel.cs" />
     <Compile Include="Identity\Roles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Enums\" />
     <Folder Include="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

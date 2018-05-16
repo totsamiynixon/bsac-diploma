@@ -55,7 +55,8 @@ namespace Services
             return await _exerciseRepository.Collection.Select(f => new ExerciseDTO
             {
                 Id = f.Id,
-                Name = f.Name
+                Name = f.Name,
+                VideoUrl = f.VideoUrl
             }).ToListAsync();
         }
 
