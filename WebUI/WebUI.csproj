@@ -253,6 +253,7 @@
     <Compile Include="Controllers\API\Admin\AdminProfessionController.cs" />
     <Compile Include="Controllers\API\Features\ProfessionController.cs" />
     <Compile Include="Controllers\API\Features\SettingsController.cs" />
+    <Compile Include="Controllers\API\Features\UserTrainingController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
