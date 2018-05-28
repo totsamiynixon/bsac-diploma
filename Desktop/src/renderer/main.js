@@ -30,7 +30,7 @@ Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false;
 
 if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = "http://localhost:57327/";
+  axios.defaults.baseURL = "http://18.188.233.49/BSAC_Diploma_Server/";
 }
 /* eslint-disable no-new */
 new Vue({

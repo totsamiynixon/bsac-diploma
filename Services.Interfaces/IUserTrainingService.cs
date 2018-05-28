@@ -8,6 +8,7 @@ namespace Services.Interfaces
 {
     public interface IUserTrainingService
     {
-        
+        //Task<UserTraining> GetUserTraining(int userId);
+        //Task CompleteTraining(int userId, int trainingId);
     }
 }

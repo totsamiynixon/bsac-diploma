@@ -2,7 +2,9 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 import Vuetify from "vuetify";
-import { store } from "./store";
+import {
+  store
+} from "./store";
 import axios from "axios";
 import "vuetify/dist/vuetify.min.css";
 //Components
@@ -24,6 +26,11 @@ Vue.use(Vuetify, {
 //Components init
 Vue.component("app-alerts", AlertsCmp);
 Vue.component("app-loading", LoadingCmp);
+
+if (process.env.NODE_ENV === 'production') {
+  axios.defaults.baseURL = "http://18.188.233.49/BSAC_Diploma_Server/";
+}
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
@@ -32,7 +39,5 @@ new Vue({
   router,
   store,
   render: h => h(App),
-  created() {
-  }
+  created() {}
 });
-
