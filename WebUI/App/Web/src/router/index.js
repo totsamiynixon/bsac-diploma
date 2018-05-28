@@ -17,8 +17,7 @@ import AddOrUpdateProfession from "@/components/Admin/Profession/AddOrUpdateProf
 Vue.use(Router);
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: "/",
       redirect: "/admin",
       name: "default",
@@ -38,8 +37,7 @@ export default new Router({
       name: "admin",
       redirect: "/admin/criterias",
       component: AdminLayout,
-      children: [
-        {
+      children: [{
           path: "criterias",
           name: "criterias",
           component: Criterias
@@ -82,8 +80,7 @@ export default new Router({
       name: "auth",
       redirect: "auth/signin",
       component: AuthLayout,
-      children: [
-        {
+      children: [{
           path: "signup",
           name: "Signup",
           component: Signup
@@ -94,7 +91,12 @@ export default new Router({
           component: Signin
         }
       ]
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
+
   ],
   mode: "history",
   linkActiveClass: "active-route"
