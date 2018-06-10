@@ -15,6 +15,7 @@ namespace WebUI.Infrastructure
         {
            //FEATURES
             _kernel.Bind<IExerciseService>().To<ExerciseService>().InRequestScope();
+            _kernel.Bind<ISettingsService>().To<SettingsService>().InRequestScope();
         }
     }
 }

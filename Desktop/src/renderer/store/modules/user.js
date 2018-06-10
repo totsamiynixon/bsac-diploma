@@ -23,6 +23,9 @@ const actions = {
           roles: result.data.roles,
           settings: null
         });
+        commit("features/settings/setSettings", null, {
+          root: true
+        })
       });
   },
   signUserIn({
@@ -31,13 +34,15 @@ const actions = {
     axios.post("/api/account/sign-in", payload)
       .then(result => {
         localStorage.setItem("token", result.data.token);
-        localStorage.setObject("settings", result.data.settings);
+        //localStorage.setObject("settings", result.data.settings);
         commit("setUser", {
           id: result.data.id,
           name: result.data.name,
-          roles: result.data.roles,
-          settings: result.settings
+          roles: result.data.roles
         });
+        commit("features/settings/setSettings", result.data.settings, {
+          root: true
+        })
       });
   },
   autoSignIn({
@@ -50,17 +55,19 @@ const actions = {
         reject("Not logged in");
         return;
       }
-      commit("shared/setLoading", true, {
-        root: true
-      });
       axios.defaults.headers.common['Authorization'] = "Bearer " + token;
       axios.get("/api/account/check-login").then(
-        user => {
-          commit("setUser", user);
-          resolve(user);
-          commit("shared/setLoading", false, {
-            root: true
+        result => {
+          commit("setUser", {
+            id: result.data.id,
+            name: result.data.name,
+            roles: result.data.roles
           });
+          console.log(result.data.settings);
+          commit("features/settings/setSettings", result.data.settings, {
+            root: true
+          })
+          resolve(result.data);
         }
       );
     });

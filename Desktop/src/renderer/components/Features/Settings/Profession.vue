@@ -6,7 +6,7 @@
       <div slot="activator">
         <v-btn color="primary"
                dark>Выбрать профессию</v-btn>
-        <v-chip>{{value}}</v-chip>
+        <v-chip>{{profession.name}}</v-chip>
       </div>
       <v-card>
         <v-card-title>Выберите профессию</v-card-title>
@@ -20,13 +20,13 @@
         <v-card-text style="height: 300px;">
           <v-radio-group column
                          v-model="profession"
-                         v-for="(group, key) in filtered"
+                         v-for="(group, key) in filteredProfessions"
                          :key="key"
-                         :label="key">
-            <v-radio v-for="name in group"
-                     :label="name"
-                     :key="name"
-                     :value="name"></v-radio>
+                         :label="key.toUpperCase()">
+            <v-radio v-for="item in group"
+                     :label="item.name"
+                     :key="item.id"
+                     :value="item"></v-radio>
           </v-radio-group>
         </v-card-text>
         <v-divider></v-divider>
@@ -36,7 +36,7 @@
                  @click.native="dialog = false">Закрыть</v-btn>
           <v-btn color="blue darken-1"
                  flat
-                 @click.native="dialog = false; update();">Сохранить</v-btn>
+                 @click.native="dialog = false; setCurrentProfession()">Сохранить</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,13 +44,12 @@
 </template>
 <script>
 export default {
-  props: ["value"],
+  props: ["professions"],
   data: function() {
     return {
-      profession: null,
-      professions: professions,
       dialog: false,
-      filter: ""
+      filter: "",
+      profession: {}
     };
   },
   watch: {
@@ -59,15 +58,16 @@ export default {
     }
   },
   created() {
-    this.profession = this.value != null ? this.value.slice() : "";
+    this.profession =
+      this.$store.getters["features/settings/profession"] || this.profession;
   },
   computed: {
-    filtered() {
+    filteredProfessions() {
       let result = {};
-      for (var key in professions) {
-        if (professions.hasOwnProperty(key)) {
-          let items = professions[key].filter(profession =>
-            profession.includes(this.filter)
+      for (var key in this.professions) {
+        if (this.professions.hasOwnProperty(key)) {
+          let items = this.professions[key].filter(profession =>
+            profession.name.includes(this.filter)
           );
           if (items.length > 0) {
             result[key] = items;
@@ -84,20 +84,13 @@ export default {
     onClear() {
       this.filter = "";
     },
-    setCurrentProfession(value) {
-      this.profession = value;
-    },
-    update() {
-      this.$emit("update:value", this.profession);
+    setCurrentProfession() {
+      this.$store.dispatch(
+        "features/settings/changeProfession",
+        this.profession
+      );
     }
   }
-};
-
-var professions = {
-  A: ["Автогонщик", "Адвокат", "Архитектор"],
-  Б: ["Блогер", "Ботаник", "Бухгалтер"],
-  В: ["Вахтер", "Водител", "Военнослужащий", "Врач"],
-  V: ["Vladimir"]
 };
 </script>
 

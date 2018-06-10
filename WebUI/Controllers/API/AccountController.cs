@@ -5,7 +5,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
-using Services.DTO.Settings;
+using Services.Features.DTO.Settings;
+using Services.Features.Interfaces;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,7 @@ namespace WebUI.Controllers.API
                 Name = user.UserName,
                 Roles = await _userManager.GetRolesAsync(user.Id),
                 Token = token,
-                Settings = roles.Any(z => z == Roles.User) ? await _settingsService.GetSettingsAsync(user.Id) : default(SettingsDTO)
+                Settings = roles.Any(z => z == Roles.User || z == Roles.Admin) ? await _settingsService.GetSettingsAsync(user.Id) : default(SettingsDTO)
             };
             return Ok(result);
         }
@@ -114,11 +115,13 @@ namespace WebUI.Controllers.API
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user != null)
                 {
+                    var roles = await _userManager.GetRolesAsync(user.Id);
                     return Ok(new
                     {
                         Email = user.Email,
                         Id = user.Id,
-                        Roles = user.Roles
+                        Roles = user.Roles,
+                        Settings = roles.Any(z => z == Roles.User || z== Roles.Admin) ? await _settingsService.GetSettingsAsync(user.Id) : default(SettingsDTO)
                     });
                 }
             }

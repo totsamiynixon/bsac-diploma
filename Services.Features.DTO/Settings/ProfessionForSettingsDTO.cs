@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.DTO.Settings
+namespace Services.Features.DTO.Settings
 {
-    public class SettingsProfessionDTO
+    public class ProfessionForSettingsDTO
     {
         public int Id { get; set; }
 

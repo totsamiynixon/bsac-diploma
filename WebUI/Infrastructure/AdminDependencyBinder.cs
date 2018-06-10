@@ -16,7 +16,6 @@ namespace WebUI.Infrastructure
             _kernel.Bind<ICriteriaService>().To<CriteriaService>().InRequestScope();
             _kernel.Bind<IExerciseService>().To<ExerciseService>().InRequestScope();
             _kernel.Bind<IProfessionService>().To<ProfessionService>().InRequestScope();
-            _kernel.Bind<ISettingsService>().To<SettingsService>().InRequestScope();
         }
     }
 }
