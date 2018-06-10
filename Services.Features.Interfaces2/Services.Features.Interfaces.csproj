@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IExerciseService.cs" />
+    <Compile Include="ISettingsService.cs" />
+    <Compile Include="IUserTrainingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

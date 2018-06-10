@@ -1,7 +1,7 @@
 <template>
   <v-flex class="px-2 py-2">
-    <profession-settings :value.sync="profession"></profession-settings>
-    <preferred-time-settings :times.sync="times"></preferred-time-settings>
+    <profession-settings :professions="professions"></profession-settings>
+    <preferred-time-settings></preferred-time-settings>
   </v-flex>
 </template>
 <script>
@@ -10,24 +10,19 @@ import PreferredTimeSettings from "./PreferredTime";
 export default {
   data: function() {
     return {
-      profession: "Бухгалтер",
-      times: [
-        {
-          value: null,
-          dialog: false
-        },
-        {
-          value: null,
-          dialog: false
-        },
-        {
-          value: null,
-          dialog: false
-        }
-      ]
+      professions: []
     };
   },
   methods: {},
+  created() {
+    this.$http.get("/api/settings/initData").then(response => {
+      this.professions = response.data.professions;
+      this.$store.dispatch(
+        "features/settings/installSettings",
+        response.data.settings
+      );
+    });
+  },
   components: {
     ProfessionSettings,
     PreferredTimeSettings
