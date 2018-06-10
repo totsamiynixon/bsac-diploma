@@ -251,6 +251,7 @@
     <Compile Include="Controllers\API\AccountController.cs" />
     <Compile Include="Controllers\API\Admin\AdminExerciseController.cs" />
     <Compile Include="Controllers\API\Admin\AdminProfessionController.cs" />
+    <Compile Include="Controllers\API\Features\ExerciseController.cs" />
     <Compile Include="Controllers\API\Features\ProfessionController.cs" />
     <Compile Include="Controllers\API\Features\SettingsController.cs" />
     <Compile Include="Controllers\API\Features\UserTrainingController.cs" />
@@ -268,14 +269,18 @@
     <Compile Include="Identity\ApplicationUserManager.cs" />
     <Compile Include="Identity\EmailService.cs" />
     <Compile Include="Identity\SmsService.cs" />
+    <Compile Include="Infrastructure\AdminDependencyBinder.cs" />
+    <Compile Include="Infrastructure\FeaturesDependencyBuilder.cs" />
+    <Compile Include="Infrastructure\IDependencyBuilder.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\NinjectDependencyScope.cs" />
     <Compile Include="Infrastructure\NinjectSignalRDependencyResolver.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
-    <Compile Include="Mapping\DomainToDomainConfiguration.cs" />
-    <Compile Include="Mapping\DomainToDTOMappingProfile.cs" />
-    <Compile Include="Mapping\DTOToDomainMappingProfile.cs" />
-    <Compile Include="Mapping\DtoToDtoConfiguration.cs" />
+    <Compile Include="Mapping\Admin\DomainToDomainConfiguration.cs" />
+    <Compile Include="Mapping\Admin\DomainToDTOMappingProfile.cs" />
+    <Compile Include="Mapping\Admin\DTOToDomainMappingProfile.cs" />
+    <Compile Include="Mapping\Admin\DtoToDtoConfiguration.cs" />
+    <Compile Include="Mapping\Features\FeaturesDomainToDTOMappingProfile.cs" />
     <Compile Include="Models\Identity\AccountViewModels.cs" />
     <Compile Include="Models\Identity\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -415,6 +420,22 @@
     <ProjectReference Include="..\Services.DTO\Services.DTO.csproj">
       <Project>{6d3ea9a9-4aca-4a1b-a342-015b6045e146}</Project>
       <Name>Services.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services.Features.DTO\Services.Features.DTO.csproj">
+      <Project>{3fae1d6b-9441-4780-a42d-c2b14b02b2e2}</Project>
+      <Name>Services.Features.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services.Features.Implementations2\Services.Features.Implementations.csproj">
+      <Project>{cd7916de-f156-4be3-816a-0ca16fa9394f}</Project>
+      <Name>Services.Features.Implementations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services.Features.Interfaces2\Services.Features.Interfaces.csproj">
+      <Project>{d2cb9fee-3adf-46c3-973f-00931bccc99f}</Project>
+      <Name>Services.Features.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services.Features.Models\Services.Features.Models.csproj">
+      <Project>{36917124-a0e1-46d4-b922-ed82d12260e5}</Project>
+      <Name>Services.Features.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Services.Interfaces\Services.Interfaces.csproj">
       <Project>{96750a4a-1fa0-49b5-b5ea-d539b37ace42}</Project>

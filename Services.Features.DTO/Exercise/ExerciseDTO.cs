@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Services.Features.DTO.ExerciseCriteria;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.DTO.Exercise
+namespace Services.Features.DTO.Exercise
 {
     public class ExerciseDTO
     {
@@ -12,8 +13,11 @@ namespace Services.DTO.Exercise
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public string VideoUrl { get; set; }
 
-        public string PreviewText { get; set; }
+        public List<ExerciseCriteriaDTO> Criterias { get; set; }
+
     }
 }

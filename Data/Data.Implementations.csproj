@@ -91,6 +91,10 @@
     <Compile Include="Migrations\201805142118545_UpdateUserExercisesAddedCountOfRepeats.Designer.cs">
       <DependentUpon>201805142118545_UpdateUserExercisesAddedCountOfRepeats.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806101320344_ExercisePreviewText.cs" />
+    <Compile Include="Migrations\201806101320344_ExercisePreviewText.Designer.cs">
+      <DependentUpon>201806101320344_ExercisePreviewText.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
@@ -133,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805142118545_UpdateUserExercisesAddedCountOfRepeats.resx">
       <DependentUpon>201805142118545_UpdateUserExercisesAddedCountOfRepeats.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806101320344_ExercisePreviewText.resx">
+      <DependentUpon>201806101320344_ExercisePreviewText.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

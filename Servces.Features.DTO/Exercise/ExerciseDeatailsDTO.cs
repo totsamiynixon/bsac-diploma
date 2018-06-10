@@ -1,14 +1,11 @@
-﻿using Entity.Enums;
-using Services.DTO.ExerciseCriteria;
+﻿using Servces.Features.DTO.ExerciseCriteria;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Services.DTO.Exercise
+namespace Servces.Features.DTO.Exercise
 {
-    public class ExerciseDetailsDTO
+    public class ExerciseDeatailsDTO
     {
         public int Id { get; set; }
 
@@ -20,9 +17,8 @@ namespace Services.DTO.Exercise
 
         public string PreviewText { get; set; }
 
-        public DifficultyLevel DifficultyLevel { get; set; }
+        public string DifficultyLevel { get; set; }
 
         public List<ExerciseCriteriaDTO> Criterias { get; set; }
-
     }
 }

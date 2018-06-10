@@ -16,6 +16,8 @@ namespace Entity.Domain
 
         public string Description { get; set; }
 
+        public string PreviewText { get; set; }
+
         public string VideoUrl { get; set; }
 
         public DifficultyLevel DifficultyLevel { get; set; }

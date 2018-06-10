@@ -61,10 +61,7 @@ namespace WebUI.Infrastructure
             _kernel.Bind<ApplicationRoleManager>().ToSelf().InRequestScope();
             _kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
 
-            _kernel.Bind<ICriteriaService>().To<CriteriaService>().InRequestScope();
-            _kernel.Bind<IExerciseService>().To<ExerciseService>().InRequestScope();
-            _kernel.Bind<IProfessionService>().To<ProfessionService>().InRequestScope();
-            _kernel.Bind<ISettingsService>().To<SettingsService>().InRequestScope();
+            ApplyServicesDependencies(_kernel);
 
             _kernel.Bind<IIdentityMessageService>().To<EmailService>().InRequestScope();
             _kernel.Bind<IDataSerializer<AuthenticationTicket>>().To<TicketSerializer>();
@@ -80,6 +77,19 @@ namespace WebUI.Infrastructure
                     DataProtectionProvider = Startup.DataProtectionProvider
                 });
 
+        }
+
+
+        private static void ApplyServicesDependencies(IKernel _kernel)
+        {
+            var builders = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => typeof(IDependencyBuilder).IsAssignableFrom(p) && !p.IsInterface);
+            foreach(var builder in builders)
+            {
+                var instance = (IDependencyBuilder)Activator.CreateInstance(builder);
+                instance.ApplyBindings(_kernel);
+            }
         }
 
         public void Dispose()

@@ -5,8 +5,8 @@
                   prepend-icon="search"
                   label="Поиск"
                   class="hidden-sm-and-down"
-                  v-model="search.query"
-                  @dblclick="settingsDialog = true"></v-text-field>
+                  @input="searchUpdate"
+                  @dblclick="search.dialog = true"></v-text-field>
     <v-layout row>
       <v-flex xs12
               sm6
@@ -16,24 +16,30 @@
               v-for="exercise in filteredExercises"
               :key="exercise.id">
         <v-card>
-          <v-card-media :src="exercise.url"
-                        height="200px">
+          <v-card-media>
+            <div class="media-holder">
+              <iframe :src="exercise.videoUrl+'?controls=0&disablekb=0&fs=0&showinfo=0&end=10&rel=0'"
+            
+                      webkitallowfullscreen
+                      mozallowfullscreen
+                      allowfullscreen></iframe>
+            </div>
           </v-card-media>
           <v-card-title primary-title>
             <div>
-              <h3 class="headline mb-0">{{exercise.title}}</h3>
-              <div>{{exercise.preview}}</div>
+              <h3 class="headline mb-0">{{exercise.name}}</h3>
+              <div>{{exercise.previewText}}</div>
             </div>
           </v-card-title>
           <v-card-actions>
             <v-btn flat
                    color="orange"
-                   :to="{name:'exercise', params:{id:0}}">Подробнее</v-btn>
+                   :to="{name:'exercise', params:{id:exercise.id}}">Подробнее</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
-    <v-dialog v-model="settingsDialog"
+    <v-dialog v-model="search.dialog"
               fullscreen
               hide-overlay
               transition="dialog-bottom-transition"
@@ -44,7 +50,7 @@
                    color="primary">
           <v-btn icon
                  dark
-                 @click.native="settingsDialog = false">
+                 @click.native="search.dialog = false">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Настройки поиска</v-toolbar-title>
@@ -52,7 +58,7 @@
           <v-toolbar-items>
             <v-btn dark
                    flat
-                   @click.native="settingsDialog = false">Сохранить</v-btn>
+                   @click.native="search.dialog = false">Сохранить</v-btn>
           </v-toolbar-items>
         </v-toolbar>
         <v-card-text>
@@ -61,7 +67,7 @@
             <v-subheader>Основные</v-subheader>
             <v-list-tile avatar>
               <v-list-tile-action>
-                <v-checkbox v-model="search.settings.byExercises"></v-checkbox>
+                <v-checkbox v-model="search.properties.byExercises"></v-checkbox>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>По упражнениям</v-list-tile-title>
@@ -70,7 +76,7 @@
             </v-list-tile>
             <v-list-tile avatar>
               <v-list-tile-action>
-                <v-checkbox v-model="search.settings.byCriterias"></v-checkbox>
+                <v-checkbox v-model="search.properties.byCriterias"></v-checkbox>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>По критериям</v-list-tile-title>
@@ -79,7 +85,7 @@
             </v-list-tile>
             <v-list-tile avatar>
               <v-list-tile-action>
-                <v-checkbox v-model="search.settings.byProfessions"></v-checkbox>
+                <v-checkbox v-model="search.properties.byProfessions"></v-checkbox>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>По профессиям</v-list-tile-title>
@@ -99,43 +105,39 @@
 export default {
   data() {
     return {
-      settingsDialog: false,
-      exercises: [
-        {
-          id: 1,
-          title: "Отжимания",
-          url: "http://sportwiki.to/images/0/0e/Atlas_fitnesa9.jpg",
-          preview:
-            "Отжимания - главное упражнение для верхней части тела. Оно помогает развить силу и выносливость, нарастить мышцы, укрепить суставы, и, помимо тренировки мышц верхней части тела, помогает наладить их согласованную работу с мышцами средней и нижней частей тела."
-        },
-        {
-          id: 2,
-          title: "Приседания",
-          url: "http://sportwiki.to/images/3/3f/Sil_men_prised.jpg",
-          preview:
-            "Приседания — непревзойденные по эффективности упражнения для нижней части тела. Более того, слова «для нижней части тела» не так уж и важны. Развить в себе функциональную силу без приседаний практически невозможно: их выполнение задействует все мышцы ног, нагружает пресс и нижний отдел спины."
-        },
-        {
-          id: 3,
-          title: "Наклоны",
-          url: "http://www.fitnessera.ru/wp-content/uploads/2017/06/17.jpg",
-          preview:
-            "Нakлoны тyлoвищa впepeд —  oчeнь пpocтoe yпpaжнeниe, koтopoe знakomo нam eщe c дeтcтвa. Нecmoтpя нa вcю пpocтoтy, oнo oчeнь пoлeзнo, тak kak пoзвoляeт пpивecти в тoнyc mнoжecтвo вaжных mышц, yлyчшaeт гибkocть и блaгoтвopнo влияeт нa здopoвьe."
-        }
-      ],
       search: {
-        query: "",
-        settings: {
+        dialog: false,
+        timer: null,
+        properties: {
+          query: "",
           byExercises: true,
-          byCriterias: false,
-          byProfessions: false
+          byCriterias: false
         }
       }
     };
   },
-  computed: {
+  methods: {
+    searchUpdate(value) {
+      if (this.search.timer != null) {
+        clearTimeout(this.search.timer);
+      }
+      this.search.timer = setTimeout(() => {
+        this.search.properties.query = value;
+      }, 1000);
+    }
+  },
+  created() {},
+  asyncComputed: {
     filteredExercises() {
-      return this.exercises.filter(ex => ex.title.includes(this.search.query));
+      return this.$http
+        .get("/api/exercises/getAll", {
+          params: {
+            query: this.search.properties.query,
+            byCriterias: this.search.properties.byCriterias,
+            byExercises: this.search.properties.byExercises
+          }
+        })
+        .then(response => response.data);
     }
   }
 };

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AutoMapper;
+using WebUI.Mapping.Features;
 
 namespace WebUI.Mapping
 {
@@ -16,6 +17,7 @@ namespace WebUI.Mapping
                 x.AddProfile<DTOToDomainMappingProfile>();
                 x.AddProfile<DomainToDomainConfiguration>();
                 x.AddProfile<DtoToDtoConfiguration>();
+                x.AddProfile<FeaturesDomainToDTOMappingProfile>();
             });
         }
     }

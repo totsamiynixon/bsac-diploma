@@ -17,6 +17,17 @@
                     label="Описание"
                     multi-line
                     required></v-text-field>
+      <v-text-field v-model="currentExercise.previewText"
+                    :rules="validation.exercise.previewText"
+                    label="Текст на превью"
+                    multi-line
+                    required></v-text-field>
+      <v-select :items="getDifficultyLevelOptions()"
+                :value="currentExercise.difficultyLevel"
+                @change="setCriteria($event, index)"
+                label="Выберите критерий"
+                item-text="text"
+                item-value="id"></v-select>
       <v-layout row
                 v-for="(currentExerciseCriteria,index) in currentExercise.criterias"
                 :key="index">
@@ -66,6 +77,12 @@ export default {
               (v && v.length <= 512) ||
               "Описание должно быть длиной не более 512 символов"
           ],
+          previewText: [
+            v => !!v || "Текст для превью является обязательным",
+            v =>
+              (v && v.length <= 200) ||
+              "Текст для превью должен быть длиной не более 200 символов"
+          ],
           criteria: {
             weight: [v => !!v || "Вес является обязательным"]
           },
@@ -81,12 +98,30 @@ export default {
         id: 0,
         name: "",
         description: "",
+        previewText: "",
+        difficultyLevel: "",
         criterias: []
       },
       criterias: []
     };
   },
   methods: {
+    getDifficultyLevelOptions() {
+      return [
+        {
+          id: 0,
+          text: "Легко"
+        },
+        {
+          id: 1,
+          text: "Средне"
+        },
+        {
+          id: 2,
+          text: "Тяжело"
+        }
+      ];
+    },
     setCriteria(criteria, index) {
       this.currentExercise.criterias[index] = criteria;
       this.currentExercise.criterias = this.currentExercise.criterias.slice();

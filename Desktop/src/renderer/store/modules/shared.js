@@ -13,7 +13,7 @@ const mutations = {
           state.loading = true;
           return;
         }
-      },500);
+      }, 500);
     } else {
       isLoadingCanceled = true
       state.loading = payload;
@@ -39,13 +39,22 @@ const mutations = {
   }
 };
 const actions = {
-  loading(state) {
-    return state.loading;
+  loading({
+    commit,
+    state
+  }, payload) {
+    commit("setLoading", payload);
   },
-  error(state) {
-    return state.error;
+  error({
+    commit,
+    state
+  }, payload) {
+    commit("setError", payload);
   },
-  clearError({ commit, state }, payload) {
+  clearError({
+    commit,
+    state
+  }, payload) {
     commit("clearError", payload);
   }
 };
