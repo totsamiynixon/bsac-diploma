@@ -47,6 +47,7 @@
     <Compile Include="Settings\ProfessionForSettingsDTO.cs" />
     <Compile Include="Settings\SettingsDTO.cs" />
     <Compile Include="UserTraining\UserTrainingDTO.cs" />
+    <Compile Include="UserTraining\UserTrainingExerciseDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,11 +6,11 @@
       <v-text-field v-model="currentExercise.name"
                     :rules="validation.exercise.name"
                     label="Название"></v-text-field>
-      <v-text-field v-model="currentExercise.videoUrl"
-                    :rules="validation.exercise.videoUrl"
+      <v-text-field v-model="currentExercise.videoId"
+                    :rules="validation.exercise.videoId"
                     label="Видео"></v-text-field>
       <v-flex>
-        <iframe :src="currentExercise.videoUrl"></iframe>
+        <iframe :src="getYoutubeUrl(currentExercise.videoId)"></iframe>
       </v-flex>
       <v-text-field v-model="currentExercise.description"
                     :rules="validation.exercise.description"
@@ -86,12 +86,7 @@ export default {
           criteria: {
             weight: [v => !!v || "Вес является обязательным"]
           },
-          videoUrl: [
-            v => !!v || "Видео является обязятельным полем",
-            v =>
-              v.match(new RegExp("youtube.com/((v|embed)/)?[a-zA-Z0-9]+")) ||
-              "Видео должно быть с YouTube"
-          ]
+          videoId: [v => !!v || "Видео является обязятельным полем"]
         }
       },
       exercise: {
@@ -100,6 +95,7 @@ export default {
         description: "",
         previewText: "",
         difficultyLevel: "",
+        videoId: "",
         criterias: []
       },
       criterias: []
@@ -121,6 +117,9 @@ export default {
           text: "Тяжело"
         }
       ];
+    },
+    getYoutubeUrl(videoId) {
+      return "youtube.com/embed/" + videoId;
     },
     setCriteria(criteria, index) {
       this.currentExercise.criterias[index] = criteria;
