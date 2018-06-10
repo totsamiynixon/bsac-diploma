@@ -14,9 +14,6 @@ const actions = {
   signUserUp({
     commit
   }, payload) {
-    commit("shared/setLoading", true, {
-      root: true
-    });
     axios.post("/api/account/sign-up", payload)
       .then(result => {
         localStorage.setItem("token", result.data.token);
@@ -26,25 +23,11 @@ const actions = {
           roles: result.data.roles,
           settings: null
         });
-        commit("shared/setLoading", false, {
-          root: true
-        });
-      })
-      .catch(error => {
-        commit("shared/setLoading", false, {
-          root: true
-        });
-        commit("shared/setError", error, {
-          root: true
-        });
       });
   },
   signUserIn({
     commit
   }, payload) {
-    commit("shared/setLoading", true, {
-      root: true
-    });
     axios.post("/api/account/sign-in", payload)
       .then(result => {
         localStorage.setItem("token", result.data.token);
@@ -55,19 +38,7 @@ const actions = {
           roles: result.data.roles,
           settings: result.settings
         });
-        commit("shared/setLoading", false, {
-          root: true
-        });
-      })
-      .catch(error => {
-        commit("shared/setLoading", false, {
-          root: true
-        });
-        commit("shared/setError", error, {
-          root: true
-        });
-
-      })
+      });
   },
   autoSignIn({
     commit
@@ -88,15 +59,6 @@ const actions = {
           commit("setUser", user);
           resolve(user);
           commit("shared/setLoading", false, {
-            root: true
-          });
-        },
-        error => {
-          reject(error);
-          commit("shared/setLoading", false, {
-            root: true
-          });
-          commit("shared/setError", error, {
             root: true
           });
         }

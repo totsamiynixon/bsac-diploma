@@ -4,7 +4,7 @@
       <v-card class="px-5 py-5">
         <v-card-media>
           <div class="media-holder">
-            <iframe src="https://www.youtube.com/embed/_U8XRJi_1KY"
+            <iframe :src="exercise.videoUrl"
                     webkitallowfullscreen
                     mozallowfullscreen
                     allowfullscreen></iframe>
@@ -13,11 +13,8 @@
         </v-card-media>
         <v-card-title primary-title>
           <div>
-            <h3 class="headline mb-0">Отжимания</h3>
-            <div>Отжимания - главное упражнение для верхней части тела. Оно помогает развить
-              силу и выносливость, нарастить мышцы, укрепить суставы, и, помимо тренировки
-              мышц верхней части тела, помогает наладить их согласованную работу
-              с мышцами средней и нижней частей тела.</div>
+            <h3 class="headline mb-0">{{exercise.name}}</h3>
+            <div>{{exercise.description}}</div>
           </div>
         </v-card-title>
       </v-card>
@@ -25,3 +22,24 @@
   </v-layout>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      exercise: {}
+    };
+  },
+  methods: {
+    getExercise() {
+      this.$http
+        .get("/api/exercises/get", { params: { id: this.$route.params.id } })
+        .then(response => {
+          this.exercise = response.data;
+        });
+    }
+  },
+  created() {
+    this.getExercise();
+  }
+};
+</script>

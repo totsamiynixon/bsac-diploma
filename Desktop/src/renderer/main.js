@@ -8,10 +8,15 @@ import router from './router'
 import {
   store
 } from './store'
+import {
+  httpConfig
+} from "./utils/http"
+import AsyncComputed from 'vue-async-computed'
 
 import AlertsCmp from "./components/Shared/Alerts"
 import LoadingCmp from "./components/Shared/Loading"
 
+Vue.use(AsyncComputed)
 Vue.use(Vuetify, {
   theme: {
     primary: "#1565c0",
@@ -25,13 +30,14 @@ Vue.use(Vuetify, {
 });
 Vue.component("app-alerts", AlertsCmp);
 Vue.component("app-loading", LoadingCmp);
+
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
-Vue.http = Vue.prototype.$http = axios
+Vue.http = Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
 
-if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = "http://18.188.233.49/BSAC_Diploma_Server/";
-}
+httpConfig.init();
+
 /* eslint-disable no-new */
 new Vue({
   components: {
