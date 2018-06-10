@@ -56,7 +56,7 @@ namespace Services
             {
                 Id = f.Id,
                 Name = f.Name,
-                VideoUrl = f.VideoUrl
+                VideoId = f.VideoId
             }).ToListAsync();
         }
 

@@ -7,7 +7,7 @@ using WebUI.Mapping.Features;
 
 namespace WebUI.Mapping
 {
-    public class AutoMapperConfiguration
+    public static class AutoMapperConfiguration
     {
         public static void Configure()
         {
