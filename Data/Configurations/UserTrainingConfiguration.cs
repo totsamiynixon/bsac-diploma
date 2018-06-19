@@ -11,7 +11,7 @@ namespace Data.Implementations.Configurations
     {
         public UserTrainingConfiguration()
         {
-            HasMany(s => s.Exercises).WithRequired(s => s.UserTraining).HasForeignKey(s=>s.UserTrainingId).WillCascadeOnDelete(true);
+            HasMany(s => s.Exercises).WithRequired(s => s.UserTraining).WillCascadeOnDelete(true);
         }
     }
 }

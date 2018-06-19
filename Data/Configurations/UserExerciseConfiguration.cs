@@ -9,9 +9,9 @@ namespace Data.Implementations.Configurations
 {
     public class UserExerciseConfiguration : ConfigurationBase<UserExercise>
     {
-        public UserExerciseConfiguration()
+        public UserExerciseConfiguration() : base()
         {
-            HasRequired(s => s.Exercise).WithOptional().WillCascadeOnDelete(true);
+            HasRequired(s => s.Exercise).WithMany().HasForeignKey(f=>f.ExerciseId);
         }
     }
 }

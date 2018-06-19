@@ -11,6 +11,9 @@ import {
 import {
   httpConfig
 } from "./utils/http"
+import {
+  NotificationsRunner
+} from "./utils/notifications"
 import AsyncComputed from 'vue-async-computed'
 
 import AlertsCmp from "./components/Shared/Alerts"
@@ -47,6 +50,8 @@ new Vue({
   store,
   template: '<App/>'
 }).$mount('#app');
+
+NotificationsRunner.initNotifications();
 
 Storage.prototype.setObject = function(key, value) {
   this.setItem(key, JSON.stringify(value));

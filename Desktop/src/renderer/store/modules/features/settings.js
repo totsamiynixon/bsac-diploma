@@ -1,8 +1,12 @@
 import Vuex from "vuex";
-import axios from "axios"
+import axios from "axios";
+import {
+  ipcRenderer
+} from "electron"
 const state = {
   settings: null
 };
+
 
 const mutations = {
   setSettings(state, payload) {
@@ -13,6 +17,7 @@ const mutations = {
       state.settings = {};
     }
     state.settings.profession = payload;
+
   },
   setPreferredTrainingTime(state, payload) {
     if (!state.settings) {

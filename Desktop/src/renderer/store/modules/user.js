@@ -17,6 +17,8 @@ const actions = {
     axios.post("/api/account/sign-up", payload)
       .then(result => {
         localStorage.setItem("token", result.data.token);
+        axios.defaults.headers.common['Authorization'] = "Bearer " + result
+          .data.token;
         commit("setUser", {
           id: result.data.id,
           name: result.data.name,
@@ -34,7 +36,8 @@ const actions = {
     axios.post("/api/account/sign-in", payload)
       .then(result => {
         localStorage.setItem("token", result.data.token);
-        //localStorage.setObject("settings", result.data.settings);
+        axios.defaults.headers.common['Authorization'] = "Bearer " + result
+          .data.token;
         commit("setUser", {
           id: result.data.id,
           name: result.data.name,
@@ -75,7 +78,13 @@ const actions = {
   logout({
     commit
   }) {
-    localStorage.removeItem("token");
+    return new Promise((resolve, reject) => {
+      localStorage.removeItem("token");
+      commit("setUser", null);
+      resolve();
+      return;
+    })
+
   }
 };
 

@@ -18,7 +18,7 @@
         <v-card>
           <v-card-media>
             <div class="media-holder">
-              <iframe :src="exercise.videoUrl+'?controls=0&disablekb=0&fs=0&showinfo=0&end=10&rel=0'"
+              <iframe :src="`https://youtube.com/embed/${exercise.videoUrl}?controls=0&disablekb=0&fs=0&showinfo=0&end=10&rel=0`"
             
                       webkitallowfullscreen
                       mozallowfullscreen
