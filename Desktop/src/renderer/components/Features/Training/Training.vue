@@ -4,7 +4,7 @@
       <v-card class="px-5 py-5">
         <v-card-media>
           <div class="media-holder">
-            <iframe src="https://www.youtube.com/embed/_U8XRJi_1KY"
+            <iframe :src="`https://www.youtube.com/embed/${exercise.videoId}`"
                     webkitallowfullscreen
                     mozallowfullscreen
                     allowfullscreen></iframe>
@@ -13,18 +13,18 @@
         </v-card-media>
         <v-card-title primary-title>
           <div>
-            <h3 class="headline mb-0">Отжимания</h3>
-            <div>Отжимания - главное упражнение для верхней части тела. Оно помогает развить
-              силу и выносливость, нарастить мышцы, укрепить суставы, и, помимо тренировки
-              мышц верхней части тела, помогает наладить их согласованную работу
-              с мышцами средней и нижней частей тела.</div>
+            <h3 class="headline mb-0">{{exercise.name}}</h3>
+            <div>{{exercise.previewText}}</div>
           </div>
         </v-card-title>
         <v-card-actions>
-          <h3 class="headline mb-0">Упражнение 1 из 3</h3>
+          <h3 class="headline mb-0">Упражнение {{currentIndex}} из {{totalCount}}</h3>
           <v-spacer></v-spacer>
-          <v-btn flat
-                 :to="{name:'training-result'}"
+           <v-btn flat v-if="nextExerciseId != null"
+                  @click="nextExercise">
+                 Далее!</v-btn>
+          <v-btn flat v-if="nextExerciseId == null"
+                 @click="completeTraining"
                  color="orange">Выполнено!</v-btn>
         </v-card-actions>
       </v-card>
@@ -32,3 +32,42 @@
   </v-layout>
 </template>
 
+
+<script>
+export default {
+  data(){
+    return {
+      exercise:{},
+      nextExerciseId: null,
+      totalCount:null,
+      currentIndex: null
+    }
+  },
+  created(){
+    this.initExercise(this.$route.params.id);
+  },
+  methods:{
+    initExercise(id){
+       var result =  this.$store.getters["features/userTraining/exercise"](id);
+  if(!result){
+    this.$router.push({name:'training-result'});
+    return;
+  }
+  this.exercise = result.exercise;
+  this.nextExerciseId = result.nextExerciseId;
+  this.currentIndex = result.currentIndex;
+  this.totalCount = result.totalCount;
+    },
+    nextExercise(){
+      this.$store.dispatch("features/userTraining/completeExercise", this.exercise.id).then(success=>{
+      this.initExercise(this.nextExerciseId);
+      });
+    },
+    completeTraining(){
+      this.$store.dispatch("features/userTraining/completeTraining").then((success)=>{
+        this.$router.push({name:'training-result'});
+      });
+    }
+  }
+}
+</script>

@@ -37,7 +37,7 @@ export default {
     },
     logout() {
       this.$store.dispatch("user/logout");
-      this.$router.push("/");
+      this.$router.push("/auth");
     }
   },
   name: "AllToolbar"

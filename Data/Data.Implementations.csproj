@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201806102100192_ChangedVideoUrlToVideoId.Designer.cs">
       <DependentUpon>201806102100192_ChangedVideoUrlToVideoId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806112153463_322.cs" />
+    <Compile Include="Migrations\201806112153463_322.Designer.cs">
+      <DependentUpon>201806112153463_322.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
@@ -147,6 +151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806102100192_ChangedVideoUrlToVideoId.resx">
       <DependentUpon>201806102100192_ChangedVideoUrlToVideoId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806112153463_322.resx">
+      <DependentUpon>201806112153463_322.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

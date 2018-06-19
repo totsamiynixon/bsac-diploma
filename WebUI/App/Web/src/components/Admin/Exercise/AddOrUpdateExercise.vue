@@ -119,7 +119,7 @@ export default {
       ];
     },
     getYoutubeUrl(videoId) {
-      return "youtube.com/embed/" + videoId;
+      return "https://youtube.com/embed/" + videoId;
     },
     setCriteria(criteria, index) {
       this.currentExercise.criterias[index] = criteria;

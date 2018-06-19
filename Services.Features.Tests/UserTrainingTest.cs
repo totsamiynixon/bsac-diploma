@@ -7,7 +7,7 @@ using Data.Implementations.Context;
 using Data.Interfaces;
 using Entity.Domain.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Services.Features.Implementations2;
+using Services.Features.Implementations;
 using Services.Features.Interfaces;
 
 namespace Services.Features.Tests

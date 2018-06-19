@@ -5,6 +5,7 @@
     <app-sidebar></app-sidebar>
     <app-toolbar></app-toolbar>
     <v-content>
+      <training-notifier :dialog.sync="notifierDialog"></training-notifier>
       <router-view/>
     </v-content>
   </v-app>
@@ -13,14 +14,26 @@
 <script>
 import AppToolbar from "@/components/Shared/Layout/Toolbar";
 import AppSidebar from "@/components/Shared/Layout/Sidebar";
-import AuthGuard from "./router/auth-guard.js";
+import TrainingNotifier from "@/components/Shared/Notifier";
 export default {
   data() {
-    return {};
+    return {
+      notifierDialog: false
+    };
   },
   components: {
     AppToolbar,
-    AppSidebar
+    AppSidebar,
+    TrainingNotifier
+  },
+  mounted() {
+    this.$electron.ipcRenderer.on(
+      "notify-user-about-training",
+      (event, payload) => {
+        console.log("Пытаюсь открыть модалку");
+        this.notifierDialog = true;
+      }
+    );
   },
   name: "App"
 };

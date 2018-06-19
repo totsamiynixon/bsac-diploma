@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Z.EntityFramework.Plus;
 
-namespace Services.Features.Implementations2
+namespace Services.Features.Implementations
 {
     public class UserTrainingService : IUserTrainingService
     {
@@ -38,7 +38,7 @@ namespace Services.Features.Implementations2
         }
         public async Task CompleteTraining(int userId, int trainingId)
         {
-           await _userTrainingRepository.Collection.Where(s => s.UserId == userId && s.Id == trainingId).UpdateAsync(s => new UserTraining
+            await _userTrainingRepository.Collection.Where(s => s.UserId == userId && s.Id == trainingId).UpdateAsync(s => new UserTraining
             {
                 IsPassed = true
             });
@@ -46,18 +46,24 @@ namespace Services.Features.Implementations2
 
         public async Task<UserTrainingDTO> GenerateAndGetUserTrainingAsync(int userId)
         {
+            var lastNotPassedUserTraining = await _userTrainingRepository.Collection.Include(s => s.Exercises).Include(s => s.Exercises.Select(f => f.Exercise)).FirstOrDefaultAsync(f => f.UserId == userId && !f.IsPassed);
+            if(lastNotPassedUserTraining != null)
+            {
+                return Mapper.Map<UserTraining, UserTrainingDTO>(lastNotPassedUserTraining);
+            }
             var userProfessionId = await _settingsRepository.Collection.Where(s => s.Id == userId).Select(f => f.ProfessionId).FirstOrDefaultAsync();
             if (!userProfessionId.HasValue)
             {
                 throw new Exception("User has no setted up profession! Please, set up profession first!");
             }
             var criteriasIds = await _professionCriteriaRepository.Collection.OrderByDescending(s => s.Weight).Take(5).Select(s => s.CriteriaId).ToListAsync();
-            var exercises = await _exerciseCriteriaRepository.Collection.Where(s => criteriasIds.Any(z => z == s.CriteriaId)).OrderByDescending(f => f.Weight).Take(5).Select(s => s.Exercise).ToListAsync();
+            var exercises = await _exercisesRepository.Collection.IncludeFilter(s => s.ExerciseCriterias.Where(ec => criteriasIds.Any(cid => ec.CriteriaId == cid))).Where(s => s.ExerciseCriterias.Any(ec => criteriasIds.Any(cid => cid == ec.CriteriaId))).ToListAsync();
+            var exercisesFiltering = exercises.OrderByDescending(s => s.ExerciseCriterias.Sum(f => f.Weight)).Take(5).ToList();
             var userTraining = new UserTraining
             {
                 Created = DateTime.UtcNow,
                 UserId = userId,
-                Exercises = exercises.Select(ex => new UserExercise
+                Exercises = exercisesFiltering.Select(ex => new UserExercise
                 {
                     ExerciseId = ex.Id,
                     CountOfRepeats = 10
@@ -65,7 +71,23 @@ namespace Services.Features.Implementations2
             };
             _userTrainingRepository.Insert(userTraining);
             await _unitOfWork.SaveChangesAsync();
-            return Mapper.Map<UserTraining, UserTrainingDTO>(userTraining);
+            lastNotPassedUserTraining = await _userTrainingRepository.Collection.Include(s => s.Exercises).Include(s => s.Exercises.Select(f => f.Exercise)).FirstOrDefaultAsync(f => f.UserId == userId && !f.IsPassed);
+            return Mapper.Map<UserTraining, UserTrainingDTO>(lastNotPassedUserTraining);
+            //var userTraining = new UserTraining
+            //{
+            //    Created = DateTime.UtcNow,
+            //    UserId = userId,
+            //};
+            //_userTrainingRepository.Insert(userTraining);
+            //await _unitOfWork.SaveChangesAsync();
+            //var userExercises = exercisesFiltering.Select(s => new UserExercise
+            //{
+            //    ExerciseId = s.Id,
+            //    UserTrainingId = userTraining.Id
+            //}).ToList();
+            //userExercises.ForEach(ue => _userExerciseRepository.Insert(ue));
+            //await _unitOfWork.SaveChangesAsync();
+            //userTraining = _us
         }
     }
 }

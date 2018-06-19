@@ -37,8 +37,9 @@ export default {
       this.$store.dispatch("sidebar/changeDrawerState");
     },
     logout() {
-      this.$store.dispatch("user/logout");
-      this.$router.push("/");
+      this.$store.dispatch("user/logout").then((success)=>{
+        this.$router.push("/auth/signin");
+      });
     }
   },
   computed: {

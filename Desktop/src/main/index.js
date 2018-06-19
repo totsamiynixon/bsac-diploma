@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'development') {
     '\\\\')
 }
 
-let mainWindow
+let mainWindow;
 const winURL = process.env.NODE_ENV === 'development' ?
   `http://localhost:9080` :
   `file://${__dirname}/index.html`
@@ -54,11 +54,10 @@ app.on('activate', () => {
     createWindow()
   }
 })
-ipcMain.on('ping', (event, data) => {
-  console.log(mainWindow);
+ipcMain.on('notify-user-about-training', (event, data) => {
   mainWindow.show();
-  event.sender.send('pong', Math.random());
-})
+  mainWindow.webContents.send("notify-user-about-training");
+});
 
 /**
  * Auto Updater

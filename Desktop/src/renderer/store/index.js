@@ -4,6 +4,7 @@ import SidebarStore from "./modules/sidebar.js";
 import UserStore from "./modules/user.js";
 import SharedStore from "./modules/shared.js";
 import SettingsStore from "./modules/features/settings";
+import UserTrainingStore from "./modules/features/userTraining";
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
@@ -14,7 +15,8 @@ export const store = new Vuex.Store({
     features: {
       namespaced: true,
       modules: {
-        settings: SettingsStore
+        settings: SettingsStore,
+        userTraining: UserTrainingStore
       }
     }
   },
