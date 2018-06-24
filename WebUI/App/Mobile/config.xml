@@ -5,12 +5,12 @@
     <preference name="android-targetSdkVersion" value="27" />
     <hook src="hooks/hookers.js" type="before_prepare" />
     <hook src="hooks/beforedep.js" type="before_deploy" />
-    <name>Cordova - Framework7 - Vue - Webpack Template</name>
+    <name>BSAC Diploma</name>
     <description>
         Brand new cordova project!
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="email_from_config" href="https://vk.com/id169573384">
+       BSAC Team
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />

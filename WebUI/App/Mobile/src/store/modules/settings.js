@@ -1,70 +1,72 @@
 import Vuex from "vuex";
 import axios from "axios";
-
 const state = {
-  profession: {
-    id: 0,
-    name: ""
-  },
-  preferredTainingTime: []
+  settings: null
 };
 
+
 const mutations = {
+  setSettings(state, payload) {
+    state.settings = payload;
+  },
   setProfession(state, payload) {
-    state.profession = payload;
+    if (!state.settings) {
+      state.settings = {};
+    }
+    state.settings.profession = payload;
+
   },
   setPreferredTrainingTime(state, payload) {
-    state.preferredTainingTime = payload;
-  },
-  setSettings(state, payload) {
-    state = payload;
+    if (!state.settings) {
+      state.settings = {};
+    }
+    state.settings.preferredTrainingTime = payload;
   }
 };
 const actions = {
   changeProfession({
     commit
   }, payload) {
-    axios.post("/api/settigns/profession", payload)
-      .then(response => {
-        commit("setProfession", payload);
+    axios.post("/api/settings/saveProfession", {
+        professionId: payload.id
       })
-      .catch(error => {});
+      .then(result => {
+        commit("setProfession", {
+          id: payload.id,
+          name: payload.name,
+        });
+      });
   },
-  changePreferredTrainingTime({
+  changePreferredTime({
     commit
   }, payload) {
-    return new Promise((resolve, reject) => {
-      axios.post("/api/settings/preferredTimes", payload)
-        .then(result => {
-          commit("setProfession", payload);
-          resolve();
-        })
-        .catch(error => {
-          regect(error);
-        })
-    })
+    axios.post("/api/settings/savePrefferedTime", payload)
+      .then(result => {
+        commit("setPreferredTrainingTime", payload);
+      });
   },
-  getSettings({
+  installSettings({
     commit
-  }) {
-    axios.get("/api/settings").then(
-      result => {
-        commit("setSettings", result.data)
-      },
-      error => {}
-    );
+  }, payload) {
+    commit("setSettings", payload);
   }
 };
 
 const getters = {
+  settings(state) {
+    return state.settings;
+  },
   profession(state) {
-    return Object.assign({}, state.profession);
+    if (!state.settings) {
+      return null;
+    }
+    return state.settings.profession;
   },
-  preferredTainingTime(state) {
-    return state.preferredTainingTime.slice();
-  },
-  all(state) {
-    return Object.assign({}, state.settings);
+  preferredTime(state) {
+    if (state.settings == null) {
+      return [];
+    }
+    return state.settings.preferredTrainingTime;
   }
 };
 

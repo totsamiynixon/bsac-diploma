@@ -3,21 +3,43 @@
     <f7-navbar title="Упражнения"
                back-link="Back"></f7-navbar>
     <f7-card>
-      <f7-card-header>Отжимания</f7-card-header>
+      <f7-card-header>{{exercise.name}}</f7-card-header>
       <f7-card-content>
         <iframe style="width:100%;border:0"
-                src="https://www.youtube.com/embed/_U8XRJi_1KY"
+                :src="`https://www.youtube.com/embed/${exercise.videoId}`"
                 webkitallowfullscreen
                 mozallowfullscreen
                 allowfullscreen></iframe>
       </f7-card-content>
       <f7-card-footer>
-        Отжимания - главное упражнение для верхней части тела. Оно помогает развить силу
-        и выносливость, нарастить мышцы, укрепить суставы, и, помимо тренировки мышц
-        верхней части тела, помогает наладить их согласованную работу с мышцами средней
-        и нижней частей тела.
+        {{exercise.description}}
       </f7-card-footer>
     </f7-card>
   </f7-page>
 </template>
 
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      exercise: {}
+    };
+  },
+  methods: {
+    getExercise() {
+      console.log(this.$f7route);
+      axios
+        .get("/api/exercises/get", {
+          params: { id: this.$f7route.params.id }
+        })
+        .then(response => {
+          this.exercise = response.data;
+        });
+    }
+  },
+  created() {
+    this.getExercise();
+  }
+};
+</script>
