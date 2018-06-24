@@ -82,8 +82,10 @@ const actions = {
       axios.get("/api/account/check-login").then(
         response => {
           commit("setUser", response.data);
-          commit("setSettings", response.data.settings);
-          resolve(user);
+          commit("settings/setSettings", response.data.settings, {
+            root: true
+          });
+          resolve(response.data);
         },
         error => {
           reject(error);

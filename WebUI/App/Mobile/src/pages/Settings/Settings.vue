@@ -12,7 +12,7 @@
       <f7-list-item link="/settings/profession/"
                     title="Профессия">
         <slot name="after-list">
-          {{currentProfession.name}}
+          {{profession}}
         </slot>
       </f7-list-item>
       <f7-list-item link="/settings/preferred-time/"
@@ -21,23 +21,23 @@
   </f7-page>
 </template>
 <script>
-import axios from "axios";
 export default {
-  data() {
+  data: function() {
     return {
-      profession: {
-        id: 0,
-        name: ""
-      }
+      professions: [],
+      settings: {}
     };
   },
+  methods: {},
   created() {
-    this.$store.dispatch("settings/getProfession");
+    this.$http.get("/api/settings/initData").then(response => {
+      this.professions = response.data.professions;
+      this.$store.dispatch("settings/installSettings", response.data.settings);
+    });
   },
   computed: {
-    currentProfession() {
-      let result = this.$store.getters["settings/profession"];
-      return result != null ? result : this.profession;
+    profession() {
+      return this.$store.getters["settings/profession"].name || "";
     }
   }
 };

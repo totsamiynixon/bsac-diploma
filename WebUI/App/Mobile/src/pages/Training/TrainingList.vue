@@ -8,28 +8,26 @@
       </f7-nav-left>
       <f7-nav-title>Тренировка</f7-nav-title>
       <f7-nav-right>
-        <f7-link>Начать</f7-link>
+        <f7-link @click="$f7router.navigate(`/training`)">Начать</f7-link>
       </f7-nav-right>
     </f7-navbar>
-    <f7-block v-for="(item, index) in items"
-              :key="index">
-      <h3>{{item.header}}</h3>
+    <f7-block v-for="(exercises, key) in userTraining.exercises"
+              :key="key">
+      <h3>{{key}}</h3>
       <ul class="list media-list"
           style="padding:0">
-        <li v-for="exercise in item.exercises"
+        <li v-for="exercise in exercises"
             :key="exercise.title">
-          <a href="/training"
-             class="item-link item-content">
+          <a class="item-content">
             <div class="item-media"
-                 style="width:30%"><img :src="exercise.avatar"
+                 style="width:30%"><img :src="getThumbnail(exercise.videoId)"
                    style="width:100%" /></div>
             <div class="item-inner">
               <div class="item-title-row">
-                <div class="item-title">{{exercise.title}}</div>
+                <div class="item-title">{{exercise.name}}</div>
               </div>
-              <div class="item-subtitle">{{exercise.countOfRepeats}}</div>
-              <div class="item-subtitle">Не выполнено</div>
-              <div class="item-text">{{exercise.subtitle}}</div>
+              <div class="item-subtitle">{{exercise.countOfRepeats}} повторений</div>
+              <div class="item-text">{{exercise.previewText}}</div>
             </div>
           </a>
         </li>
@@ -42,41 +40,35 @@
 export default {
   data() {
     return {
-      items: [
-        {
-          header: "Низкая сложность",
-          exercises: [
-            {
-              avatar: "https://www.wikireading.ru/img/143620_73_i_042.png",
-              title: "Наклоны",
-              countOfRepeats: 10,
-              subtitle:
-                "oчeнь пpocтoe yпpaжнeниe, koтopoe знakomo нam eщe c дeтcтвa"
-            }
-          ]
-        },
-        {
-          exercises: [
-            {
-              avatar:
-                "https://i.ytimg.com/vi/vJmNWi2EMew/hqdefault.jpg?sqp=-oaymwEYCNIBEHZIVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLBEpvl3mFwNzV-JpynmS5WcO-tSbQ",
-              title: "Отжиманя",
-              countOfRepeats: 10,
-              subtitle:
-                "Постарайтесь соблюдать технику выполнения. Вдох на во время опускания туловища, выдох на подъеме"
-            },
-            {
-              avatar: "http://sportwiki.to/images/3/3f/Sil_men_prised.jpg",
-              title: "Приседания",
-              countOfRepeats: 10,
-              subtitle:
-                "Одно из базовых силовых упражнений (в том числе в пауэрлифтинге и культуризме)"
-            }
-          ],
-          header: "Средняя сложность"
-        }
-      ]
+      userTraining: {}
     };
+  },
+  created() {
+    this.$http.get("/api/userTrainings/get").then(response => {
+      this.userTraining = response.data;
+      let toCommit = Object.assign({}, response.data);
+      toCommit.exercises = [];
+      for (var k in response.data.exercises) {
+        if (response.data.exercises.hasOwnProperty(k)) {
+          toCommit.exercises = toCommit.exercises.concat(
+            response.data.exercises[k]
+          );
+        }
+      }
+      this.$store.commit("userTraining/setUserTraining", toCommit);
+    });
+  },
+  methods: {
+    getThumbnail(videoId) {
+      return `https://i1.ytimg.com/vi/${videoId}/default.jpg`;
+    },
+    getFirstId() {
+      for (var k in this.userTraining.exercises) {
+        if (this.userTraining.exercises.hasOwnProperty(k)) {
+          return this.userTraining.exercises[k][0].id;
+        }
+      }
+    }
   }
 };
 </script>
