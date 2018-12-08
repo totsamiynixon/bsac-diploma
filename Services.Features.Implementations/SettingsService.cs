@@ -1,8 +1,9 @@
 ﻿using Data.Interfaces;
 using Data.Interfaces.Repositories;
+using Entity.Domain;
 using Entity.Domain.Settings;
-using Services.DTO.Settings;
-using Services.Interfaces;
+using Services.Features.DTO.Settings;
+using Services.Features.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,26 +12,39 @@ using System.Text;
 using System.Threading.Tasks;
 using Z.EntityFramework.Plus;
 
-namespace Services
+namespace Services.Features.Implementations
 {
     public class SettingsService : ISettingsService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IGenericRepository<Settings> _settingsRepository;
+        private readonly IGenericRepository<Profession> _professionRepository;
+        private readonly IGenericRepository<TrainingTime> _trainingTimeRepostory;
         public SettingsService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _settingsRepository = _unitOfWork.Repository<Settings>();
+            _professionRepository = _unitOfWork.Repository<Profession>();
+            _trainingTimeRepostory = _unitOfWork.Repository<TrainingTime>();
+        }
+
+        public async Task<List<ProfessionForSettingsDTO>> GetProfessionsForSettingsAsync()
+        {
+            return await _professionRepository.Collection.Select(s => new ProfessionForSettingsDTO
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToListAsync();
         }
 
         public async Task<SettingsDTO> GetSettingsAsync(int userId)
         {
-            var result =  await _settingsRepository.Collection.Include(s=>s.Profession).Include(s=>s.DefaultTrainingTimes).FirstOrDefaultAsync(s => s.Id == userId);
-            if(result != null)
+            var result = await _settingsRepository.Collection.Include(s => s.Profession).Include(s => s.DefaultTrainingTimes).FirstOrDefaultAsync(s => s.Id == userId);
+            if (result != null)
             {
                 return new SettingsDTO
                 {
-                    Profession = result.Profession != null ? new SettingsProfessionDTO
+                    Profession = result.Profession != null ? new ProfessionForSettingsDTO
                     {
                         Id = result.Profession.Id,
                         Name = result.Profession.Name
@@ -48,7 +62,10 @@ namespace Services
             {
                 return;
             }
-            settings.DefaultTrainingTimes.Clear();
+            foreach (var tt in settings.DefaultTrainingTimes.ToArray())
+            {
+                _trainingTimeRepostory.Delete(tt);
+            }
             var timesToAdd = times.Select(z => new TrainingTime
             {
                 Value = z

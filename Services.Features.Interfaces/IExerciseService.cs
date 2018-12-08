@@ -1,6 +1,5 @@
-﻿
-using Servces.Features.DTO.Exercise;
-using Services.DTO.Features.Exercise;
+﻿using Services.Features.DTO.Exercise;
+using Services.Features.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace Services.Features.Interfaces
 {
     public interface IExerciseService
     {
-        Task<ExerciseDTO[]> GetAllExercises(string query, int[] criteriaIds, int[] professionIds);
-        Task<ExerciseDeatailsDTO> GetSingleExercise(int id);
+        Task<ExerciseDTO[]> GetAllExercisesAsync(SearchExerciseModel searchModel);
+        Task<ExerciseDeatailsDTO> GetSingleExerciseAsync(int id);
     }
 }

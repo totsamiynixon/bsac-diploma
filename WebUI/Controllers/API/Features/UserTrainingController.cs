@@ -11,7 +11,7 @@ using WebUI.Models.Controllers.Features.UserTraining;
 
 namespace WebUI.Controllers.API.Features
 {
-    [RoutePrefix("api/userTrainings")]
+    [RoutePrefix("api/usertrainings")]
     public class UserTrainingController : ApiController
     {
         private readonly IUserTrainingService _userTrainingService;

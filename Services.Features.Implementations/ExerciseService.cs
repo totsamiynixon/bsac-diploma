@@ -1,11 +1,18 @@
-﻿
+﻿using AutoMapper;
+using Data.Interfaces;
+using Data.Interfaces.Repositories;
+using Entity.Domain;
+using LinqKit;
+using Services.Features.DTO.Exercise;
 using Services.Features.Interfaces;
+using Services.Features.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Z.EntityFramework.Plus;
 
 namespace Services.Features.Implementations
 {
@@ -20,44 +27,36 @@ namespace Services.Features.Implementations
             _exerciseRepository = _unitOfWork.Repository<Exercise>();
             _exerciseCriteriaRepository = _unitOfWork.Repository<ExerciseCriteria>();
         }
-        public async Task<int> AddOrUpdateExerciseAsync(ExerciseDetailsDTO dto)
+
+        public async Task<ExerciseDTO[]> GetAllExercisesAsync(SearchExerciseModel searchModel)
         {
-            var exercise = Mapper.Map<ExerciseDetailsDTO, Exercise>(dto);
-            var exerciseInDb = await _exerciseRepository.CollectionWithTracking.Include(z => z.ExerciseCriterias).FirstOrDefaultAsync(f => f.Id == exercise.Id);
-            if (exerciseInDb == null)
+            var exercies = await _exerciseRepository.Collection.Include(s => s.ExerciseCriterias).Where(BuildSearchExpression(searchModel)).ToArrayAsync();
+            return Mapper.Map<Exercise[], ExerciseDTO[]>(exercies);
+        }
+
+        public async Task<ExerciseDeatailsDTO> GetSingleExerciseAsync(int id)
+        {
+            var exercise = await _exerciseRepository.Collection.FirstOrDefaultAsync(s => s.Id == id);
+            return Mapper.Map<Exercise, ExerciseDeatailsDTO>(exercise);
+        }
+
+
+        private Expression<Func<Exercise, bool>> BuildSearchExpression(SearchExerciseModel searchModel)
+        {
+            var predicate = PredicateBuilder.New<Exercise>();
+            if (string.IsNullOrEmpty(searchModel.Query))
             {
-                _exerciseRepository.Insert(exercise);
+                return PredicateBuilder.True<Exercise>();
             }
-            else
+            if (searchModel.ByExercises)
             {
-                Mapper.Map(exercise, exerciseInDb);
-                _exerciseCriteriaRepository.Delete(exerciseInDb.ExerciseCriterias.ToArray());
-                exerciseInDb.ExerciseCriterias.AddRange(exercise.ExerciseCriterias);
-                _exerciseRepository.Update(exerciseInDb);
+                predicate = predicate.Or(s => s.Description.Contains(searchModel.Query) || s.Name.Contains(searchModel.Query) || s.PreviewText.Contains(searchModel.Query));
             }
-            await _unitOfWork.SaveChangesAsync();
-            return exercise.Id;
-        }
-
-        public async Task DeleteAsync(params int[] ids)
-        {
-            await _exerciseRepository.Collection.Where(f => ids.Any(z => z == f.Id)).DeleteAsync();
-        }
-
-        public async Task<List<ExerciseDTO>> GetAllAsync()
-        {
-            return await _exerciseRepository.Collection.Select(f => new ExerciseDTO
+            if (searchModel.ByCriterias)
             {
-                Id = f.Id,
-                Name = f.Name,
-                VideoUrl = f.VideoUrl
-            }).ToListAsync();
-        }
-
-        public async Task<ExerciseDetailsDTO> GetByIdAsync(int id)
-        {
-            var exercise = await _exerciseRepository.Collection.Include(f => f.ExerciseCriterias).FirstOrDefaultAsync(f => f.Id == id);
-            return Mapper.Map<Exercise, ExerciseDetailsDTO>(exercise);
+                predicate = predicate.Or(s => s.ExerciseCriterias.Any(z => z.Criteria.Name.Contains(searchModel.Query)));
+            }
+            return predicate;
         }
     }
 }
