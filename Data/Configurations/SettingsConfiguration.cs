@@ -15,7 +15,6 @@ namespace Data.Implementations.Configurations
         {
             HasKey(s => s.Id);
             Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-            //HasRequired(s => s.User).WithOptional(s => s.Settings)
             HasOptional(s => s.Profession).WithMany().WillCascadeOnDelete(true);
             HasMany(s => s.DefaultTrainingTimes).WithRequired(z => z.Settings);
         }
