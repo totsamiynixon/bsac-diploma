@@ -1,6 +1,7 @@
-/packages
+packages
 
 bin
 obj
 .vs
-/WebUI/logs
+logs
+

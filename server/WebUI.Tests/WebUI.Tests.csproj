@@ -93,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebUI\WebUI.csproj">
-      <Project>{E7924AFE-AE83-4C65-A298-F757F8B7B5BC}</Project>
+      <Project>{e7924afe-ae83-4c65-a298-f757f8b7b5bc}</Project>
       <Name>WebUI</Name>
     </ProjectReference>
   </ItemGroup>

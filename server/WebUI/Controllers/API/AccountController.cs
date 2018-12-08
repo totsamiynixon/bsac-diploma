@@ -94,8 +94,9 @@ namespace WebUI.Controllers.API
                         {
                             Id = user.Id,
                             Name = user.UserName,
+                            Expires = token.expiresUtc,
                             Roles = await _userManager.GetRolesAsync(user.Id),
-                            Token = token
+                            Token = token.token
                         });
                     }
                 }
@@ -103,48 +104,22 @@ namespace WebUI.Controllers.API
             return BadRequest("Error");
         }
 
-        // GET: /Account/Register
-        [HttpGet]
-        [Route("check-login")]
-        [AllowAnonymous]
-        public async Task<IHttpActionResult> CheckLogin()
-        {
-            var userId = User.Identity.GetUserId<int>();
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByIdAsync(userId);
-                if (user != null)
-                {
-                    var roles = await _userManager.GetRolesAsync(user.Id);
-                    return Ok(new
-                    {
-                        Email = user.Email,
-                        Id = user.Id,
-                        Roles = user.Roles,
-                        Settings = roles.Any(z => z == Roles.User || z== Roles.Admin) ? await _settingsService.GetSettingsAsync(user.Id) : default(SettingsDTO)
-                    });
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return BadRequest("Error");
-        }
-
-        private async Task<string> GenerateTokenAsync(User user)
+        private async Task<(string token, DateTime expiresUtc)> GenerateTokenAsync(User user)
         {
             var tokenExpiration = Startup.OAuthServerOptions.AccessTokenExpireTimeSpan;
             var identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", await _userManager.GetRolesAsync(user.Id))));
 
+            var expires = DateTime.UtcNow.Add(tokenExpiration);
             var props = new AuthenticationProperties()
             {
                 IssuedUtc = DateTime.UtcNow,
-                ExpiresUtc = DateTime.UtcNow.Add(tokenExpiration),
+                ExpiresUtc = expires,
             };
             var ticket = new AuthenticationTicket(identity, props);
             var accessToken = Startup.OAuthServerOptions.AccessTokenFormat.Protect(ticket);
-            return accessToken;
+            return (accessToken, expires);
         }
     }
 }
