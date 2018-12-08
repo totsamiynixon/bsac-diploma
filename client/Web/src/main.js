@@ -27,9 +27,7 @@ Vue.use(Vuetify, {
 Vue.component("app-alerts", AlertsCmp);
 Vue.component("app-loading", LoadingCmp);
 
-if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = "http://18.188.233.49/BSAC_Diploma_Server/";
-}
+axios.defaults.baseURL = base_url;
 
 Vue.config.productionTip = false;
 
