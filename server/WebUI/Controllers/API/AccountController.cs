@@ -26,19 +26,16 @@ namespace WebUI.Controllers.API
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private readonly IIdentityMessageService _messageService;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly ISettingsService _settingsService;
         public AccountController(
             ApplicationUserManager userManager,
             ApplicationSignInManager signInManager,
-            IIdentityMessageService messageService,
             IAuthenticationManager authenticationManager,
             ISettingsService settingsService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _messageService = messageService;
             _authenticationManager = authenticationManager;
             _settingsService = settingsService;
         }
@@ -68,7 +65,8 @@ namespace WebUI.Controllers.API
                 Id = user.Id,
                 Name = user.UserName,
                 Roles = await _userManager.GetRolesAsync(user.Id),
-                Token = token,
+                Token = token.token,
+                Expires = token.expiresUtc,
                 Settings = roles.Any(z => z == Roles.User || z == Roles.Admin) ? await _settingsService.GetSettingsAsync(user.Id) : default(SettingsDTO)
             };
             return Ok(result);

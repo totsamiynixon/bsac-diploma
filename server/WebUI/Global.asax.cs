@@ -37,26 +37,14 @@ namespace WebUI
 
             Response.Clear();
             Server.ClearError();
-
-            IController newController = new ErrorController();
-            var routeData = new RouteData();
-            routeData.Values.Add("controller", "Error");
-            if (exception is HttpException)
+            if(exception is HttpException)
             {
-                routeData.Values.Add("action", "Error404");
+                var httpex = exception as HttpException;
+                Response.StatusCode = httpex.GetHttpCode();
+                return;
             }
-            else if (exception is IBusinessError)
-            {
-                routeData.Values.Add("action", "CustomError");
-                routeData.Values.Add("exception", exception);
-            }
-            else
-            {
-                routeData.Values.Add("action", "Error500");
-            }
-
-            var newRequestContext = new RequestContext(new HttpContextWrapper(HttpContext.Current), routeData);
-            newController.Execute(newRequestContext);
+            Response.StatusCode = 500;
+            Response.Write("Error!");
         }
     }
 }
