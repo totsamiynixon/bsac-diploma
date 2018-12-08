@@ -20,7 +20,6 @@ namespace WebUI
 //#endif
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-            //config.Filters.Add(new HostAuthenticationFilter(DefaultAuthenticationTypes.ApplicationCookie));
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -39,9 +38,6 @@ namespace WebUI
             settings.Converters.Add(new IsoDateTimeConverter());
             jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             jsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-
-            //config.Services.Add(typeof(IExceptionLogger), config.DependencyResolver.GetService(typeof(IExceptionLogger)));
-
             RegisterGlobalFilters(config);
         }
 
