@@ -6,19 +6,10 @@
              fixed>
     <v-toolbar-title style="width: 300px"
                      class="ml-0 pl-3">
-      <v-toolbar-side-icon @click.stop="drawer()"></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click.stop="drawer()" v-show="items.length > 0"></v-toolbar-side-icon>
       <span class="hidden-sm-and-down">Профилактика</span>
     </v-toolbar-title>
-    <v-text-field flat
-                  solo-inverted
-                  prepend-icon="search"
-                  label="Поиск"
-                  class="hidden-sm-and-down"></v-text-field>
     <v-spacer></v-spacer>
-    <v-btn :to="{name:'default'}"
-           icon>
-      <v-icon>apps</v-icon>
-    </v-btn>
     <v-btn icon
            @click.prevent="logout">
       <v-icon>notifications</v-icon>
@@ -39,6 +30,11 @@ export default {
       this.$store.dispatch("user/logout");
       this.$router.push("/auth");
     }
+  },
+  computed: {
+    items(){
+          return this.$store.getters['sidebar/items']
+      }
   },
   name: "AllToolbar"
 };

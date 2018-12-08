@@ -4,6 +4,7 @@
       :clipped="$vuetify.breakpoint.mdAndUp"
       app
       :value="drawer"
+       v-if="items.length > 0"
     >
       <v-list dense>
         <template v-for="item in items">
@@ -69,7 +70,7 @@
 export default {
   data() {
     return {
-        
+
     }
   },
   computed: {

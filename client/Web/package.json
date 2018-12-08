@@ -1,8 +1,8 @@
 {
-  "name": "ostervalder-schemes",
+  "name": "bsac-diploma-web",
   "version": "1.0.0",
-  "description": "Project for creating ostervalder shemes",
-  "author": "yauhenibh <yauhenibh@gmail.com>",
+  "description": "BSAC Diploma Admin Panel",
+  "author": "email_from_config",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
