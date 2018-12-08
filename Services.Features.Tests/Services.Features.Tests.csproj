@@ -77,12 +77,12 @@
       <Project>{3FAE1D6B-9441-4780-A42D-C2B14B02B2E2}</Project>
       <Name>Services.Features.DTO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services.Features.Implementations2\Services.Features.Implementations.csproj">
-      <Project>{CD7916DE-F156-4BE3-816A-0CA16FA9394F}</Project>
+    <ProjectReference Include="..\Services.Features.Implementations\Services.Features.Implementations.csproj">
+      <Project>{6F06618B-702E-4C30-9F01-5C1EA6543DD4}</Project>
       <Name>Services.Features.Implementations</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services.Features.Interfaces2\Services.Features.Interfaces.csproj">
-      <Project>{D2CB9FEE-3ADF-46C3-973F-00931BCCC99F}</Project>
+    <ProjectReference Include="..\Services.Features.Interfaces\Services.Features.Interfaces.csproj">
+      <Project>{A4D8A797-EE8F-420F-BB59-556C9A74C132}</Project>
       <Name>Services.Features.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
