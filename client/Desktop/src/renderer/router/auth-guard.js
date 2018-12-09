@@ -13,10 +13,6 @@ export default (to, from, next) => {
     }
     next();
   } else {
-    store.dispatch("user/autoSignIn").then((resolve) => {
-      next()
-    }, (reject) => {
       next("/auth/signin");
-    })
   }
 }

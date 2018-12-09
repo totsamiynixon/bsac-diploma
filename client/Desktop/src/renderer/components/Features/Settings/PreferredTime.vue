@@ -3,15 +3,15 @@
     <v-list two-line
             subheader>
       <v-subheader>Предпочтительное время</v-subheader>
-      <v-list-tile v-for="(item,index) in times"
+      <v-list-tile v-for="(item,index) in model.times"
                    :key="index">
         <v-list-tile-action>
-          <v-btn :color="'red'"
+          <v-btn 
                  dark
                  fab
                  small
                  @click="remove(index)">
-            <v-icon>remove</v-icon>
+            <v-icon style="height:initial;">remove</v-icon>
           </v-btn>
         </v-list-tile-action>
         <v-list-tile-content>
@@ -56,30 +56,36 @@
 export default {
   data() {
     return {
-      times: []
+      model: {
+        times: []
+      }
     };
   },
   created() {
-    var times = this.$store.getters["features/settings/preferredTime"] || [];
-    this.times = times.map(s => {
-      return {
-        dialog: false,
-        value: s
-      };
-    });
+    this.$store.watch(
+      () => this.$store.getters["features/settings/preferredTime"],
+      value => {
+        this.model.times = value.map(time => {
+          return {
+            value: time,
+            dialog: false
+          };
+        });
+      }
+    );
   },
   methods: {
     add() {
-      this.times.push({
+      this.model.times.push({
         value: null,
         dialog: false
       });
     },
     remove(index) {
-      this.times.splice(index, 1);
+      this.model.times.splice(index, 1);
     },
     save() {
-      var payload = this.times.map(s => {
+      var payload = this.model.times.map(s => {
         return s.value;
       });
       this.$store.dispatch("features/settings/changePreferredTime", payload);
