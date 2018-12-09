@@ -98,6 +98,11 @@ let rendererConfig = {
     __filename: process.env.NODE_ENV !== 'production'
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'settings': JSON.stringify({
+        base_url: process.env.BASE_URL || "http://localhost:57327/"
+      })
+    }),
     new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       filename: 'index.html',

@@ -6,7 +6,7 @@
     <app-toolbar></app-toolbar>
     <v-content>
       <training-notifier :dialog.sync="notifierDialog"></training-notifier>
-      <router-view/>
+      <router-view />
     </v-content>
   </v-app>
 </template>
@@ -15,6 +15,7 @@
 import AppToolbar from "@/components/Shared/Layout/Toolbar";
 import AppSidebar from "@/components/Shared/Layout/Sidebar";
 import TrainingNotifier from "@/components/Shared/Notifier";
+import { Notifier } from "./utils/notifications";
 export default {
   data() {
     return {
@@ -27,10 +28,10 @@ export default {
     TrainingNotifier
   },
   mounted() {
+    new Notifier(this.$electron.ipcRenderer, this.$store).initNotifications();
     this.$electron.ipcRenderer.on(
-      "notify-user-about-training",
+      ":notify-user-about-training",
       (event, payload) => {
-        console.log("Пытаюсь открыть модалку");
         this.notifierDialog = true;
       }
     );
@@ -55,5 +56,17 @@ export default {
   width: 100%;
   left: 0;
   top: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.5s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
 }
 </style>

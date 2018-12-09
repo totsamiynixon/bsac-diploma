@@ -19,7 +19,7 @@
         <v-divider></v-divider>
         <v-card-text style="height: 300px;">
           <v-radio-group column
-                         v-model="profession"
+                         v-model="professionModel"
                          v-for="(group, key) in filteredProfessions"
                          :key="key"
                          :label="key.toUpperCase()">
@@ -49,17 +49,8 @@ export default {
     return {
       dialog: false,
       filter: "",
-      profession: {}
+      professionModel: null
     };
-  },
-  watch: {
-    value(value) {
-      this.profession = this.value != null ? this.value.slice() : "";
-    }
-  },
-  created() {
-    this.profession =
-      this.$store.getters["features/settings/profession"] || this.profession;
   },
   computed: {
     filteredProfessions() {
@@ -75,6 +66,9 @@ export default {
         }
       }
       return result;
+    },
+    profession() {
+      return this.$store.getters["features/settings/profession"] || {};
     }
   },
   methods: {
@@ -87,7 +81,7 @@ export default {
     setCurrentProfession() {
       this.$store.dispatch(
         "features/settings/changeProfession",
-        this.profession
+        this.professionModel
       );
     }
   }

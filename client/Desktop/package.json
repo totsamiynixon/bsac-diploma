@@ -1,9 +1,9 @@
 {
   "name": "bsac-diploma-desktop",
   "version": "0.0.0",
-  "author": "yauhenibh <yauhenibh@gmail.com>",
-  "description": "An electron-vue project",
-  "license": null,
+  "author": "email_from_config",
+  "description": "BSAC Diploma desktop reminder project.",
+  "license": "see license in LICENSE.md",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -18,7 +18,7 @@
   },
   "build": {
     "productName": "bsac-diploma-desktop",
-    "appId": "org.simulatedgreg.electron-vue",
+    "appId": "bsac-diploma-desktop",
     "directories": {
       "output": "build"
     },
