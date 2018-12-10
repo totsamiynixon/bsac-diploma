@@ -30,7 +30,7 @@ export default {
   mounted() {
     new Notifier(this.$electron.ipcRenderer, this.$store).initNotifications();
     this.$electron.ipcRenderer.on(
-      ":notify-user-about-training",
+      "notifier:notify-user-about-training",
       (event, payload) => {
         this.notifierDialog = true;
       }

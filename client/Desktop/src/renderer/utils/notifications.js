@@ -3,10 +3,11 @@ export function Notifier(ipcRenderer, store) {
   this.setAsideToTime = null;
   this.trainingTimeInterval = null;
   this.initNotifications = () => {
-    ipcRenderer.on("set-aside-timer", () => {
+    ipcRenderer.on("notifier:set-aside-timer", () => {
       that.setAsideToTime = getTimeAsObj(
-        new Date(oldDateObj.getTime() + 10 * 60000)
+        new Date(new Date().getTime() + 10 * 60000)
       );
+      console.log(that.setAsideToTime);
     });
     store.watch(
       () => store.getters["features/settings/preferredTime"],
@@ -35,7 +36,7 @@ export function Notifier(ipcRenderer, store) {
         closestTime.hours == currentTime.hours &&
         closestTime.minutes == currentTime.minutes
       ) {
-        ipcRenderer.send("notify-user-about-training");
+        ipcRenderer.send("notifier:notify-user-about-training");
         runNotifications();
       }
     }, 60000);

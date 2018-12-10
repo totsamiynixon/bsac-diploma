@@ -7,7 +7,8 @@ import {
   Menu,
   Notification
 } from "electron";
-import { autoUpdater } from "electron-updater";
+import Notifier from "node-notifier";
+// import { autoUpdater } from "electron-updater";
 
 /**
  * Set `__static` path to static files in production
@@ -59,26 +60,31 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.on("notify-user-about-training", (event, data) => {
-  console.log("notify-user-about-training");
-  showNotification();
-});
-
-function showNotification() {
-  var notification = new Notification({
-    title: "Пришло время тренировки!",
-    subtitle: "BSAC Diploma нотификация",
-    body: "Кликните, чтобы приступить, или закройте, чтобы отложить на 10 минут"
-  });
-  notification.on("click", () => {
+ipcMain.on("notifier:notify-user-about-training", (event, data) => {
+  Notifier.notify(
+    {
+      title: "Пришло время тренировки!",
+      message:
+        "Кликните, чтобы приступить, или закройте, чтобы отложить на 10 минут",
+      sound: true,
+      wait: true
+    },
+    function(err, response) {
+      if(err){
+        mainWindow.webContents.send("notifier:set-aside-timer");
+      }
+      console.log("notifier:notify-user-about-training", err, response);
+    }
+  );
+  Notifier.on("click", function(notifierObject, options) {
     mainWindow.show();
-    mainWindow.webContents.send("notify-user-about-training");
+    mainWindow.webContents.send("notifier:notify-user-about-training");
   });
-  notification.on("close", () => {
-    ipcRenderer.send("set-aside-timer");
-  });
-  notification.show();
-}
+
+  // Notifier.on("close", function(notifierObject, options) {
+  //   mainWindow.webContents.send("notifier:set-aside-timer");
+  // });
+});
 
 /**
  * Auto Updater
@@ -88,13 +94,13 @@ function showNotification() {
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
  */
 
-autoUpdater.on("update-downloaded", () => {
-  autoUpdater.quitAndInstall();
-});
+// autoUpdater.on("update-downloaded", () => {
+//   autoUpdater.quitAndInstall();
+// });
 
-app.on("ready", () => {
-  if (process.env.NODE_ENV === "production") autoUpdater.checkForUpdates();
-});
+// app.on("ready", () => {
+//   if (process.env.NODE_ENV === "production") autoUpdater.checkForUpdates();
+// });
 
 function buildMenu() {
   const template = [

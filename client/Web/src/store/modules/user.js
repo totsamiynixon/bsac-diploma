@@ -26,10 +26,12 @@ const mutations = {
       roles: payload.roles
     };
     localStorage.setItem("user_auth", JSON.stringify(payload));
+    axios.defaults.headers.common["Authorization"] = "Bearer " + payload.token;
   },
   clearUser(state) {
     state.user = null;
     localStorage.removeItem("user_auth");
+    axios.defaults.headers.common["Authorization"] = "";
   }
 };
 
@@ -69,7 +71,6 @@ const actions = {
     axios
       .post("/api/account/sign-in", payload)
       .then(result => {
-        var token = localStorage.setItem("token", result.data.token);
         commit("setUser", {
           id: result.data.id,
           name: result.data.name,
