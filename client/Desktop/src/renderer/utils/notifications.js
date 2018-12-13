@@ -1,93 +1,65 @@
+import moment from "moment";
 export function Notifier(ipcRenderer, store) {
-  let that = this;
-  this.setAsideToTime = null;
-  this.trainingTimeInterval = null;
+  let trainingTimeTimer = null;
   this.initNotifications = () => {
     ipcRenderer.on("notifier:set-aside-timer", () => {
-      that.setAsideToTime = getTimeAsObj(
-        new Date(new Date().getTime() + 10 * 60000)
-      );
-      console.log(that.setAsideToTime);
+      let curDate = new Date();
+      curDate.setSeconds(0, 0);
+      startTimerAndNotifyAt(new Date(curDate.getTime() + 10 * 60000));
     });
     store.watch(
       () => store.getters["features/settings/preferredTime"],
       value => {
         if (value != null && value.length > 0) {
-          runNotifications();
+          let closestTime = getClosestTrainTime();
+          if (closestTime) startTimerAndNotifyAt(closestTime);
         } else {
-          stopNotifications();
+          breakTimer();
         }
       }
     );
   };
 
-  function stopNotifications() {
-    if (that.trainingTimeInterval != null) {
-      clearInterval(that.trainingTimeInterval);
-    }
-    that.setAsideToTime = null;
-  }
-  function runNotifications() {
-    stopNotifications();
-    let closestTime = calculateClosestTime();
-    that.trainingTimeInterval = setInterval(() => {
-      let currentTime = getTimeAsObj(new Date());
-      if (
-        closestTime.hours == currentTime.hours &&
-        closestTime.minutes == currentTime.minutes
-      ) {
-        ipcRenderer.send("notifier:notify-user-about-training");
-        runNotifications();
-      }
-    }, 60000);
-  }
-
-  function stringTimeToTimeObj(str) {
-    if (!str) {
-      return;
-    }
-    let timeArray = str.split(":");
-    return {
-      hours: Number.parseInt(timeArray[0]),
-      minutes: Number.parseInt(timeArray[1])
-    };
-  }
-
-  function getTimeAsObj(date) {
-    return {
-      hours: date.getHours(),
-      minutes: date.getMinutes()
-    };
-  }
-
-  function calculateClosestTime() {
-    var currentTime = getTimeAsObj(new Date());
-    if (
-      that.setAsideToTime != null &&
-      (that.setAsideToTime.hours > currentTime.hours ||
-        (that.setAsideToTime.hours == currentTime.hours &&
-          that.setAsideToTime.minutes > currentTime.minutes))
-    ) {
-      return setAsideToTime;
-    }
-    let closestTime = store.getters["features/settings/preferredTime"].find(
-      t => {
-        let timeObj = stringTimeToTimeObj(t);
-        if (
-          timeObj.hours > currentTime.hours ||
-          (timeObj.hours == currentTime.hours &&
-            timeObj.minutes > currentTime.minutes)
-        ) {
-          return true;
-        }
-        return false;
-      }
-    );
-    if (closestTime == null) {
-      return stringTimeToTimeObj(
-        store.getters["features/settings/preferredTime"][0]
+  function getClosestTrainTime() {
+    if (store.getters["features/settings/preferredTime"]) {
+      let preferredTimeArr = store.getters["features/settings/preferredTime"];
+      let differedArray = preferredTimeArr
+        .map(time => {
+          let _time = moment(time, "HH:mm");
+          return moment()
+            .set({
+              hour: _time.get("hour"),
+              minute: _time.get("minute"),
+              second: 0
+            })
+            .diff(moment());
+        })
+        .map(res => (res <= 0 ? Number.MAX_VALUE : res));
+      let time = moment(
+        preferredTimeArr[differedArray.indexOf(Math.min(...differedArray))],
+        "HH:mm"
       );
+      return moment()
+        .set({
+          hour: time.get("hour"),
+          minute: time.get("minute"),
+          second: 0
+        })
+        .toDate();
     }
-    return stringTimeToTimeObj(closestTime);
+    return null;
+  }
+  function breakTimer() {
+    if (trainingTimeTimer != null) {
+      clearTimeout(trainingTimeTimer);
+    }
+  }
+  function startTimerAndNotifyAt(notifyAtTime) {
+    breakTimer();
+    trainingTimeTimer = setTimeout(() => {
+      ipcRenderer.send("notifier:notify-user-about-training");
+      let closestTime = getClosestTrainTime();
+      if (closestTime) startTimerAndNotifyAt(closestTime);
+    }, notifyAtTime - new Date());
   }
 }
