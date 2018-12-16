@@ -23,12 +23,8 @@ namespace WebUI.Controllers.API.Features
         [Route("getAll")]
         public async Task<IHttpActionResult> GetAll()
         {
-            var result = await _professionService.GetAllGrouped();
-            return Ok(result.Select(f => {
-                var dictionary = new Dictionary<string, List<ProfessionDTO>>();
-                dictionary.Add(f.Key.ToUpper(), f.ToList());
-                return dictionary;
-            }));
+            var result = await _professionService.GetAllAsync();         
+            return Ok(result);
         }
     }
 }

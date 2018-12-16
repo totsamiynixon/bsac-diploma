@@ -1,7 +1,7 @@
 import Vuex from "vuex"
 const state = {
   loading: false,
-  errors: []
+  alerts: []
 };
 var isLoadingCanceled = false;
 const mutations = {
@@ -19,23 +19,23 @@ const mutations = {
       state.loading = payload;
     }
   },
-  setError(state, payload) {
+  showAlert(state, payload) {
     payload.dismissed = false;
-    state.errors.push(payload);
+    state.alerts.push(payload);
     setTimeout(() => {
       payload.dismissed = true;
     }, 3000);
   },
-  clearError(state, payload) {
-    var index = state.errors.findIndex(value => {
+  clearAlert(state, payload) {
+    var index = state.alerts.findIndex(value => {
       return value == payload;
     });
     if (index != -1) {
-      state.errors.splice(index, 1);
+      state.alerts.splice(index, 1);
     }
   },
-  clearErrors(state) {
-    state.errors = [];
+  clearAlerts(state) {
+    state.alerts = [];
   }
 };
 const actions = {
@@ -45,17 +45,47 @@ const actions = {
   }, payload) {
     commit("setLoading", payload);
   },
+  alert({
+    commit,
+    state
+  }, payload) {
+    commit("showAlert", payload);
+  },
   error({
     commit,
     state
   }, payload) {
-    commit("setError", payload);
+    let alert = {
+      ...payload,
+      type: "error"
+    }
+    commit("showAlert", alert);
   },
-  clearError({
+  warning({
     commit,
     state
   }, payload) {
-    commit("clearError", payload);
+    let alert = {
+      ...payload,
+      type: "warning"
+    }
+    commit("showAlert", payload);
+  },
+  success({
+    commit,
+    state
+  }, payload) {
+    let alert = {
+      ...payload,
+      type: "success"
+    }
+    commit("showAlert", payload);
+  },
+  clearAlert({
+    commit,
+    state
+  }, payload) {
+    commit("clearAlert", payload);
   }
 };
 
@@ -63,8 +93,8 @@ const getters = {
   loading(state) {
     return state.loading;
   },
-  errors(state) {
-    return state.errors;
+  alerts(state) {
+    return state.alerts;
   }
 };
 

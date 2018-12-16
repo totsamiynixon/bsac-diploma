@@ -19,14 +19,14 @@
         <v-divider></v-divider>
         <v-card-text style="height: 300px;">
           <v-radio-group column
-                         v-model="professionModel"
-                         v-for="(group, key) in filteredProfessions"
-                         :key="key"
-                         :label="key.toUpperCase()">
-            <v-radio v-for="item in group"
+                         v-for="group in filteredProfessions"
+                         :key="group.group"
+                         :label="group.group"
+                         v-model="professionModel.id">
+            <v-radio v-for="item in group.children"
                      :label="item.name"
                      :key="item.id"
-                     :value="item"></v-radio>
+                     :value="item.id"></v-radio>
           </v-radio-group>
         </v-card-text>
         <v-divider></v-divider>
@@ -44,31 +44,42 @@
 </template>
 <script>
 export default {
-  props: ["professions"],
   data: function() {
     return {
       dialog: false,
       filter: "",
-      professionModel: null
+      professionModel: {
+        id: null,
+        name: null
+      },
+      professions: []
+    };
+  },
+  created() {
+    this.$http("/api/professions/getAll").then(response => {
+      this.professions = response.data;
+    });
+    this.professionModel = {
+      ...this.$store.getters["user/profession"]
     };
   },
   computed: {
     filteredProfessions() {
-      let result = {};
-      for (var key in this.professions) {
-        if (this.professions.hasOwnProperty(key)) {
-          let items = this.professions[key].filter(profession =>
-            profession.name.includes(this.filter)
-          );
-          if (items.length > 0) {
-            result[key] = items;
-          }
-        }
-      }
+      let filteredPrfessions = this.professions.filter(f =>
+        f.name.includes(this.filter)
+      );
+      let data = filteredPrfessions.reduce((r, e) => {
+        let group = e.name[0];
+        if (!r[group]) r[group] = { group, children: [e] };
+        else r[group].children.push(e);
+        return r;
+      }, {});
+
+      let result = Object.values(data);
       return result;
     },
     profession() {
-      return this.$store.getters["features/settings/profession"] || {};
+      return this.$store.getters["user/profession"];
     }
   },
   methods: {
@@ -80,8 +91,8 @@ export default {
     },
     setCurrentProfession() {
       this.$store.dispatch(
-        "features/settings/changeProfession",
-        this.professionModel
+        "user/changeProfession",
+        this.professions.find(f => f.id == this.professionModel.id)
       );
     }
   }

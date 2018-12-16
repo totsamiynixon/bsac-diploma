@@ -22,6 +22,7 @@ using WebUI.Models.Identity;
 namespace WebUI.Controllers.API
 {
     [RoutePrefix("api/account")]
+    [Authorize]
     public class AccountController : ApiController
     {
         private ApplicationSignInManager _signInManager;
@@ -67,7 +68,7 @@ namespace WebUI.Controllers.API
                 Roles = await _userManager.GetRolesAsync(user.Id),
                 Token = token.token,
                 Expires = token.expiresUtc,
-                Settings = roles.Any(z => z == Roles.User || z == Roles.Admin) ? await _settingsService.GetSettingsAsync(user.Id) : default(SettingsDTO)
+                Issued = token.issuedUtc
             };
             return Ok(result);
         }
@@ -93,6 +94,7 @@ namespace WebUI.Controllers.API
                             Id = user.Id,
                             Name = user.UserName,
                             Expires = token.expiresUtc,
+                            Issued = token.issuedUtc,
                             Roles = await _userManager.GetRolesAsync(user.Id),
                             Token = token.token
                         });
@@ -102,12 +104,32 @@ namespace WebUI.Controllers.API
             return BadRequest("Error");
         }
 
-        private async Task<(string token, DateTime expiresUtc)> GenerateTokenAsync(User user)
+        // POST: /Account/Register
+        [HttpGet]
+        [Route("fullinfo")]
+        public async Task<IHttpActionResult> GetFullInfoAsync()
         {
-            var tokenExpiration = Startup.OAuthServerOptions.AccessTokenExpireTimeSpan;
+            var userId = User.Identity.GetUserId<int>();
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return BadRequest("Error");
+            }
+            var settings = await _settingsService.GetSettingsAsync(userId);
+            return Ok(new
+            {
+                id = user.Id,
+                userName = user.UserName,
+                roles = await GetRolesAsStringAsync(user),
+                settings = settings
+            });
+        }
+        private async Task<(string token, DateTime expiresUtc, DateTime issuedUtc)> GenerateTokenAsync(User user)
+        {
+            var tokenExpiration = Startup.OAuthOptions.AccessTokenExpireTimeSpan;
             var identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", await _userManager.GetRolesAsync(user.Id))));
+            identity.AddClaim(new Claim(ClaimTypes.Role, await GetRolesAsStringAsync(user)));
 
             var expires = DateTime.UtcNow.Add(tokenExpiration);
             var props = new AuthenticationProperties()
@@ -116,8 +138,13 @@ namespace WebUI.Controllers.API
                 ExpiresUtc = expires,
             };
             var ticket = new AuthenticationTicket(identity, props);
-            var accessToken = Startup.OAuthServerOptions.AccessTokenFormat.Protect(ticket);
-            return (accessToken, expires);
+            var accessToken = Startup.OAuthOptions.AccessTokenFormat.Protect(ticket);
+            return (accessToken, expires, DateTime.UtcNow);
+        }
+
+        private async Task<string> GetRolesAsStringAsync(User user)
+        {
+            return string.Join(",", await _userManager.GetRolesAsync(user.Id));
         }
     }
 }

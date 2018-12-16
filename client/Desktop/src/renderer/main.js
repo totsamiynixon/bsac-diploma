@@ -1,22 +1,17 @@
-import Vue from 'vue'
-import axios from 'axios'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.css'
+import Vue from "vue";
+import Vuetify from "vuetify";
+import AsyncComputed from "vue-async-computed";
+import axios from "axios";
+import "vuetify/dist/vuetify.css";
 
-import App from './App'
-import router from './router'
-import {
-  store
-} from './store'
-import {
-  httpConfig
-} from "./utils/http"
-import AsyncComputed from 'vue-async-computed'
+import App from "./App";
+import { store } from "./store";
+import router from "./router";
+import { Notifier } from "./utils/notifications";
+import { HttpManager } from "./utils/httpManager";
+import { EventEmitter } from "events";
 
-import AlertsCmp from "./components/Shared/Alerts"
-import LoadingCmp from "./components/Shared/Loading"
-
-Vue.use(AsyncComputed)
+Vue.use(AsyncComputed);
 Vue.use(Vuetify, {
   theme: {
     primary: "#1565c0",
@@ -28,22 +23,28 @@ Vue.use(Vuetify, {
     warning: "#FFC107"
   }
 });
-Vue.component("app-alerts", AlertsCmp);
-Vue.component("app-loading", LoadingCmp);
 
+if (!process.env.IS_WEB) { 
+  
+  Vue.use(require("vue-electron"));
+  new Notifier(
+    Vue.prototype.$electron.ipcRenderer,
+    store,
+    Vue.prototype.$eventBus 
+  ).initNotifications();
+}
 
-if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
-Vue.http = Vue.prototype.$http = axios;
+Vue.http = Vue.prototype.$http = axios.create();
 Vue.config.productionTip = false;
+Vue.app_settings = Vue.prototype.$app_settings = settings;
+Vue.eventBus = Vue.prototype.$eventBus = new EventEmitter();
+new HttpManager(Vue.prototype.$http, store).init();
 
-httpConfig.init();
-
-/* eslint-disable no-new */
 new Vue({
   components: {
     App
   },
   router,
   store,
-  template: '<App/>'
-}).$mount('#app');
+  template: "<App/>"
+}).$mount("#app");

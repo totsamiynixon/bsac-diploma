@@ -1,14 +1,17 @@
 import moment from "moment";
-export function Notifier(ipcRenderer, store) {
+export function Notifier(ipcRenderer, $store, $eventBus) {
   let trainingTimeTimer = null;
   this.initNotifications = () => {
+    ipcRenderer.on("notifier:notify-user-about-training", () => {
+      $eventBus.emit("notifier:notify-user-about-training");
+    });
     ipcRenderer.on("notifier:set-aside-timer", () => {
       let curDate = new Date();
       curDate.setSeconds(0, 0);
       startTimerAndNotifyAt(new Date(curDate.getTime() + 10 * 60000));
     });
-    store.watch(
-      () => store.getters["features/settings/preferredTime"],
+    $store.watch(
+      () => $store.getters["user/trainingTime"],
       value => {
         if (value != null && value.length > 0) {
           let closestTime = getClosestTrainTime();
@@ -21,8 +24,8 @@ export function Notifier(ipcRenderer, store) {
   };
 
   function getClosestTrainTime() {
-    if (store.getters["features/settings/preferredTime"]) {
-      let preferredTimeArr = store.getters["features/settings/preferredTime"];
+    if ($store.getters["user/trainingTime"]) {
+      let preferredTimeArr = $store.getters["user/trainingTime"];
       let differedArray = preferredTimeArr
         .map(time => {
           let _time = moment(time, "HH:mm");

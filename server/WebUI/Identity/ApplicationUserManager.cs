@@ -13,23 +13,6 @@ namespace WebUI.Identity
     {
         private readonly DataContext _context;
 
-        //public override async Task<IdentityResult> AddToRoleAsync(int userId, string role)
-        //{
-        //    var userExist = await _context.Set<User>().AnyAsync(s => s.Id == userId);
-        //    if (!userExist)
-        //    {
-        //        return IdentityResult.Failed("User doesn't exist");
-        //    }
-        //    var roleInDb = await _context.Set<Role>().FirstOrDefaultAsync(s => s.Name.ToUpper() == role);
-        //    if (roleInDb == null)
-        //    {
-        //        return IdentityResult.Failed("Role doesn't exist");
-        //    }
-        //    _context.Set<UserRole>().Add(new UserRole { UserId = userId, RoleId = roleInDb.Id });
-        //    await _context.SaveChangesAsync();
-        //    return IdentityResult.Success;    
-        //}
-
         public ApplicationUserManager(DataContext dataContext, IdentityFactoryOptions<ApplicationUserManager> options)
             : base(new UserStore<User, Role, int, UserLogin, UserRole, UserClaim>(dataContext))
         {

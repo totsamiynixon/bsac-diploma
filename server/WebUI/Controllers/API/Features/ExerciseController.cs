@@ -27,6 +27,10 @@ namespace WebUI.Controllers.API.Features
             {
                 return BadRequest();
             }
+            if(model == null)
+            {
+                model = new SearchExerciseModel();
+            }
             var exercises = await _exerciseService.GetAllExercisesAsync(model);
             return Ok(exercises);
         }

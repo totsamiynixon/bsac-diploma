@@ -1,10 +1,16 @@
 <template>
-<div id="errors-container">
-  <div class="errors-holder">
-  <v-alert  v-for="(error, index) in errors" :key="index" error  transition="scale-transition" dismissible @input="onClose(error)" :value="!error.dismissed">
-    {{error.message}}
-  </v-alert>
-  </div>
+  <div id="alerts-container">
+    <div class="alerts-holder">
+      <v-alert v-for="(alert, index) in alerts"
+               :key="index"
+               :type="alert.type"
+               transition="scale-transition"
+               dismissible
+               @input="onClose(alert)"
+               :value="!alert.dismissed">
+        {{alert.message}}
+      </v-alert>
+    </div>
   </div>
 </template>
 
@@ -14,20 +20,19 @@ export default {
     return {};
   },
   computed: {
-    errors() {
-      return this.$store.getters["shared/errors"];
+    alerts() {
+      return this.$store.getters["shared/alerts"];
     }
   },
   methods: {
-    onClose(error) {
-      this.$emit("dismissed");
-      this.$store.dispatch("shared/clearError", error);
+    onClose(alert) {
+      this.$store.dispatch("shared/clearAlert", error);
     }
   }
 };
 </script>
 <style scoped>
-#errors-container .errors-holder {
+#alerts-container .alerts-holder {
   position: absolute;
   bottom: 0%;
   right: 0%;
