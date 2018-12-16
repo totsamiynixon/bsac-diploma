@@ -80,10 +80,9 @@ export default {
   },
   methods: {
     onSignin() {
-      console.log(this.$refs);
       if (this.$refs.signInForm.validate()) {
         this.$store.dispatch("user/signUserIn", {
-          email: this.email,
+          userName: this.email,
           password: this.password
         });
       }

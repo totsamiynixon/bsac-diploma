@@ -5,7 +5,7 @@
     <app-sidebar></app-sidebar>
     <app-toolbar></app-toolbar>
     <v-content>
-      <training-notifier :dialog.sync="notifierDialog"></training-notifier>
+      <training-notifier></training-notifier>
       <router-view />
     </v-content>
   </v-app>
@@ -14,27 +14,40 @@
 <script>
 import AppToolbar from "@/components/Shared/Layout/Toolbar";
 import AppSidebar from "@/components/Shared/Layout/Sidebar";
+import AppAlerts from "@/components/Shared/Alerts";
+import AppLoading from "@/components/Shared/Loading";
 import TrainingNotifier from "@/components/Shared/Notifier";
-import { Notifier } from "./utils/notifications";
+
+import { HttpManager } from "./utils/httpManager.js";
+import { Notifier } from "./utils/notifications.js";
 export default {
   data() {
-    return {
-      notifierDialog: false
-    };
+    return {};
   },
   components: {
     AppToolbar,
     AppSidebar,
+    AppAlerts,
+    AppLoading,
     TrainingNotifier
   },
-  mounted() {
-    new Notifier(this.$electron.ipcRenderer, this.$store).initNotifications();
-    this.$electron.ipcRenderer.on(
-      "notifier:notify-user-about-training",
-      (event, payload) => {
-        this.notifierDialog = true;
+  created() {
+    const httpManager = new HttpManager(this.$http, this.$store);
+    httpManager.init();
+    const notifier = new Notifier(this.$electron.ipcRenderer, this.$store);
+    notifier.initNotifications();
+    this.$store.subscribe((mutation, state) => {
+      if (mutation.type == "user/setToken") {
+        if (state.user.token == null) {
+          this.$router.push({ name: "auth" });
+        }
+      } else if (mutation.type == "user/clearUser") {
+        this.$router.push({ name: "auth" });
+      } else if (mutation.type == "user/setUser") {
+        this.$router.push({ name: "features" });
       }
-    );
+    });
+    this.$store.dispatch("user/restoreToken");
   },
   name: "App"
 };
@@ -60,7 +73,7 @@ export default {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition-duration: 0.5s;
+  transition-duration: 0.3s;
   transition-property: opacity;
   transition-timing-function: ease;
 }

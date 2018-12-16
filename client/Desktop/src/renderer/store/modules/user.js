@@ -1,83 +1,140 @@
 import Vuex from "vuex";
-import axios from "axios";
-
+import Vue from "vue";
 const state = {
-  user: null
+  id: null,
+  userName: null,
+  roles: [],
+  settings: null,
+  token: null
 };
-
-var user_auth = JSON.parse(localStorage.getItem("user_auth"));
-if (
-  user_auth != null &&
-  new Date(user_auth.expires) > new Date().getUTCDate()
-) {
-  state.user = {
-    id: user_auth.id,
-    name: user_auth.name,
-    roles: user_auth.roles
-  };
-  axios.defaults.headers.common["Authorization"] = "Bearer " + user_auth.token;
-}
 
 const mutations = {
   setUser(state, payload) {
-    state.user = {
-      id: payload.id,
-      name: payload.name,
-      roles: payload.roles
-    };
-    localStorage.setItem("user_auth", JSON.stringify(payload));
-    axios.defaults.headers.common["Authorization"] = "Bearer " + payload.token;
+    state.id = payload.id;
+    state.userName = payload.userName;
+    state.roles = payload.roles;
+    state.settings = payload.settings;
+  },
+  setToken(state, payload) {
+    if (payload != null) {
+      localStorage.setItem(
+        "user_auth",
+        JSON.stringify({
+          token: payload.token,
+          expires: payload.expires
+        })
+      );
+      state.token = payload.token;
+    } else {
+      state.token = null;
+    }
   },
   clearUser(state) {
-    state.user = null;
+    state.id = null;
+    state.userName = null;
+    state.roles = null;
+    state.settings = null;
+    state.token = null;
     localStorage.removeItem("user_auth");
-    axios.defaults.headers.common["Authorization"] = "";
+  },
+  setSettings(state, payload) {
+    state.settings = payload;
+  },
+  setPreferredTrainingTime(state, payload) {
+    state.settings.preferredTrainingTime = payload;
+  },
+  setProfession(state, payload) {
+    state.settings.profession = payload;
   }
 };
 
 const actions = {
-  signUserUp({ commit }, payload) {
-    axios.post("/api/account/sign-up", payload).then(result => {
-      localStorage.setItem("token", result.data.token);
-      const newUser = {
-        id: result.data.id,
-        name: result.data.name,
-        roles: result.data.roles,
-        token: result.data.token,
-        expires: result.data.expires
-      };
-      commit("setUser", newUser);
-      commit("features/settings/setSettings", null, {
-        root: true
-      });
+  //User setup
+  setup({ commit }) {
+    Vue.http.get("/api/account/fullinfo").then(response => {
+      commit("setUser", response.data);
     });
   },
-  signUserIn({ commit }, payload) {
-    axios.post("/api/account/sign-in", payload).then(result => {
-      commit("setUser", {
-        id: result.data.id,
-        name: result.data.name,
-        roles: result.data.roles,
+  //Authentication
+  signUserUp({ commit }, payload) {
+    Vue.http.post("/api/account/sign-up", payload).then(result => {
+      commit("setToken", {
         token: result.data.token,
         expires: result.data.expires
       });
-      commit("features/settings/setSettings", result.data.settings, {
-        root: true
-      });
+      dispatch("setup");
     });
+  },
+  signUserIn({ commit, dispatch }, payload) {
+    Vue.http
+      .post("/api/account/sign-in", {
+        email: payload.userName,
+        password: payload.password
+      })
+      .then(result => {
+        commit("setToken", {
+          token: result.data.token,
+          expires: result.data.expires
+        });
+        dispatch("setup");
+      });
+  },
+  restoreToken({ commit, dispatch }) {
+    var user_auth = JSON.parse(localStorage.getItem("user_auth"));
+    if (
+      user_auth == null ||
+      new Date(user_auth.expires) < new Date().getUTCDate()
+    ) {
+      commit("setToken", null);
+      return;
+    }
+    commit("setToken", user_auth);
+    dispatch("setup");
+  },
+  failAuth({ commit }) {
+    commit("clearUser");
   },
   logout({ commit }) {
-    return new Promise((resolve, reject) => {
-      commit("clearUser");
-      resolve();
-      return;
+    commit("clearUser");
+  },
+  //Settings
+  changeProfession({ commit }, payload) {
+    Vue.http
+      .post("/api/settings/saveProfession", {
+        professionId: payload.id
+      })
+      .then(result => {
+        commit("setProfession", {
+          id: payload.id,
+          name: payload.name
+        });
+      });
+  },
+  changePreferredTime({ commit }, payload) {
+    Vue.http.post("/api/settings/savePrefferedTime", payload).then(result => {
+      commit("setPreferredTrainingTime", payload);
     });
   }
 };
 
 const getters = {
-  user(state) {
-    return state.user;
+  isLoggedIn(state) {
+    return state != null && state.id != null && state.token != null;
+  },
+  hasSettingsSetUp(state) {
+    return state != null && state.settings != null;
+  },
+  profession(state) {
+    if (!state) {
+      return null;
+    }
+    return state.settings.profession;
+  },
+  trainingTime(state) {
+    if (!state || !state.settings) {
+      return [];
+    }
+    return state.settings.preferredTrainingTime || [];
   }
 };
 

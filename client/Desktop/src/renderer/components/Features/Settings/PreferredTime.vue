@@ -6,8 +6,7 @@
       <v-list-tile v-for="(item,index) in model.times"
                    :key="index">
         <v-list-tile-action>
-          <v-btn 
-                 dark
+          <v-btn dark
                  fab
                  small
                  @click="remove(index)">
@@ -62,8 +61,14 @@ export default {
     };
   },
   created() {
+    this.model.times = this.$store.getters["user/trainingTime"].map(time => {
+      return {
+        value: time,
+        dialog: false
+      };
+    });
     this.$store.watch(
-      () => this.$store.getters["features/settings/preferredTime"],
+      () => this.$store.getters["user/trainingTime"],
       value => {
         this.model.times = value.map(time => {
           return {
@@ -88,7 +93,7 @@ export default {
       var payload = this.model.times.map(s => {
         return s.value;
       });
-      this.$store.dispatch("features/settings/changePreferredTime", payload);
+      this.$store.dispatch("user/changePreferredTime", payload);
     }
   }
 };

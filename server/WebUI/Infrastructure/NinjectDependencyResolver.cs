@@ -65,17 +65,11 @@ namespace WebUI.Infrastructure
 
             _kernel.Bind<IIdentityMessageService>().To<EmailService>().InRequestScope();
             _kernel.Bind<IDataSerializer<AuthenticationTicket>>().To<TicketSerializer>();
-            _kernel.Bind<IDataProtector>().ToMethod(x => Startup.DataProtectionProvider.Create(appName));
             _kernel.Bind<ISecureDataFormat<AuthenticationTicket>>().To<SecureDataFormat<AuthenticationTicket>>();
             _kernel.Bind<ITextEncoder>().To<Base64UrlTextEncoder>();
             _kernel.Bind<IAuthenticationManager>()
                 .ToMethod(c => HttpContext.Current.GetOwinContext().Authentication)
                 .InRequestScope();
-            _kernel.Bind<IdentityFactoryOptions<ApplicationUserManager>>()
-                .ToMethod(x => new IdentityFactoryOptions<ApplicationUserManager>()
-                {
-                    DataProtectionProvider = Startup.DataProtectionProvider
-                });
 
         }
 

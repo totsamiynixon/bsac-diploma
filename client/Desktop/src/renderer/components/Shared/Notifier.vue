@@ -1,6 +1,5 @@
 <template>
-  <v-dialog :value="dialog"
-            @input="$emit('update:dialog', $event.target.value)"
+  <v-dialog :value="open"
             max-width="290">
     <v-card>
       <v-card-title class="headline">Пришло время немного позаниматься!</v-card-title>
@@ -17,14 +16,23 @@
 
 <script>
 export default {
-  props: ["dialog"],
   data() {
-    return {};
+    return {
+      open: false
+    };
+  },
+  created() {
+    this.$eventBus.on(
+      "notifier:notify-user-about-training",
+      (event, payload) => {
+        this.open = true;
+      }
+    );
   },
   methods: {
     ok() {
       this.$router.push({ name: "training-list" });
-      this.$emit("update:dialog", false);
+      this.open = false;
     }
   }
 };

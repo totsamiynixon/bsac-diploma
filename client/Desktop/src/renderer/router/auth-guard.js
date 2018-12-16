@@ -1,11 +1,9 @@
-import {
-  store
-} from '../store'
+import { store } from "../store";
 
 export default (to, from, next) => {
-  if (store.getters['user/user']) {
-    if (store.getters['features/settings/settings'] == null && to.name !=
-      "settings") {
+  console.log(to, from, store);
+  if (store.getters["user/isLoggedIn"]) {
+    if (!store.getters["user/hasSettingsSetUp"] && to.name != "settings") {
       next({
         name: "settings"
       });
@@ -13,6 +11,8 @@ export default (to, from, next) => {
     }
     next();
   } else {
-      next("/auth/signin");
+    next({
+      name: "auth"
+    });
   }
-}
+};

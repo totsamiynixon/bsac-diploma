@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using Data.Implementations.Context;
 using Duke.Owin.VkontakteMiddleware;
 using Entity.Domain.Identity;
 using Microsoft.AspNet.Identity;
@@ -24,114 +26,116 @@ namespace WebUI
 {
     public partial class Startup
     {
-        public static IDataProtectionProvider DataProtectionProvider { get; private set; }
-        public static OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
-        {
-            AllowInsecureHttp = true,
-            TokenEndpointPath = new PathString("/api/account/token"),
-            AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-            Provider = new OAuthAuthorizationServerProvider()
-        };
+        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
+
+        //public static ApplicationOAuthProvider OAuthProvider => OAuthOptions.Provider as ApplicationOAuthProvider;
+
+        public static string PublicClientId { get; private set; }
+
         // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
-            // Configure the db context, user manager and signin manager to use a single instance per request
-
-            DataProtectionProvider = app.GetDataProtectionProvider();
-            // Enable the application to use a cookie to store information for the signed in user
-            // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            // Configure the sign in cookie
-            app.SetDefaultSignInAsAuthenticationType(DefaultAuthenticationTypes.ApplicationCookie);
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            app.CreatePerOwinContext(() => new DataContext());
+            app.CreatePerOwinContext(() => DependencyResolver.Current.GetService<ApplicationUserManager>());
+            PublicClientId = "BSACDiploma";
+            OAuthOptions = new OAuthAuthorizationServerOptions
             {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
-                Provider = new CookieAuthenticationProvider
-                {
-                    // Enables the application to validate the security stamp when the user logs in.
-                    // This is a security feature which is used when you change a password or add an external login to your account.  
-                    OnValidateIdentity = SecurityStampValidator
-                        .OnValidateIdentity<UserManager<User, int>, User, int>(
-                            validateInterval: TimeSpan.FromMinutes(30),
-                            regenerateIdentityCallback: (manager, user) => user.GenerateUserIdentityAsync(manager),
-                            getUserIdCallback: (user) => int.Parse(user.GetUserId())),
-                    OnApplyRedirect = ctx =>
-                    {
-                        if (!HttpContext.Current.Request.Url.AbsoluteUri.Contains("/api/"))
-                        {
-                            ctx.Response.Redirect(ctx.RedirectUri);
-                        }
-                    }
-                },
-                CookieName = "ApplicationAuth"
-            });
-
-
-            // Token Generation
-            app.UseOAuthAuthorizationServer(OAuthServerOptions);
-            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
-
-            // Uncomment the following lines to enable logging in with third party login providers
-            app.UseTwitterAuthentication(new TwitterAuthenticationOptions()
-            {
-                ConsumerKey = "NMHW0d13DaqAaywHf7f2VvJYt",
-                ConsumerSecret = "RQaRTSp8QIijhWiag8tBD1mCXruJ1OulbQPR2jOgPjMlwpJh6s",
-                BackchannelCertificateValidator = new CertificateSubjectKeyIdentifierValidator(new[]
-                    {
-                        "A5EF0B11CEC04103A34A659048B21CE0572D7D47", // VeriSign Class 3 Secure Server CA - G2
-                        "0D445C165344C1827E1D20AB25F40163D8BE79A5", // VeriSign Class 3 Secure Server CA - G3
-                        "7FD365A7C2DDECBBF03009F34339FA02AF333133", // VeriSign Class 3 Public Primary Certification Authority - G5
-                        "39A55D933676616E73A761DFA16A7E59CDE66FAD", // Symantec Class 3 Secure Server CA - G4
-                        "5168FF90AF0207753CCCD9656462A212B859723B", //DigiCert SHA2 High Assurance Server C‎A 
-                        "B13EC36903F8BF4701D498261A0802EF63642BC3" //DigiCert High Assurance EV Root CA
-                    })
-            }
-            );
-
-
-            //app.UseFacebookAuthentication(
-            //   appId: "164530750755602",
-            //   appSecret: "80f3997e319283694ef6b09c75961a88");
-
-            app.UseFacebookAuthentication(
-                appId: "675554055963544",
-                appSecret: "1bf98658d01aef192d54faa20c6adf2e");
-
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            {
-                ClientId = "840725586783-jd43671i0fs4j5qkdbmn3p6r6k7p9t3l.apps.googleusercontent.com",
-                ClientSecret = "PrgjP8UxBU2WCZvljDPdm3m6"
-            });
-            app.UseVkontakteAuthentication(new VkAuthenticationOptions()
-            {
-                AppId = "6104507",
-                AppSecret = "kklrlzvdTN2z6VgXdV3M",
-
-
-            });
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                AllowInsecureHttp = true
+            };
+            app.UseOAuthBearerTokens(OAuthOptions);
         }
     }
-    //public class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
+
+    //public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     //{
-    //    public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+
+
+    //    private readonly string _publicClientId;
+
+    //    public ApplicationOAuthProvider(string publicClientId)
     //    {
-    //        context.Validated();
+    //        if (publicClientId == null)
+    //        {
+    //            throw new ArgumentNullException("publicClientId");
+    //        }
+
+    //        _publicClientId = publicClientId;
+    //    }
+
+    //    public async Task<AuthenticationTicket> GenerateTicketAsync(User user, ApplicationUserManager userManager)
+    //    {
+    //        ClaimsIdentity oAuthIdentity = await userManager.CreateIdentityAsync(user, OAuthDefaults.AuthenticationType);
+    //        var roles = userManager.GetRoles(user.Id);
+    //        AuthenticationProperties properties = CreateProperties(user.UserName, roles);
+    //        return new AuthenticationTicket(oAuthIdentity, properties);
     //    }
 
     //    public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
     //    {
-    //        var _userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
-    //        var user = await _userManager.FindAsync(context.UserName, context.Password);
+    //        var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
+
+    //        User user = await userManager.FindAsync(context.UserName, context.Password);
+
     //        if (user == null)
     //        {
     //            context.SetError("invalid_grant", "The user name or password is incorrect.");
     //            return;
     //        }
-    //        var identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
-    //        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-    //        identity.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", await _userManager.GetRolesAsync(user.Id))));
-    //        context.Validated(identity);
+    //        var ticket = await GenerateTicketAsync(user, userManager);
+    //        context.Validated(ticket);
+    //    }
 
+    //    public override Task TokenEndpoint(OAuthTokenEndpointContext context)
+    //    {
+    //        foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
+    //        {
+    //            context.AdditionalResponseParameters.Add(property.Key, property.Value);
+    //        }
+    //        return Task.FromResult<object>(null);
+    //    }
+
+    //    public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+    //    {
+
+    //        if (context.Request.Method == "OPTIONS")
+    //        {
+    //            context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "*" });
+    //            context.Response.StatusCode = 200;
+    //        }
+            
+    //        // Resource owner password credentials does not provide a client ID.
+    //        if (context.ClientId == null)
+    //        {
+    //            context.Validated();
+    //        }
+
+    //        return Task.FromResult<object>(null);
+    //    }
+
+    //    public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
+    //    {
+    //        if (context.ClientId == _publicClientId)
+    //        {
+    //            Uri expectedRootUri = new Uri(context.Request.Uri, "/");
+
+    //            if (expectedRootUri.AbsoluteUri == context.RedirectUri)
+    //            {
+    //                context.Validated();
+    //            }
+    //        }
+
+    //        return Task.FromResult<object>(null);
+    //    }
+
+    //    public static AuthenticationProperties CreateProperties(string userName, IEnumerable<string> roles)
+    //    {
+    //        IDictionary<string, string> data = new Dictionary<string, string>
+    //        {
+    //            { "userName", userName },
+    //            { "roles", string.Join(" ,", roles) }
+    //        };
+    //        return new AuthenticationProperties(data);
     //    }
     //}
 }

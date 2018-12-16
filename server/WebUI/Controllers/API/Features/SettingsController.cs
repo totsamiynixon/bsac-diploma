@@ -22,22 +22,6 @@ namespace WebUI.Controllers.API.Mobile
             _settingsService = settingsService;
         }
 
-
-        [Route("initData")]
-        [HttpGet]
-        public async Task<IHttpActionResult> GetInitData()
-        {
-            var userId = User.Identity.GetUserId<int>();
-            var settings = await _settingsService.GetSettingsAsync(userId);
-            var professions = await _settingsService.GetProfessionsForSettingsAsync();
-            var model = new InitDataModel
-            {
-                Professions = professions.GroupBy(s => s.Name.Substring(0, 1).ToUpper()).OrderBy(s=>s.Key).ToDictionary(s=>s.Key, z=>z.OrderBy(f=>f.Name).ToList()),
-                Settings = settings
-            };
-            return Ok(model);
-        }
-
         [HttpPost]
         [Route("saveProfession")]
         public async Task<IHttpActionResult> ChangeProfession(SetProfessionModel model)

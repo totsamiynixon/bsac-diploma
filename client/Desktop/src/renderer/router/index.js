@@ -22,14 +22,12 @@ import TrainingResult from "@/components/Features/Training/TrainingResult.vue";
 //SETTINGS
 import Settings from "@/components/Features/Settings/Settings.vue"
 
-
 Vue.use(Router);
 
 export default new Router({
   routes: [{
       path: "/",
       name: "default",
-      redirect: "/features"
     },
     {
       path: "/features",
@@ -75,6 +73,9 @@ export default new Router({
       path: "/auth",
       name: "auth",
       component: AuthLayout,
+      redirect: {
+        name: "signin"
+      },
       children: [{
           path: "signup",
           name: "signup",
