@@ -292,6 +292,7 @@
     <Compile Include="Models\Controllers\Features\Settings\InitDataModel.cs" />
     <Compile Include="Models\Controllers\Features\Settings\SetProfessionModel.cs" />
     <Compile Include="Models\Controllers\Features\UserTraining\CompeteUserTraining.cs" />
+    <Compile Include="Models\Controllers\Features\UserTraining\UpdateUserTrainingRating.cs" />
     <Compile Include="Models\Identity\AccountViewModels.cs" />
     <Compile Include="Models\Identity\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

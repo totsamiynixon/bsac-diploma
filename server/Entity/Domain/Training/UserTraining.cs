@@ -21,5 +21,7 @@ namespace Entity.Domain.Training
         public bool IsPassed { get; set; }
 
         public List<UserExercise> Exercises { get; set; }
+
+        public int? Rating { get; set; }
     }
 }

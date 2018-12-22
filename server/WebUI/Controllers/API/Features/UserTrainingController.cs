@@ -21,12 +21,21 @@ namespace WebUI.Controllers.API.Features
             _userTrainingService = userTrainingService;
         }
 
-        [Route("get")]
+        [Route("get/grouped")]
         [HttpGet]
-        public async Task<IHttpActionResult> GetUserTraining()
+        public async Task<IHttpActionResult> GetUserTrainingGroupedAsync()
         {
             var userId = User.Identity.GetUserId<int>();
             var userTraining = await _userTrainingService.GenerateAndGetUserTrainingAsync(userId);
+            return Ok(userTraining);
+        }
+
+        [Route("get")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetUserTrainingAsync()
+        {
+            var userId = User.Identity.GetUserId<int>();
+            var userTraining = await _userTrainingService.GetLastUserTrainingAsync(userId);
             return Ok(userTraining);
         }
 
@@ -39,7 +48,20 @@ namespace WebUI.Controllers.API.Features
                 return BadRequest();
             }
             var userId = User.Identity.GetUserId<int>();
-            await _userTrainingService.CompleteTraining(userId, model.UserTrainingId);
+            await _userTrainingService.CompleteTrainingAsync(userId, model.UserTrainingId);
+            return Ok();
+        }
+
+        [Route("rating")]
+        [HttpPost]
+        public async Task<IHttpActionResult> UpdateUserTrainingRating(UpdateUserTrainingRating model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var userId = User.Identity.GetUserId<int>();
+            await _userTrainingService.UpdateTrainingRatingAsync(userId, model.UserTrainingId, model.Rating);
             return Ok();
         }
     }

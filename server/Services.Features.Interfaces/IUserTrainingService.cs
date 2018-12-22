@@ -9,8 +9,10 @@ namespace Services.Features.Interfaces
 {
     public interface IUserTrainingService
     {
-        Task<UserTrainingDTO> GenerateAndGetUserTrainingAsync(int userId);
+        Task<UserTrainingGroupedDTO> GenerateAndGetUserTrainingAsync(int userId);
+        Task<UserTrainingDTO> GetLastUserTrainingAsync(int userId);
         //Task<UserTrainingDTO> GetUserTraining(int trainingId);
-        Task CompleteTraining(int userId, int trainingId);
+        Task CompleteTrainingAsync(int userId, int trainingId);
+        Task UpdateTrainingRatingAsync(int userId, int trainingId, int rating);
     }
 }
