@@ -36,7 +36,7 @@ namespace Services.Features.Implementations
             _professionCriteriaRepository = _unitOfWork.Repository<ProfessionCriteria>();
             _settingsRepository = _unitOfWork.Repository<Settings>();
         }
-        public async Task CompleteTraining(int userId, int trainingId)
+        public async Task CompleteTrainingAsync(int userId, int trainingId)
         {
             await _userTrainingRepository.Collection.Where(s => s.UserId == userId && s.Id == trainingId).UpdateAsync(s => new UserTraining
             {
@@ -44,12 +44,22 @@ namespace Services.Features.Implementations
             });
         }
 
-        public async Task<UserTrainingDTO> GenerateAndGetUserTrainingAsync(int userId)
+        public async Task<UserTrainingDTO> GetLastUserTrainingAsync(int userId)
         {
             var lastNotPassedUserTraining = await _userTrainingRepository.Collection.Include(s => s.Exercises).Include(s => s.Exercises.Select(f => f.Exercise)).FirstOrDefaultAsync(f => f.UserId == userId && !f.IsPassed);
             if (lastNotPassedUserTraining != null)
             {
                 return Mapper.Map<UserTraining, UserTrainingDTO>(lastNotPassedUserTraining);
+            }
+            return null;
+        }
+
+        public async Task<UserTrainingGroupedDTO> GenerateAndGetUserTrainingAsync(int userId)
+        {
+            var lastNotPassedUserTraining = await _userTrainingRepository.Collection.Include(s => s.Exercises).Include(s => s.Exercises.Select(f => f.Exercise)).FirstOrDefaultAsync(f => f.UserId == userId && !f.IsPassed);
+            if (lastNotPassedUserTraining != null)
+            {
+                return Mapper.Map<UserTraining, UserTrainingGroupedDTO>(lastNotPassedUserTraining);
             }
             var userProfessionId = await _settingsRepository.Collection.Where(s => s.Id == userId).Select(f => f.ProfessionId).FirstOrDefaultAsync();
             if (!userProfessionId.HasValue)
@@ -72,7 +82,15 @@ namespace Services.Features.Implementations
             _userTrainingRepository.Insert(userTraining);
             await _unitOfWork.SaveChangesAsync();
             lastNotPassedUserTraining = await _userTrainingRepository.Collection.Include(s => s.Exercises).Include(s => s.Exercises.Select(f => f.Exercise)).FirstOrDefaultAsync(f => f.UserId == userId && !f.IsPassed);
-            return Mapper.Map<UserTraining, UserTrainingDTO>(lastNotPassedUserTraining);
+            return Mapper.Map<UserTraining, UserTrainingGroupedDTO>(lastNotPassedUserTraining);
+        }
+
+        public async Task UpdateTrainingRatingAsync(int userId, int trainingId, int rating)
+        {
+            await _userTrainingRepository.Collection.Where(s => s.UserId == userId && s.Id == trainingId).UpdateAsync(s => new UserTraining
+            {
+                Rating = rating
+            });
         }
     }
 }

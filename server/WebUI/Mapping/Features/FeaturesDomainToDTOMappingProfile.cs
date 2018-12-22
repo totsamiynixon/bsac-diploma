@@ -29,10 +29,11 @@ namespace WebUI.Mapping.Features
                 .ForMember(s => s.Name, m => m.MapFrom(mf => mf.Exercise.Name))
                 .ForMember(s => s.PreviewText, m => m.MapFrom(mf => mf.Exercise.PreviewText))
                 .ForMember(s => s.VideoId, m => m.MapFrom(mf => mf.Exercise.VideoId));
-            CreateMap<UserTraining, UserTrainingDTO>().ForMember(s => s.Exercises, m => m.MapFrom((sc, d) =>
+            CreateMap<UserTraining, UserTrainingGroupedDTO>().ForMember(s => s.Exercises, m => m.MapFrom((sc, d) =>
             {
                 return sc.Exercises.GroupBy(s => s.Exercise.DifficultyLevel).OrderBy(s => s.Key).ToDictionary(s => Enums.GetDescription(s.Key), z => Mapper.Map<List<UserExercise>, List<UserTrainingExerciseDTO>>(z.OrderBy(f => f.Exercise.Name).ToList()));
             }));
+            CreateMap<UserTraining, UserTrainingDTO>();
         }
     }
 }

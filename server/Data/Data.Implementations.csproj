@@ -103,6 +103,10 @@
     <Compile Include="Migrations\201806112153463_322.Designer.cs">
       <DependentUpon>201806112153463_322.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812221403304_AddedRatingToUserTraining.cs" />
+    <Compile Include="Migrations\201812221403304_AddedRatingToUserTraining.Designer.cs">
+      <DependentUpon>201812221403304_AddedRatingToUserTraining.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
@@ -154,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806112153463_322.resx">
       <DependentUpon>201806112153463_322.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812221403304_AddedRatingToUserTraining.resx">
+      <DependentUpon>201812221403304_AddedRatingToUserTraining.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
