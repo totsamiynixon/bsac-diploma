@@ -1,100 +1,123 @@
 {
-  "name": "bsac-diploma-desktop",
-  "version": "0.0.0",
-  "author": "email_from_config",
-  "description": "BSAC Diploma desktop reminder project.",
-  "license": "see license in LICENSE.md",
-  "main": "./dist/electron/main.js",
-  "scripts": {
-    "build": "node .electron-vue/build.js && electron-builder",
-    "build:dir": "node .electron-vue/build.js && electron-builder --dir",
-    "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
-    "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
-    "dev": "node .electron-vue/dev-runner.js",
-    "pack": "npm run pack:main && npm run pack:renderer",
-    "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
-    "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
-    "postinstall": ""
+  "author": "Muhammad Ubaid Raza <mubaidr@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/mubaidr/vue-electron-template/issues"
   },
   "build": {
-    "productName": "bsac-diploma-desktop",
-    "appId": "bsac-diploma-desktop",
+    "appId": "org.mubaidr.vue-electron-template",
     "directories": {
       "output": "build"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "path": "/Applications",
+          "type": "link",
+          "x": 410,
+          "y": 150
+        },
+        {
+          "type": "file",
+          "x": 130,
+          "y": 150
+        }
+      ]
     },
     "files": [
       "dist/electron/**/*"
     ],
-    "dmg": {
-      "contents": [
-        {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 130,
-          "y": 150,
-          "type": "file"
-        }
+    "linux": {
+      "icon": "LogoDesigns/512pxblue.png",
+      "publish": [
+        "github"
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "icon": "LogoDesigns/512pxblue.png",
+      "publish": [
+        "github"
+      ]
     },
+    "productName": "vue-electron-template",
     "win": {
-      "icon": "build/icons/icon.ico"
-    },
-    "linux": {
-      "icon": "build/icons"
+      "icon": "LogoDesigns/512pxblue.png",
+      "publish": [
+        "github"
+      ]
     }
   },
   "dependencies": {
     "axios": "^0.16.1",
     "moment": "^2.22.2",
     "node-notifier": "^5.3.0",
-    "vue": "^2.4.2",
-    "vue-async-computed": "^3.3.1",
+    "bulma-addons": "^0.1.12",
+    "bulma-pro": "^0.1.4",
+    "vue": "^2.5.21",
+    "vue-async-computed": "^3.5.0",
     "vue-electron": "^1.0.6",
-    "vue-router": "^2.5.3",
-    "vuetify": "1.0.0",
-    "vuex": "^2.3.1"
+    "vue-router": "^3.0.2",
+    "vuetify": "^1.3.15",
+    "vuex": "^3.0.1"
   },
+  "description": "An electron-vue project",
   "devDependencies": {
-    "babel-core": "^6.25.0",
-    "babel-loader": "^7.1.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-stage-0": "^6.24.1",
-    "babel-register": "^6.24.1",
-    "babili-webpack-plugin": "^0.1.2",
-    "cfonts": "^1.1.3",
-    "chalk": "^2.1.0",
-    "copy-webpack-plugin": "^4.0.1",
-    "cross-env": "^5.0.5",
-    "css-loader": "^0.28.4",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "copy-webpack-plugin": "^4.6.0",
+    "cross-env": "^5.2.0",
+    "css-loader": "^2.0.1",
     "del": "^3.0.0",
     "devtron": "^1.4.0",
-    "electron": "^1.7.5",
-    "electron-debug": "^1.4.0",
-    "electron-devtools-installer": "^2.2.4",
-    "electron-builder": "^19.19.1",
-    "extract-text-webpack-plugin": "^3.0.0",
-    "file-loader": "^0.11.2",
-    "html-webpack-plugin": "^2.30.1",
-    "multispinner": "^0.2.1",
+    "electron": "~3.0.12",
+    "electron-builder": "^20.38.3",
+    "electron-debug": "^2.0.0",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-import-resolver-webpack": "^0.10.1",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "inject-loader": "^4.0.1",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "node-loader": "^0.6.0",
-    "style-loader": "^0.18.2",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.1",
-    "url-loader": "^0.5.9",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "tree-kill": "1.2.1",
+    "url-loader": "^1.1.2",
+    "vue-devtools": "^5.0.0-beta.1",
     "vue-html-loader": "^1.2.4",
-    "vue-loader": "^13.0.5",
-    "vue-style-loader": "^3.0.1",
-    "vue-template-compiler": "^2.4.2",
-    "webpack": "^3.5.2",
-    "webpack-dev-server": "^2.7.1",
-    "webpack-hot-middleware": "^2.18.2"
-  }
+    "vue-loader": "^15.4.2",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
+    "webpack-hot-middleware": "^2.24.3"
+  },
+  "license": "MIT",
+  "main": "./dist/electron/main.js",
+  "name": "vue-electron-template",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mubaidr/vue-electron-template.git"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production npm run pack && electron-builder",
+    "build:dir": "npm run pack && electron-builder --dir",
+    "clean": "cross-env BUILD_TARGET=clean node vue-electron/build.js",
+    "dev": "cross-env NODE_ENV=development node vue-electron/dev-runner.js",
+    "lint": "eslint --ext .js,.vue --fix src",
+    "pack": "npm run pack:main && npm run pack:renderer",
+    "pack:main": "webpack --mode production --hide-modules --config vue-electron/webpack.main.config.js",
+    "pack:renderer": "webpack --mode production --hide-modules --config vue-electron/webpack.renderer.config.js",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "version": "0.0.1"
 }

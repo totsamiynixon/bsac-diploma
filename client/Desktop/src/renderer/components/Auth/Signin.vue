@@ -82,7 +82,7 @@ export default {
     onSignin() {
       if (this.$refs.signInForm.validate()) {
         this.$store.dispatch("user/signUserIn", {
-          userName: this.email,
+          email: this.email,
           password: this.password
         });
       }

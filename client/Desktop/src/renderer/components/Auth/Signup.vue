@@ -80,7 +80,7 @@ export default {
   computed: {
     comparePasswords() {
       return [
-        this.password !== this.confirmPassword ? "Пароли не совпадают" : "",
+        this.password !== this.confirmPassword ? "Пароли не совпадают" : true,
         !!this.password || "Введите подтверждение пароля"
       ];
     },

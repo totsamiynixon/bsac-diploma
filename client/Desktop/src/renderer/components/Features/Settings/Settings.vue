@@ -5,17 +5,15 @@
   </v-flex>
 </template>
 <script>
-import ProfessionSettings from "./Profession";
-import PreferredTimeSettings from "./PreferredTime";
+import ProfessionSettings from './Profession'
+import PreferredTimeSettings from './PreferredTime'
 export default {
-  data: function() {
-    return {
-    
-    };
-  },
   components: {
     ProfessionSettings,
-    PreferredTimeSettings
-  }
-};
+    PreferredTimeSettings,
+  },
+  data() {
+    return {}
+  },
+}
 </script>

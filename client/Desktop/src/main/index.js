@@ -1,106 +1,148 @@
-import {
-  app,
-  BrowserWindow,
-  ipcMain,
-  ipcRenderer,
-  remote,
-  Menu,
-  Notification
-} from "electron";
+/* eslint-disable */
+import { app,   ipcMain, BrowserWindow } from 'electron'
 import Notifier from "node-notifier";
-// import { autoUpdater } from "electron-updater";
+/* eslint-enable */
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true
 
-/**
- * Set `__static` path to static files in production
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
- */
-if (process.env.NODE_ENV !== "development") {
-  global.__static = require("path")
-    .join(__dirname, "/static")
-    .replace(/\\/g, "\\\\");
+let mainWindow
+let winURL = 'http://localhost:9080'
+
+if (process.env.NODE_ENV === 'development') {
+  try {
+    // eslint-disable-next-line
+    require('electron-debug')({
+      showDevTools: true,
+    })
+  } catch (err) {
+    console.log(
+      'Failed to install `electron-debug`: Please set `NODE_ENV=production` before build to avoid installing debugging packages. ',
+    )
+  }
+} else {
+  winURL = `file://${__dirname}/index.html`
+
+  /**
+   * Set `__static` path to static files in production
+   * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
+   */
+  // eslint-disable-next-line
+  global.__static = require('path')
+    .join(__dirname, '/static')
+    .replace(/\\/g, '\\\\') // eslint-disable-line
 }
 
-let mainWindow;
-const winURL =
-  process.env.NODE_ENV === "development"
-    ? `http://localhost:9080`
-    : `file://${__dirname}/index.html`;
+function installDevTools() {
+  try {
+    require('devtron').install() //eslint-disable-line
+    require('vue-devtools').install() //eslint-disable-line
+  } catch (err) {
+    console.log(
+      'Failed to install `devtron` & `vue-devtools`: Please set `NODE_ENV=production` before build to avoid installing debugging packages. ',
+    )
+  }
+}
+
+function initNotifications(){
+  ipcMain.on("notifier:notify-user-about-training", (event, data) => {
+    Notifier.notify(
+      {
+        title: "Пришло время тренировки!",
+        message:
+          "Кликните, чтобы приступить, или закройте, чтобы отложить на 10 минут",
+        sound: true,
+        wait: true
+      },
+      (err, response) => {
+        mainWindow.webContents.send("notifier:set-aside-timer");
+      }
+    );
+    Notifier.on("click", (notifierObject, options) => {
+      mainWindow.show();
+      mainWindow.webContents.send("notifier:notify-user-about-training");
+    });
+  });
+ }
 
 function createWindow() {
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 1000,
-    useContentSize: false,
-    width: 1600
-  });
-
-  mainWindow.loadURL(winURL);
-
-  mainWindow.on("closed", () => {
-    mainWindow = null;
-  });
-}
-
-app.on("ready", function() {
-  createWindow();
-  buildMenu();
-});
-
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
-
-app.on("activate", () => {
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
-
-ipcMain.on("notifier:notify-user-about-training", (event, data) => {
-  Notifier.notify(
-    {
-      title: "Пришло время тренировки!",
-      message:
-        "Кликните, чтобы приступить, или закройте, чтобы отложить на 10 минут",
-      sound: true,
-      wait: true
+    useContentSize: true,
+    width: 1000,
+    height: 700,
+    minWidth: 500,
+    minHeight: 350,
+    backgroundColor: '#fff',
+    webPreferences: {
+      nodeIntegrationInWorker: true,
+      webSecurity: false,
     },
-    function(err, response) {
-      mainWindow.webContents.send("notifier:set-aside-timer");
-    }
-  );
-  Notifier.on("click", function(notifierObject, options) {
-    mainWindow.show();
-    mainWindow.webContents.send("notifier:notify-user-about-training");
-  });
-});
+    show: false,
+  })
 
-function buildMenu() {
-  const template = [
-    {
-      label: "Настройки",
-      submenu: [
-        {
-          label: "Выйти",
-          click: function() {
-            app.quit();
-          }
-        }
-      ]
+  // mainWindow.setMenu(null)
+  mainWindow.loadURL(winURL)
+
+  // Show when loaded
+  mainWindow.on('ready-to-show', () => {
+    mainWindow.show()
+    mainWindow.focus()
+
+    if (
+      process.env.ELECTRON_ENV === 'development' ||
+      process.argv.indexOf('--debug') !== -1
+    ) {
+      mainWindow.webContents.openDevTools()
     }
-  ];
-  if (process.env.NODE_ENV !== "production") {
-    template.submenu.push({
-      label: "Открыть инструменты разработчика",
-      click: function() {
-        mainWindow.webContents.openDevTools();
-      }
-    });
-  }
-  const menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
+  })
+
+  mainWindow.on('closed', () => {
+    mainWindow = null
+  })
 }
+
+app.on('ready', () => {
+  createWindow()
+
+  if (process.env.NODE_ENV === 'development') {
+    installDevTools()
+  }
+
+  initNotifications();
+
+})
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('activate', () => {
+  if (mainWindow === null) {
+    createWindow()
+  }
+})
+
+/**
+ * Auto Updater
+ *
+ * Uncomment the following code below and install `electron-updater` to
+ * support auto updating. Code Signing with a valid certificate is required.
+ * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
+ */
+
+/*
+import { autoUpdater } from 'electron-updater'
+
+autoUpdater.on('update-downloaded', () => {
+  autoUpdater.quitAndInstall()
+})
+
+app.on('ready', () => {
+  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
+})
+ */
+
+

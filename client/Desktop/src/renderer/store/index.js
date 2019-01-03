@@ -6,7 +6,7 @@ import SharedStore from "./modules/shared.js";
 
 Vue.use(Vuex);
 
-export const store = new Vuex.Store({
+export default new Vuex.Store({
   modules: {
     sidebar: SidebarStore,
     user: UserStore,

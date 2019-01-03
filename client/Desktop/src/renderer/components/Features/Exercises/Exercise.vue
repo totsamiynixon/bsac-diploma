@@ -4,7 +4,7 @@
       <v-card class="px-5 py-5">
         <v-card-media>
           <div class="media-holder">
-            <iframe :src="exercise.videoUrl"
+            <iframe :src="`https://youtube.com/embed/${exercise.videoId}?controls=0&disablekb=0&fs=0&showinfo=0&end=10&rel=0`"
                     webkitallowfullscreen
                     mozallowfullscreen
                     allowfullscreen></iframe>
@@ -24,22 +24,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      exercise: {}
-    };
-  },
-  methods: {
-    getExercise() {
-      this.$http
-        .get("/api/exercises/get", { params: { id: this.$route.params.id } })
-        .then(response => {
-          this.exercise = response.data;
-        });
+  asyncComputed:{
+    exercise(){
+      return this.$apiService.getExercise(this.$route.params.id)
     }
-  },
-  created() {
-    this.getExercise();
   }
-};
+}
 </script>
