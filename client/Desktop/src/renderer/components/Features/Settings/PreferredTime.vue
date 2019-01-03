@@ -50,51 +50,46 @@
            @click="save">Сохранить</v-btn>
   </v-flex>
 </template>
-    
+
 <script>
+import moment from 'moment'
 export default {
   data() {
     return {
       model: {
-        times: []
-      }
-    };
+        times: [],
+      },
+    }
   },
   created() {
-    this.model.times = this.$store.getters["user/trainingTime"].map(time => {
-      return {
-        value: time,
-        dialog: false
-      };
-    });
+    this.model.times = this.$store.getters['user/trainingTime'].map(time => ({
+      value: moment(time, 'HH:mm').format('HH:mm'),
+      dialog: false,
+    }))
     this.$store.watch(
-      () => this.$store.getters["user/trainingTime"],
+      () => this.$store.getters['user/trainingTime'],
       value => {
-        this.model.times = value.map(time => {
-          return {
-            value: time,
-            dialog: false
-          };
-        });
-      }
-    );
+        this.model.times = value.map(time => ({
+          value: moment(time, 'HH:mm').format('HH:mm'),
+          dialog: false,
+        }))
+      },
+    )
   },
   methods: {
     add() {
       this.model.times.push({
         value: null,
-        dialog: false
-      });
+        dialog: false,
+      })
     },
     remove(index) {
-      this.model.times.splice(index, 1);
+      this.model.times.splice(index, 1)
     },
     save() {
-      var payload = this.model.times.map(s => {
-        return s.value;
-      });
-      this.$store.dispatch("user/changePreferredTime", payload);
-    }
-  }
-};
+      const payload = this.model.times.map(s => s.value);
+      this.$store.dispatch('user/changePreferredTime', payload)
+    },
+  },
+}
 </script>

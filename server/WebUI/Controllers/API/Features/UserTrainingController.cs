@@ -11,6 +11,7 @@ using WebUI.Models.Controllers.Features.UserTraining;
 
 namespace WebUI.Controllers.API.Features
 {
+    [Authorize]
     [RoutePrefix("api/usertrainings")]
     public class UserTrainingController : ApiController
     {

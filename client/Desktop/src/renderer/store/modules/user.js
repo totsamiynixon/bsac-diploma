@@ -1,147 +1,139 @@
-import Vuex from "vuex";
-import Vue from "vue";
+import apiService from '../../utils/apiService'
 const state = {
   id: null,
   userName: null,
   roles: [],
   settings: null,
-  token: null
-};
+  token: null,
+}
 
 const mutations = {
-  setUser(state, payload) {
-    state.id = payload.id;
-    state.userName = payload.userName;
-    state.roles = payload.roles;
-    state.settings = payload.settings;
+  set(state, payload) {
+    state.id = payload.id
+    state.userName = payload.userName
+    state.roles = payload.roles
+    state.settings = payload.settings
   },
   setToken(state, payload) {
     if (payload != null) {
       localStorage.setItem(
-        "user_auth",
+        'userAuth',
         JSON.stringify({
           token: payload.token,
-          expires: payload.expires
-        })
-      );
-      state.token = payload.token;
+          expires: payload.expires,
+        }),
+      )
+      state.token = payload.token
     } else {
-      state.token = null;
+      state.token = null
     }
   },
-  clearUser(state) {
-    state.id = null;
-    state.userName = null;
-    state.roles = null;
-    state.settings = null;
-    state.token = null;
-    localStorage.removeItem("user_auth");
+  drop(state) {
+    state.id = null
+    state.userName = null
+    state.roles = null
+    state.settings = null
+    state.token = null
+    localStorage.removeItem('userAuth')
   },
   setSettings(state, payload) {
-    state.settings = payload;
+    state.settings = payload
   },
   setPreferredTrainingTime(state, payload) {
-    state.settings.preferredTrainingTime = payload;
+    state.settings.preferredTrainingTime = payload
   },
   setProfession(state, payload) {
-    state.settings.profession = payload;
-  }
-};
+    state.settings.profession = payload
+  },
+}
 
 const actions = {
-  //User setup
+  // User setup
   setup({ commit }) {
-    Vue.http.get("/api/account/fullinfo").then(response => {
-      commit("setUser", response.data);
-    });
+    apiService.getFullUserInfo().then(info => {
+      commit('set', info)
+    })
   },
-  //Authentication
-  signUserUp({ commit }, payload) {
-    Vue.http.post("/api/account/sign-up", payload).then(result => {
-      commit("setToken", {
-        token: result.data.token,
-        expires: result.data.expires
-      });
-      dispatch("setup");
-    });
+  // Authentication
+  signUserUp({ dispatch, commit }, payload) {
+    apiService
+      .signUp(payload.email, payload.password, payload.confirmPassword)
+      .then(result => {
+        commit('setToken', {
+          token: result.token,
+          expires: result.expires,
+        })
+        dispatch('setup')
+      })
   },
   signUserIn({ commit, dispatch }, payload) {
-    Vue.http
-      .post("/api/account/sign-in", {
-        email: payload.userName,
-        password: payload.password
+    apiService.signIn(payload.email, payload.password).then(result => {
+      commit('setToken', {
+        token: result.token,
+        expires: result.expires,
       })
-      .then(result => {
-        commit("setToken", {
-          token: result.data.token,
-          expires: result.data.expires
-        });
-        dispatch("setup");
-      });
+      dispatch('setup')
+    })
   },
-  restoreToken({ commit, dispatch }) {
-    var user_auth = JSON.parse(localStorage.getItem("user_auth"));
+  tryRestoreUser({ commit, dispatch }) {
+    const userAuth = JSON.parse(localStorage.getItem('userAuth'))
     if (
-      user_auth == null ||
-      new Date(user_auth.expires) < new Date().getUTCDate()
+      userAuth == null ||
+      new Date(userAuth.expires) < new Date().getUTCDate()
     ) {
-      commit("setToken", null);
-      return;
+      commit('setToken', null)
+      return
     }
-    commit("setToken", user_auth);
-    dispatch("setup");
+    commit('setToken', userAuth)
+    dispatch('setup')
   },
   failAuth({ commit }) {
-    commit("clearUser");
+    commit('drop')
   },
   logout({ commit }) {
-    commit("clearUser");
+    commit('drop')
   },
-  //Settings
+  // Settings
   changeProfession({ commit }, payload) {
-    Vue.http
-      .post("/api/settings/saveProfession", {
-        professionId: payload.id
+    apiService.changeProfession(payload.id).then(result => {
+      commit('setProfession', {
+        id: payload.id,
+        name: payload.name,
       })
-      .then(result => {
-        commit("setProfession", {
-          id: payload.id,
-          name: payload.name
-        });
-      });
+    })
   },
   changePreferredTime({ commit }, payload) {
-    Vue.http.post("/api/settings/savePrefferedTime", payload).then(result => {
-      commit("setPreferredTrainingTime", payload);
-    });
-  }
-};
+    apiService.savePreferredTime(payload).then(result => {
+      commit('setPreferredTrainingTime', payload)
+    })
+  },
+}
 
 const getters = {
   isLoggedIn(state) {
-    return state != null && state.id != null && state.token != null;
+    return state != null && state.id != null && state.token != null
   },
   hasSettingsSetUp(state) {
-    return state != null && state.settings != null;
+    return state != null && state.settings && state.settings.profession != null
   },
   profession(state) {
     if (!state) {
-      return null;
+      return null
     }
-    return state.settings.profession;
+    return state.settings.profession
   },
   trainingTime(state) {
     if (!state || !state.settings) {
-      return [];
+      return []
     }
-    return state.settings.preferredTrainingTime || [];
-  }
-};
+    return state.settings.preferredTrainingTime || []
+  },
+}
 
 export default {
   namespaced: true,
   state,
   getters,
   actions,
-  mutations
-};
+  mutations,
+}

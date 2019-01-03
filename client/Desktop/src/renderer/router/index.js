@@ -1,25 +1,25 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-//AUTH
+// AUTH
 import Signup from "@/components/Auth/Signup";
 import Signin from "@/components/Auth/Signin";
-import AuthLayout from "@/components/Auth/Shared/Layout";
+import TheAuthLayout from "@/components/Auth/Shared/TheLayout";
 import AuthGuard from "./auth-guard";
 
-//FEATURES
-import FeaturesLayout from "@/components/Features/Shared/Layout"
+// FEATURES
+import TheFeaturesLayout from "@/components/Features/Shared/TheLayout"
 
-//EXERCISES
+// EXERCISES
 import Exercises from "@/components/Features/Exercises/Exercises.vue"
 import SingleExercise from "@/components/Features/Exercises/Exercise.vue"
 
-//TRAINING
+// TRAINING
 import TrainingList from "@/components/Features/Training/TrainingList.vue"
 import Training from "@/components/Features/Training/Training.vue"
 import TrainingResult from "@/components/Features/Training/TrainingResult.vue";
 
-//SETTINGS
+// SETTINGS
 import Settings from "@/components/Features/Settings/Settings.vue"
 
 Vue.use(Router);
@@ -35,36 +35,42 @@ export default new Router({
       redirect: {
         name: "exercises"
       },
-      component: FeaturesLayout,
+      component: TheFeaturesLayout,
       children: [{
           path: "exercises",
           name: "exercises",
           component: Exercises,
+          beforeEnter:AuthGuard
         },
         {
           path: "exercises/:id",
           name: "exercise",
           component: SingleExercise,
+          beforeEnter:AuthGuard
         },
         {
           path: "settings",
           name: "settings",
           component: Settings,
+          beforeEnter:AuthGuard
         },
         {
           path: "training/:id",
           name: "training",
           component: Training,
+          beforeEnter:AuthGuard
         },
         {
           path: "training-list",
           name: "training-list",
           component: TrainingList,
+          beforeEnter:AuthGuard
         },
         {
           path: "training-result",
           name: "training-result",
           component: TrainingResult,
+          beforeEnter:AuthGuard
         },
       ],
       beforeEnter: AuthGuard
@@ -72,7 +78,7 @@ export default new Router({
     {
       path: "/auth",
       name: "auth",
-      component: AuthLayout,
+      component: TheAuthLayout,
       redirect: {
         name: "signin"
       },
@@ -93,6 +99,6 @@ export default new Router({
       redirect: '/'
     }
   ],
-  mode: "history",
+  mode: "hash",
   linkActiveClass: "active-route"
 });

@@ -1,23 +1,11 @@
-import Vuex from "vuex"
 const state = {
   loading: false,
   alerts: []
 };
-var isLoadingCanceled = false;
+let isLoadingCanceled = false;
 const mutations = {
   setLoading(state, payload) {
-    if (payload == true) {
-      isLoadingCanceled = false;
-      setTimeout(() => {
-        if (!isLoadingCanceled) {
-          state.loading = true;
-          return;
-        }
-      }, 500);
-    } else {
-      isLoadingCanceled = true
-      state.loading = payload;
-    }
+    state.loading = payload;
   },
   showAlert(state, payload) {
     payload.dismissed = false;
@@ -27,10 +15,8 @@ const mutations = {
     }, 3000);
   },
   clearAlert(state, payload) {
-    var index = state.alerts.findIndex(value => {
-      return value == payload;
-    });
-    if (index != -1) {
+    const index = state.alerts.findIndex(value => value === payload);
+    if (index !== -1) {
       state.alerts.splice(index, 1);
     }
   },
@@ -39,52 +25,45 @@ const mutations = {
   }
 };
 const actions = {
-  loading({
-    commit,
-    state
-  }, payload) {
-    commit("setLoading", payload);
+  loading({ commit, state }, payload) {
+    if (payload === true) {
+      isLoadingCanceled = false;
+      setTimeout(() => {
+        if (!isLoadingCanceled) {
+          commit("setLoading", payload);
+
+        }
+      }, 200);
+    } else {
+      isLoadingCanceled = true;
+      commit("setLoading", payload);
+    }
   },
-  alert({
-    commit,
-    state
-  }, payload) {
+  alert({ commit, state }, payload) {
     commit("showAlert", payload);
   },
-  error({
-    commit,
-    state
-  }, payload) {
-    let alert = {
+  error({ commit, state }, payload) {
+    const alert = {
       ...payload,
       type: "error"
-    }
+    };
     commit("showAlert", alert);
   },
-  warning({
-    commit,
-    state
-  }, payload) {
-    let alert = {
+  warning({ commit, state }, payload) {
+    const alert = {
       ...payload,
       type: "warning"
-    }
+    };
     commit("showAlert", payload);
   },
-  success({
-    commit,
-    state
-  }, payload) {
-    let alert = {
+  success({ commit, state }, payload) {
+    const alert = {
       ...payload,
       type: "success"
-    }
+    };
     commit("showAlert", payload);
   },
-  clearAlert({
-    commit,
-    state
-  }, payload) {
+  clearAlert({ commit, state }, payload) {
     commit("clearAlert", payload);
   }
 };

@@ -9,13 +9,13 @@
         <v-chip>{{profession.name}}</v-chip>
       </div>
       <v-card>
-        <v-card-title>Выберите профессию</v-card-title>
-        <v-text-field flat
-                      solo-inverted
-                      prepend-icon="search"
-                      label="Search"
-                      class="hidden-sm-and-down"
-                      v-model="filter"></v-text-field>
+        <v-card-title class="px-2">Выберите профессию
+          <v-text-field flat
+                        prepend-icon="search"
+                        label="Search"
+                        class="hidden-sm-and-down"
+                        v-model="filter"></v-text-field>
+        </v-card-title>
         <v-divider></v-divider>
         <v-card-text style="height: 300px;">
           <v-radio-group column
@@ -44,58 +44,58 @@
 </template>
 <script>
 export default {
-  data: function() {
+  data() {
     return {
       dialog: false,
-      filter: "",
+      filter: '',
       professionModel: {
         id: null,
-        name: null
+        name: null,
       },
-      professions: []
-    };
+      professions: [],
+    }
   },
-  created() {
-    this.$http("/api/professions/getAll").then(response => {
-      this.professions = response.data;
-    });
-    this.professionModel = {
-      ...this.$store.getters["user/profession"]
-    };
-  },
+
   computed: {
     filteredProfessions() {
-      let filteredPrfessions = this.professions.filter(f =>
-        f.name.includes(this.filter)
-      );
-      let data = filteredPrfessions.reduce((r, e) => {
-        let group = e.name[0];
-        if (!r[group]) r[group] = { group, children: [e] };
-        else r[group].children.push(e);
-        return r;
-      }, {});
+      const filteredPrfessions = this.professions.filter(f =>
+        f.name.includes(this.filter),
+      )
+      const data = filteredPrfessions.reduce((r, e) => {
+        const group = e.name[0]
+        if (!r[group]) r[group] = { group, children: [e] }
+        else r[group].children.push(e)
+        return r
+      }, {})
 
-      let result = Object.values(data);
-      return result;
+      return Object.values(data)
     },
     profession() {
-      return this.$store.getters["user/profession"];
+      return this.$store.getters['user/profession'] || {}
+    },
+  },
+  created() {
+    this.$apiService.getAllProfessions().then(professions => {
+      this.professions = professions
+    })
+    this.professionModel = {
+      ...this.$store.getters['user/profession'],
     }
   },
   methods: {
     onSearch(query) {
-      this.filter = query;
+      this.filter = query
     },
     onClear() {
-      this.filter = "";
+      this.filter = ''
     },
     setCurrentProfession() {
       this.$store.dispatch(
-        "user/changeProfession",
-        this.professions.find(f => f.id == this.professionModel.id)
-      );
-    }
-  }
-};
+        'user/changeProfession',
+        this.professions.find(f => f.id === this.professionModel.id),
+      )
+    },
+  },
+}
 </script>
 

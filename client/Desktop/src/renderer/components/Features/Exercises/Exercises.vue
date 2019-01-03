@@ -1,12 +1,12 @@
 <template>
   <v-flex>
-    <v-text-field flat
-                  solo-inverted
-                  prepend-icon="search"
-                  label="Поиск"
-                  class="hidden-sm-and-down"
-                  @input="searchUpdate"
-                  @dblclick="search.dialog = true"></v-text-field>
+    <v-flex class="px-2">
+      <v-text-field flat
+                    prepend-icon="search"
+                    label="Поиск"
+                    @input="searchUpdate"
+                    @dblclick="search.dialog = true"></v-text-field>
+    </v-flex>
     <v-layout row>
       <v-flex xs12
               sm6
@@ -18,8 +18,7 @@
         <v-card>
           <v-card-media>
             <div class="media-holder">
-              <iframe :src="`https://youtube.com/embed/${exercise.videoUrl}?controls=0&disablekb=0&fs=0&showinfo=0&end=10&rel=0`"
-            
+              <iframe :src="`https://youtube.com/embed/${exercise.videoId}?controls=0&disablekb=0&fs=0&showinfo=0&end=10&rel=0`"
                       webkitallowfullscreen
                       mozallowfullscreen
                       allowfullscreen></iframe>
@@ -89,7 +88,8 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>По профессиям</v-list-tile-title>
-                <v-list-tile-sub-title>Поиск упражнений по названию и описанию профессии</v-list-tile-sub-title>
+                <v-list-tile-sub-title>Поиск упражнений по названию и описанию
+                  профессии</v-list-tile-sub-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
@@ -109,36 +109,31 @@ export default {
         dialog: false,
         timer: null,
         properties: {
-          query: "",
+          query: '',
           byExercises: true,
-          byCriterias: false
-        }
-      }
-    };
+          byCriterias: false,
+        },
+      },
+    }
+  },
+  asyncComputed: {
+    filteredExercises() {
+      return this.$apiService.getAllExercises({
+        query: this.search.properties.query,
+        byCriterias: this.search.properties.byCriterias,
+        byExercises: this.search.properties.byExercises,
+      })
+    },
   },
   methods: {
     searchUpdate(value) {
       if (this.search.timer != null) {
-        clearTimeout(this.search.timer);
+        clearTimeout(this.search.timer)
       }
       this.search.timer = setTimeout(() => {
-        this.search.properties.query = value;
-      }, 1000);
-    }
+        this.search.properties.query = value
+      }, 1000)
+    },
   },
-  created() {},
-  asyncComputed: {
-    filteredExercises() {
-      return this.$http
-        .get("/api/exercises/getAll", {
-          params: {
-            query: this.search.properties.query,
-            byCriterias: this.search.properties.byCriterias,
-            byExercises: this.search.properties.byExercises
-          }
-        })
-        .then(response => response.data);
-    }
-  }
-};
+}
 </script>
