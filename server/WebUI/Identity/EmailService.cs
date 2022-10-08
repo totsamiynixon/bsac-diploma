@@ -11,7 +11,7 @@ namespace WebUI.Identity
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "email_from_config"));
+            emailMessage.From.Add(new MailboxAddress("data_from_config", "email_from_config"));
             emailMessage.To.Add(new MailboxAddress("", message.Destination));
             emailMessage.Subject = message.Subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
