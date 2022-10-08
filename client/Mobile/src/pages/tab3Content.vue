@@ -1,3 +1,0 @@
-<template>
-    <p>Tab 3 Content</p>
-</template>

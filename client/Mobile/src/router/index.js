@@ -87,29 +87,5 @@ export default [{
   {
     path: "/panel-left/",
     component: PanelLeftPage
-  },
-  {
-    path: "/tabs/",
-    component: Tabs
-  },
-  {
-    path: "/panel-right/",
-    component: PanelRightPage
-  },
-  {
-    path: "/about/",
-    component: AboutPage
-  },
-  {
-    path: "/form/",
-    component: FormPage
-  },
-  {
-    path: "/dynamic-route/blog/:blogId/post/:postId/",
-    component: DynamicRoutePage
-  },
-  {
-    path: "(.*)",
-    component: NotFoundPage
   }
 ];
